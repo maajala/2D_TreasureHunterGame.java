@@ -9,11 +9,13 @@ import java.util.Objects;
 public class Jewel_Sword extends SuperObject {
     public Jewel_Sword(){
 
+
         name ="Treasure"; // for chest object
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/jewelSword.png")));
         }catch (IOException e){
             e.printStackTrace(); //catches error if found
         }
+        collision = true;
     }
 }

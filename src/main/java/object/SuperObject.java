@@ -11,6 +11,9 @@ public class SuperObject { // game objects
     public BufferedImage image; // to capture image of each object
     public String name;// name for each object
     public boolean collision = false ; // for collision checker
+    public Rectangle solidArea = new Rectangle(0 , 0, 48 ,48);// create a border around each object
+    public int solidAreaDefaultX = 0;
+    public int solidAreaDefaultY=0;
     public int worldX, worldY; // we need to creat object class for keyHandling
 
     public void draw(Graphics2D g2, GamePanel gp){

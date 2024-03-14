@@ -6,11 +6,11 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Trap extends SuperObject {
-    public Trap() {
-        name = "Trap House";
+public class Lost extends SuperObject {
+    public Lost() {
+        name = "Lost Items";
         try{
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/red.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/blue.png")));
 
         }catch (IOException e){
             e.printStackTrace();

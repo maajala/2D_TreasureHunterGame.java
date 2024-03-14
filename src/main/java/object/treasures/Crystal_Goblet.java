@@ -15,5 +15,6 @@ public class Crystal_Goblet extends SuperObject {
         }catch (IOException e){
             e.printStackTrace(); //catches error if found
         }
+        collision = true;
     }
 }

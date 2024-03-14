@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHand2 implements KeyListener {
 
-    public boolean upPressed, downPressed, rightPressed, leftPressed;
+    public boolean upPress, downPress, rightPress, leftPress;
 
 
     @Override
@@ -20,16 +20,16 @@ public class KeyHand2 implements KeyListener {
 
         // thus we need to check the key we entered by the keyboard
         if(code == KeyEvent.VK_UP){
-            upPressed = true;
+            upPress = true;
         }
         if(code == KeyEvent.VK_DOWN){
-            downPressed = true;
+            downPress = true;
         }
         if(code == KeyEvent.VK_LEFT){
-            leftPressed = true;
+            leftPress = true;
         }
         if(code == KeyEvent.VK_RIGHT){
-            rightPressed = true;
+            rightPress = true;
         }
     }
 
@@ -38,16 +38,16 @@ public class KeyHand2 implements KeyListener {
         int code = e.getKeyCode();
         // here when we release the button we should return false
         if(code == KeyEvent.VK_UP){
-            upPressed = false;
+            upPress = false;
         }
         if(code == KeyEvent.VK_DOWN){
-            downPressed = false;
+            downPress = false;
         }
         if(code == KeyEvent.VK_LEFT){
-            leftPressed = false;
+            leftPress = false;
         }
         if(code == KeyEvent.VK_RIGHT){
-            rightPressed = false;
+            rightPress = false;
         }
     }
 }

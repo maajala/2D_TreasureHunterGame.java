@@ -9,6 +9,7 @@ public class Keyhandler implements KeyListener {
 
     public boolean upPressed, downPressed, rightPressed, leftPressed;
 
+    public boolean rollDiceRequested = false;
     @Override // not going to be used
     public void keyTyped(KeyEvent e) {
     }
@@ -31,6 +32,10 @@ public class Keyhandler implements KeyListener {
         if(code == KeyEvent.VK_D){
             rightPressed = true;
         }
+        if(code == KeyEvent.VK_SPACE){
+            rollDiceRequested = true;
+        }
+        System.out.println("Key Pressed: " + e.getKeyCode());
 
     }
 
@@ -50,6 +55,11 @@ public class Keyhandler implements KeyListener {
         if(code == KeyEvent.VK_D){
             rightPressed = false;
         }
+        if(code == KeyEvent.VK_SPACE){
+            rollDiceRequested = false;
+
+            System.out.println("Key released: " + e.getKeyCode());}
+
     }
 
 }

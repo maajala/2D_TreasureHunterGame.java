@@ -8,6 +8,7 @@ public class OBJ_Door extends SuperObject{
 
     public OBJ_Door(){
 
+        collision = true;
         name ="Door"; // for door object
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/door.png")));

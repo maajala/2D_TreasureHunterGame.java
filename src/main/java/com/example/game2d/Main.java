@@ -1,5 +1,7 @@
 package com.example.game2d;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -28,7 +30,30 @@ public class Main {
         gamePanel.startGameThread1();
     }
 }
- /*  public static void main(String[] args) throws IOException {
+
+  /*  public static void main(String[] args) throws IOException {
+        JFrame window = new JFrame();
+        // to close the window after usage
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.setTitle("Salesmen Go");
+
+        GamePanel gamePanel = new GamePanel();
+        window.add(gamePanel);
+
+        window.pack();
+        // window would be centered in the middle
+        window.setLocationRelativeTo(null);
+        // make window visibly possible
+        window.setVisible(true);
+
+        // WE CALL THIS AFTER CREATION OF setUpGame in GamePanel
+          gamePanel.setUpGame();
+
+        gamePanel.startGameThread1();
+    }*/
+
+  /* public static void main(String[] args) throws IOException {
         JFrame window = new JFrame();
         // to close the window after usage
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,3 +89,4 @@ public class Main {
         gamePanel1.startGameThread1();
         gamePanel2.startGameThread2();
     }*/
+

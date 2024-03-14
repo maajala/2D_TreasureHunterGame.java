@@ -27,10 +27,10 @@ public class TileManager {
 
         tile = new Tile[10];// 10 kinds of tiles for now
 
-        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];//to store the map01 numbers in this 2D array
-        //mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
+        //mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];//to store the map01 numbers in this 2D array
+        mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
         getTileImage();
-        loadMap("/maps/world01.txt");
+        loadMap("/maps/map01.txt");
     }
 
     // create a method to get Image inside the TileManager
@@ -46,9 +46,9 @@ public class TileManager {
             tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
             tile[1].collision = true;
 
-            //WATER
+            //Blue
             tile[2] = new Tile();
-            tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/water.png")));
+            tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/blue.png")));
             tile[2].collision = true;
 
             //EARTH
@@ -66,18 +66,20 @@ public class TileManager {
 
             //CASTLE BLOCK
             tile[6] = new Tile();
-            tile[6].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/castleBlock.png")));
-            tile[6].collision = true;
+            tile[6].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/black.png")));
+            //tile[6].collision = true;
 
             //STONE
             tile[7] = new Tile();
-            tile[7].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/stone.png")));
-            tile[7].collision = true;
+            tile[7].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/green.png")));
+            //tile[7].collision = true;
 
             //TETRIS
             tile[8] = new Tile();
             tile[8].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/tetris.png")));
-            tile[8].collision = true;
+            //tile[8].collision = true;
+            //
+            // 9 Red 8 yellow 7 Green 6 Black 5 Orange 2 Blue
         }
         catch (IOException e){
             e.printStackTrace();
@@ -160,7 +162,7 @@ public class TileManager {
 
     }
     // Non MoveAble mapDrawer Method
-   /* public void draw1(Graphics2D g2){
+    public void draw1(Graphics2D g2){
 
         int col =0;
         int row=0;
@@ -181,5 +183,5 @@ public class TileManager {
                 y += gp.tileSize; // FOR EACH ROW JUMP Y SHOULD BE INCREMENTED TO DRAW ON Y AXIS DOWNWARD BY 48 PIXEL
             }
         }
-    }*/
+    }
 }

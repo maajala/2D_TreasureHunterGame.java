@@ -8,9 +8,9 @@ import java.util.Objects;
 
 public class Castle extends SuperObject {
     public Castle() {
-        name = "Trap House";
+        name = "Castle";
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/castle.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/yellow.png")));
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -9,6 +9,7 @@ import java.util.Objects;
 public class Paladin_Shield extends SuperObject {
     public Paladin_Shield(){
 
+        collision = true;
         name ="Paladin Shield"; // for chest object
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/shieldB.png")));

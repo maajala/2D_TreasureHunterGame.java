@@ -13,7 +13,7 @@ public class Market extends SuperObject {
         count++;//counter for how many markets will be created
         name = "Market"+count;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/market.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/orange.png")));
 
         }catch (IOException e){
             e.printStackTrace();
