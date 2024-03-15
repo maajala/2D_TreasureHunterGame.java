@@ -11,6 +11,7 @@ public class Entity {
 
     GamePanel gp;
     public int worldX,worldY;
+    public String name;
     public int speed;
     //It describes an Image with an accessible buffer of image data.
     //(We use this to store our image files)
@@ -22,6 +23,12 @@ public class Entity {
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+
+   // public int actionCounter;// for NPCes and Monsters
+
+    //CHARACTER STATUS
+    public int maxLife;
+    public int life;
 
     public Entity(GamePanel gp){//abstract
         this.gp = gp;

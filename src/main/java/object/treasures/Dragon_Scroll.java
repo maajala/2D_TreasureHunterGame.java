@@ -10,7 +10,7 @@ public class Dragon_Scroll extends SuperObject {
     public Dragon_Scroll(){
 
 
-        name ="Dragon's Scroll"; // for chest object
+        name ="Dragon Scroll"; // for chest object
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/dragonScroll.png")));
         }catch (IOException e){

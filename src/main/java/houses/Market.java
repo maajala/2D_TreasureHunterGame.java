@@ -10,8 +10,7 @@ public class Market extends SuperObject {
     public static int count;
 
     public Market(){
-        count++;//counter for how many markets will be created
-        name = "Market"+count;
+        name = "Market";
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/orange.png")));
 

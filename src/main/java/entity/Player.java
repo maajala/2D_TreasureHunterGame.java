@@ -19,10 +19,11 @@ public class Player extends Entity{
     KeyHand2 keyHand2;// key handler for movements for p1
 
     public final int screenX;// where we draw player on screen x-axis
-    public final int screenY; // and y-axis
+    public int screenY; // and y-axis
 
-    // Key Counter
+    // Player Tools
     public int keyCount=0;
+    public double walletMoney=0;
 
     // constructor for player one
     public Player (GamePanel gp, Keyhandler keyH) {
@@ -46,6 +47,7 @@ public class Player extends Entity{
 
 
         setDefaultValues();
+        int player1Health = 100;
         try {
             getPlayerImage();
         } catch (IOException e) {
@@ -59,13 +61,17 @@ public class Player extends Entity{
 
         screenX = gp.screenWidth/2 -(gp.tileSize/2); // sub by half to be in the center
         screenY = gp.screenHeight/2 - (gp.tileSize/2);// half-way point of the screen
-       // setDefaultValues();
+
 
         solidArea = new Rectangle();
         solidArea.x = 3;// changed from 0 to 8 after cut of collision
         solidArea.y = 3;// changed from 0 to 16 after cut // it is optional
         solidArea.width = 32;//changed from tileSize(48) to 32 as the desired cut
-        solidArea.height= 32;;
+        solidArea.height= 32;
+
+        setDefaultValues();
+
+        int player2Health=95;
         try {
             getPlayerImage();
         } catch (IOException e) {
@@ -74,7 +80,7 @@ public class Player extends Entity{
     }
 
 
-    public void setDefaultValues(){
+    public void setDefaultValues() {
         // same what we did in GamePanel for player position
         //worldX = gp.tileSize * 23;// starting point , player position in world map // was 23
         //worldY = gp.tileSize * 21;// was 21
@@ -82,6 +88,10 @@ public class Player extends Entity{
         worldY = gp.maxWorldCol/2 * gp.tileSize;
         speed = 4;
         direction = "down"; // can be chosen any direction as default
+
+        //Player Status
+        maxLife =6;//6 heart means 3 hearts
+        life = maxLife; // 1 life means 1/2 heart that's why 6 hearts
     }
 
 
@@ -160,6 +170,11 @@ public class Player extends Entity{
             int npcIndex = gp.collisionChecker.checkEntity(this,gp.npc);
             interactNPC(npcIndex);
 
+            //CHECK Monster Collision
+            int  monsterIndex = gp.collisionChecker.checkEntity(this,gp.monster);
+            interactMonster(monsterIndex);
+
+
                 //IF IT WAS FALSE , PLAYER CAN MOVE
                 if (collisionOn == false) {
                     switch (direction) {
@@ -223,9 +238,6 @@ public class Player extends Entity{
                 // worldX -= speed;
             }
 
-            // Use the dice result to determine the number of steps
-            // int steps = diceResult * gp.tileSize;
-
             //CHECK THE COLLISION HERE AFTER DIRECTION BEEN KNOWN
             collisionOn = false;
             gp.collisionChecker.checkTile(this);
@@ -269,13 +281,56 @@ public class Player extends Entity{
 
     }
 
+
     public void pickUpObject(int i){
-        if(i !=999)
-            if(i==24 || i==25 || i==26){
-            gp.obj[i]=null;
-            keyCount++;
-                System.out.println("The player has now "+keyCount+" key(s)");
+      //Object Being Collected
+        if(i !=999)// any index not used in the object array
+        {
+            String objectName = gp.obj[i].name; // use this String to check our object type
+            switch (objectName)
+            {
+                case "Key"://COLLECTING KEY TO OPEN DOORS
+                    keyCount++;
+                    gp.obj[i]=null;
+                    System.out.println("The player has now "+keyCount+" key(s)");
+                    break;
+                case "Door":// OPEN DOOR ACCORDING TO THE KEYS WE HAVE
+                    if(keyCount>0)
+                    {
+                        gp.obj[i] = null;
+                        keyCount--;
+                    }
+                    System.out.println("The player has now "+keyCount+" key(s)");
+                    break;
+                case "Diamond Ring":// Worth 40.25$
+                    walletMoney +=40.25;
+                    gp.obj[i] = null;
+                    System.out.println("The player has "+walletMoney+" Dollar(s) now!!");
+                    break;
+                case "Dragon Scroll":// Worth 25.5$
+                    walletMoney +=25.5;
+                    gp.obj[i] = null;
+                    System.out.println("The player has "+walletMoney+" Dollar(s) now!!");
+                    break;
+                case "Crystal Goblet":// Worth 45.5$
+                    walletMoney +=45.5;
+                    gp.obj[i] = null;
+                    System.out.println("The player has "+walletMoney+" Dollar(s) now!!");
+                    break;
+                case "Jewel Sword":
+
+                    break;
+                case "Golden Goblet":// Worth 30.5$
+                    walletMoney +=30.5;
+                    gp.obj[i] = null;
+                    System.out.println("The player has "+walletMoney+" Dollar(s) now!!");
+                    break;
+                case "Paladin Shield":
+                    break;
+                case "Wooden Bow":
+                    break;
             }
+        }
 
     }
 
@@ -283,6 +338,11 @@ public class Player extends Entity{
         if(i !=999){
             System.out.println("You Hit An NPC");
         }
+    }
+
+    public void interactMonster(int i){
+        if(i != 999)
+            System.out.println("Be careful from the Monster!!");
     }
     public void draw(Graphics2D g2){
 
@@ -294,30 +354,40 @@ public class Player extends Entity{
             case "up":
                 if(spriteNum==1){
                     image = up1;
+                    //screenY -=speed;
                 }
                 if(spriteNum==2){
                     image = up2;
+                   // screenY -=speed;
                 }
-                if(spriteNum == 3)
+                if(spriteNum == 3) {
                     image = up3;
-                if(spriteNum == 4)
+                   // screenY -= speed;
+                }
+                if(spriteNum == 4){
                     image = up4;
+                    //screenY -= speed;
+                }
                 break;
 
              case "down":
                  if(spriteNum==1){
                      image = down1;
+                    // screenY += speed;
 
                  }
                  if(spriteNum==2){
                      image= down2;
+                    // screenY += speed;
                  }
                  if(spriteNum==3){
                      image = down3;
+                    // screenY += speed;
 
                  }
                  if(spriteNum==4){
                      image= down4;
+                  //   screenY += speed;
                  }
 
                  break;

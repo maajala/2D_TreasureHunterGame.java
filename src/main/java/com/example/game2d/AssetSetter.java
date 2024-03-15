@@ -5,6 +5,8 @@ import houses.Castle;
 import houses.Lost;
 import houses.Market;
 import houses.Trap;
+import monster.MON_GreenSlime;
+import object.Heart;
 import object.OBJ_Door;
 import object.SuperObject;
 import object.treasures.*;
@@ -135,22 +137,31 @@ public class AssetSetter extends SuperObject {
      gp.obj[26].worldX=  gp.tileSize;
      gp.obj[26].worldY = 4* gp.tileSize;
 
+     gp.obj[27] = new Heart();
+     gp.obj[27].worldX=  0*gp.tileSize;
+     gp.obj[27].worldY = 0*gp.tileSize;
 
+     gp.obj[28] = new Heart();
+     gp.obj[28].worldX=  gp.tileSize;
+     gp.obj[28].worldY = 0*gp.tileSize;
 
+     gp.obj[29] = new Heart();
+     gp.obj[29].worldX=  2*gp.tileSize;
+     gp.obj[29].worldY = 0*gp.tileSize;
 
-
-     //Castle created with 4 tetris , castle blocks
-     //TRAP  Assigned with letter "T" at the moment
-     //MARKET(5) done created on actual map with entities
-     //EMPTY done
-     //WALL(burned) done
     }
 
     public void setNPC() throws IOException {
      gp.npc[0] = new NPC_OldMan(gp);
      gp.npc[0].worldX = gp.tileSize * 3;
      gp.npc[0].worldY = gp.tileSize * 2;
+    }
 
+    public void setMonster() throws IOException{
+
+     gp.monster[0] = new MON_GreenSlime(gp);
+     gp.monster[0].worldX = gp.tileSize;
+     gp.monster[0].worldY = gp.tileSize*2;
 
     }
 }

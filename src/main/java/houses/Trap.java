@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Trap extends SuperObject {
     public Trap() {
-        name = "Trap House";
+        name = "Trap";
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/red.png")));
 

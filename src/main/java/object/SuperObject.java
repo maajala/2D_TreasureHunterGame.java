@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class SuperObject { // game objects
     //THE PARENT CLASS FOR OTHER OBJECTS
 
-    public BufferedImage image; // to capture image of each object
+    public BufferedImage image, image2 , image3; // to capture image of each object
     public String name;// name for each object
     public boolean collision = false ; // for collision checker
     public Rectangle solidArea = new Rectangle(0 , 0, 48 ,48);// create a border around each object

@@ -4,6 +4,7 @@ import collision.CollisionChecker;
 import entity.Dice;
 import entity.Entity;
 import entity.Player;
+import monster.MON_GreenSlime;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);// set the color of the background
         this.setDoubleBuffered(true);// for any buffer solve it outside offscreen for more improvement of the performance
         this.addKeyListener(keyH);// this line of code to recognise the controls of class KeyHandler
-      //  this.addKeyListener(keyH2);
+      this.addKeyListener(keyH2);
         this.setFocusable(true);//With this, GamePanel can be "focused" to receive key input.
     }
     public GamePanel(KeyHand2 keyH) throws IOException {
@@ -52,6 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setUpGame() throws IOException {
         assetSetter.setObject();
         assetSetter.setNPC();
+        assetSetter.setMonster();
     }
 
     //FPS
@@ -61,18 +63,20 @@ public class GamePanel extends JPanel implements Runnable{
     Keyhandler keyH = new Keyhandler(); //FOR PLAYER 1 MOVEMENT
     KeyHand2 keyH2 = new KeyHand2(); //FOR PLAYER 2 MOVEMENT
     Thread gameThread;// calling thread later will invoke the run method down
-   public Player player1 = new Player(this,keyH);
 
-   public Player player2 = new Player(this,keyH2);
     public TileManager tileM = new TileManager(this); // this is related to this Game Panel
 
     public CollisionChecker collisionChecker = new CollisionChecker(this);// instantiate collision checker
 
     public AssetSetter assetSetter = new AssetSetter(this);
+
+    //Entity and Objects
+    public Player player1 = new Player(this,keyH);
+    public Player player2 = new Player(this,keyH2);
     public SuperObject obj[] = new SuperObject[30]; // we prepare an array of size 10 for objects // we will use it in another class
     // THAT MEANS WE CAN DISPLAY 25 OBJECTS AT THE SAME TIME
-    public Entity npc[] = new Entity[10];
-
+    public Entity npc[] = new Entity[10];// create npc from entity
+    public Entity monster[] = new Entity[20];//create monster from npc
     public void startGameThread1() {
         gameThread = new Thread(this);// instantiating a thread
         gameThread.start();// start the thread
@@ -119,6 +123,14 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
 
+        for(int i=0 ;i< monster.length; i++)
+        {
+            if(monster[i] != null){
+                monster[i].update();
+            }
+        }
+
+
     }
 
     public void updatePlayer2(){
@@ -147,8 +159,14 @@ public class GamePanel extends JPanel implements Runnable{
             if(npc[i] !=null)
                 npc[i].draw(g2);
         }
-        //Player
+        //monster
+        for(int i=0 ; i< monster.length; i++){
+            if(monster[i] !=null)
+                monster[i].draw(g2);
+        }
+        //Player1
         player1.draw(g2);
+        //player 2
         //player2.draw1(g2);
 
         //to save some memory use dispose

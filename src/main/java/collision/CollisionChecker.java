@@ -76,7 +76,7 @@ public class CollisionChecker {
     // check collision with objects
     public int checkObject(Entity entity, boolean player){
         // the purpose here is to check if the player is hitting the object or not
-        // and if he is we return the index of that object so we collide with it
+        // and if he is we return the index of that object which collide with it
        int  index = 999;
 
        for(int i=0; i < gp.obj.length; i++) {
