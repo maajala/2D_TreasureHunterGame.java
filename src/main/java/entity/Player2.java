@@ -2,43 +2,42 @@ package entity;
 
 import collision.CollisionChecker;
 import com.example.game2d.GamePanel;
+import com.example.game2d.KeyHandler2;
 import com.example.game2d.Keyhandler;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
-public class Player extends Entity{
+public class Player2 extends Entity{
 
     //we can delete it we have super in each constructor from Entity
     GamePanel gp;// use game panel created
-    Keyhandler keyHand;
+    KeyHandler2 keyH2;
+
     public int screenX;// where we draw player on screen x-axis
     public int screenY; // and y-axis
 
     // Player Tools
-    public int keyCountA=0;
-    public double walletA=0;
-   CollisionChecker collisionChecker;
+    public int keyCountB=0;
+    public double walletB=0;
+    CollisionChecker collisionChecker;
 
-   public boolean isTurn = false ;
-   public Random random; // For rolling the dice
-
-    public int steps = 0; // Steps remaining for the player's current turn
+    public boolean isTurn = true; // Let's assume Player 1 starts
+    public Random random = new Random();
 
     // constructor for player one
-    public Player (GamePanel gp, Keyhandler keyH, CollisionChecker collisionChecker) {
+    public Player2 (GamePanel gp, KeyHandler2 keyH2, CollisionChecker collisionChecker) {
         super(gp);
         this.gp = gp;//we can delete
-        this.keyHand = keyH;
+        this.keyH2 = keyH2;
         this.collisionChecker = collisionChecker;
 
         //Player Screen Position
-        screenX = worldX; // sub by half to be in the center
-        screenY = worldY;// half-way point of the screen
+        screenX = gp.tileSize*8; // sub by half to be in the center
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);// half-way point of the screen
 
 
         //Solid Area Variables for player
@@ -50,6 +49,7 @@ public class Player extends Entity{
         solidAreaDefaultX = solidArea.x;// default values helpful to retrieve
         solidAreaDefaultY = solidArea.y;// the default values when changing them later
 
+
         setDefaultValues();
         int player1Health = 100;
         try {
@@ -57,11 +57,7 @@ public class Player extends Entity{
         } catch (IOException e) {
             e.printStackTrace(); // Log the exception or handle it in a way that makes sense for your application.
         }
-
     }
-
-    // Call this method when it's the player's turn to roll the dice
-
 //    public Player (GamePanel gp, KeyHand2 keyH2) {
 //        super(gp);
 //        this.gp = gp;
@@ -92,7 +88,7 @@ public class Player extends Entity{
         // same what we did in GamePanel for player position
         //worldX = gp.tileSize * 23;// starting point , player position in world map // was 23
         //worldY = gp.tileSize * 21;// was 21
-        worldX = gp.tileSize;// this is for 10x10 map
+        worldX = 11 * gp.tileSize;// this is for 10x10 map
         worldY = gp.maxWorldCol/2 * gp.tileSize;
         speed = 4;
         direction = "down"; // can be chosen any direction as default
@@ -141,45 +137,44 @@ public class Player extends Entity{
 
     // Update player position based on key input
     public void update() {
-//        if(!isTurn){
-            collisionOn = false;
+        collisionOn = false;
 
-            // Potential new position
-            int newWorldX = worldX;
-            int newWorldY = worldY;
+        // Potential new position
+        int newWorldX = worldX;
+        int newWorldY = worldY;
 
-            if (keyHand.upPressed) {
-                newWorldY -= speed;
-                direction = "up";
-            } else if (keyHand.downPressed) {
-                newWorldY += speed;
-                direction = "down";
-            } else if (keyHand.leftPressed) {
-                newWorldX -= speed;
-                direction = "left";
-            } else if (keyHand.rightPressed) {
-                newWorldX += speed;
-                direction = "right";
+        if (keyH2.wPressed) {
+            newWorldY -= speed;
+            direction = "up";
+        } else if (keyH2.sPressed) {
+            newWorldY += speed;
+            direction = "down";
+        } else if (keyH2.aPressed) {
+            newWorldX -= speed;
+            direction = "left";
+        } else if (keyH2.dPressed) {
+            newWorldX += speed;
+            direction = "right";
+        }
+
+
+
+        // Collision checking
+        collisionChecker.checkTile(this);
+
+        // If there is no collision, update the world position
+        if (!collisionOn) {
+            int objectIndex = collisionChecker.checkObject(this,true);
+            if(objectIndex == 999)
+            {
+                    worldX = newWorldX;
+                    worldY = newWorldY;
+
+            }else {
+                // Handle object collision event, e.g., pick up a key
+                pickUpObject(objectIndex);
             }
-            // Collision checking
-            collisionChecker.checkTile(this);
-
-            // If there is no collision, update the world position
-            if (!collisionOn) {
-                int objectIndex = collisionChecker.checkObject(this,true);
-                if(objectIndex == 999)
-                {
-                        worldX = newWorldX;
-                        worldY = newWorldY;
-
-                }else {
-                    // Handle object collision event, e.g., pick up a key
-                    pickUpObject(objectIndex);
-                }
-            }
-
-        //}
-
+        }
 
         // Update screen position based on the world position and camera position
         // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
@@ -194,193 +189,64 @@ public class Player extends Entity{
             spriteCounter = 0;
         }
     }
-//    public void update(Keyhandler keyH) {
-//        // copied from gamePanel
-//        // System.out.println("Player Update Called");
-//        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-//
-//            if (keyH.upPressed) {//THE IF STATEMENT HERE CHECKS THE DIRECTION NOW
-//                // add direction info to be updated on screen
-//                direction = "up";
-//                //worldY -= speed;// I changed this from  to switch case for collision
-//
-//            } else if (keyH.downPressed) {
-//                direction = "down";
-//               // worldY += speed;
-//            } else if (keyH.rightPressed) {
-//                direction = "right";
-//               // worldX += speed;
-//            } else if (keyH.leftPressed) { // for readability left
-//                direction = "left";
-//                 //worldX -= speed;
-//            }
-//
-//        //} else {
-//
-//            spriteCounter++;
-//            if (spriteCounter > 8) {
-//                //updates happens every 10 frames
-//                if (spriteNum == 1) {
-//                    spriteNum = 2; //update when it is pose 1 to pose 2
-//                } else if (spriteNum == 2) {
-//                    spriteNum = 3;// update when it is pose 2 to pose 1
-//                } else if (spriteNum == 3) {
-//                    spriteNum = 4;
-//                } else if (spriteNum == 4) {
-//                    spriteNum = 1;
-//                }
-//
-//                spriteCounter = 0; // initialize  again to zero
-//            }
-//        }
-//
-////
-////        if(keyH.rightPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.downPressed == true) {
-////
-////           // if (!movedThisTurn) {
-////
-////                if (keyH.upPressed) {//THE IF STATEMENT HERE CHECKS THE DIRECTION NOW
-////                    // add direction info to be updated on screen
-////                    direction = "up";
-////                    //worldY -= speed;// I changed this from  to switch case for collision
-////
-////                } else if (keyH.downPressed) {
-////                    direction = "down";
-////                    // worldY += speed;
-////                } else if (keyH.rightPressed) {
-////                    direction = "right";
-////                    //worldX += speed;
-////                } else if (keyH.leftPressed) { // for readability left
-////                    direction = "left";
-////                    // worldX -= speed;
-////                }
-////
-////                // Use the dice result to determine the number of steps
-////               // int steps = diceResult * gp.tileSize;
-////
-////
-////
-////
-////
-////            //CHECK THE COLLISION HERE AFTER DIRECTION BEEN KNOWN
-////            collisionOn = false;
-////            gp.collisionChecker.checkTile(this);
-////            //CHECK OBJECT COLLISION
-////            int objectIndex = gp.collisionChecker.checkObject(this,true);
-////            pickUpObject(objectIndex);
-////
-////            //CHECK NPC COLLISION
-////            int npcIndex = gp.collisionChecker.checkEntity(this,gp.npc);
-////            interactNPC(npcIndex);
-////
-////            //CHECK Monster Collision
-////            int  monsterIndex = gp.collisionChecker.checkEntity(this,gp.monster);
-////            interactMonster(monsterIndex);
-////
-////
-////                //IF IT WAS FALSE , PLAYER CAN MOVE
-////                if (collisionOn == false) {
-////                    switch (direction) {
-////                        case "up":
-////                            worldY -= speed;//steps; // go up
-////                            break;
-////                        case "down":
-////                            worldY += speed; // goes down
-////                            break;
-////                        case "left":
-////                            worldX -= speed; // goes to left
-////                            break;
-////                        case "right":
-////                            worldX += speed; // goes to right
-////                            break;
-////                    }
-////                   // movedThisTurn = true;
-////                }
-////
-////                //sprite counter to update images
-////                spriteCounter++;
-////                if (spriteCounter >8) {
-////                    //updates happens every 10 frames
-////                    if (spriteNum == 1) {
-////                        spriteNum = 2; //update when it is pose 1 to pose 2
-////                    } else if (spriteNum == 2) {
-////                        spriteNum = 3;// update when it is pose 2 to pose 1
-////                    } else if (spriteNum == 3) {
-////                        spriteNum = 4;
-////                    } else if (spriteNum == 4) {
-////                        spriteNum = 1;
-////                    }
-////
-////                    spriteCounter = 0; // initialize  again to zero
-////                }
-////           // }
-////        }
-////
-//    }
-
-
-    // Override the update method
-
-    // Helper method to handle movement and collision
-    // The move method should include collision checking and decrementing of steps
 
     public void pickUpObject(int i){
-      //Object Being Collected
+        //Object Being Collected
         if(i !=999)// any index not used in the object array
         {
             String objectName = gp.obj[i].name; // use this String to check our object type
             switch (objectName)
             {
                 case "Key"://COLLECTING KEY TO OPEN DOORS
-                    keyCountA++;
+                    keyCountB++;
                     gp.obj[i]=null;
-                    System.out.println("Player has now "+keyCountA+" key(s)");
+                    System.out.println("Player 2 has now "+keyCountB+" key(s)");
                     break;
                 case "Door":// OPEN DOOR ACCORDING TO THE KEYS WE HAVE
-                    if(keyCountA>0)
+                    if(keyCountB>0)
                     {
                         gp.obj[i] = null;
-                        keyCountA--;
+                        keyCountB--;
                     }
-                    System.out.println("Player has now "+keyCountA+" key(s)");
+                    System.out.println("Player 2 has now "+keyCountB+" key(s)");
                     break;
                 case "Diamond Ring":// Worth 40.25$
-                    walletA +=40.25;
+                    walletB +=40.25;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    System.out.println("Player 2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Dragon Scroll":// Worth 25.5$
-                    walletA +=25.5;
+                    walletB +=25.5;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    System.out.println("Player 2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Crystal Goblet":// Worth 45.5$
-                    walletA +=45.5;
+                    walletB +=45.5;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    System.out.println("Player 2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Jewel Sword"://Price: 27.5$
-                    if(walletA >=27.5) {
-                        walletA -=27.5;
+                    if(walletB >=27.5) {
+                        walletB -=27.5;
                         gp.obj[i] = null;
                         System.out.println("Player 2 equipped a Jewel Sword now");
                     }
                     break;
                 case "Golden Goblet":// Worth 30.5$
-                    walletA +=30.5;
+                    walletB +=30.5;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    System.out.println("Player 2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Paladin Shield": // Price: 15.5$
-                    if(walletA >=15.5) {
-                        walletA -=15.5;
+                    if(walletB >=15.5) {
+                        walletB -=15.5;
                         gp.obj[i] = null;
                         System.out.println("Player 2 equipped a Paladin Shield now");
                     }
                     break;
                 case "Wooden Bow":// Price: 12.25$
-                    if(walletA >=12.25) {
-                        walletA -=12.5;
+                    if(walletB >=12.25) {
+                        walletB -=12.5;
                         gp.obj[i] = null;
                         System.out.println("Player 2 equipped a Wooden Bow now");}
 
@@ -392,15 +258,15 @@ public class Player extends Entity{
 
     public void interactNPC(int i){
         if(i !=999){
-            System.out.println("Player Hits An NPC");
+            System.out.println("Player 2 Hits An NPC");
         }
     }
 
     public void interactMonster(int i){
         if(i != 999)
-            System.out.println("Player Touches a Monster");
+            System.out.println("Player 2 Touches a Monster");
     }
-//    public void draw(Graphics2D g2){
+    //    public void draw(Graphics2D g2){
 //
 //        BufferedImage image = null;
 //        // we will use switch case to determine which direction the player is now
@@ -491,24 +357,89 @@ public class Player extends Entity{
 //        // Now we are ready to draw the image on Screen Use .drawImage()
 //        g2.drawImage(image,screenX,screenY, gp.tileSize, gp.tileSize, null);
 //    }
-public void draw(Graphics2D g2) {
-    BufferedImage image = null;
-    switch (direction) {
-        case "up":
-            image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
-            break;
-        case "down":
-            image = spriteNum == 1 ? down1 : spriteNum == 2 ? down2 : spriteNum == 3 ? down3 : down4;
-            break;
-        case "left":
-            image = spriteNum == 1 ? left1 : spriteNum == 2 ? left2 : spriteNum == 3 ? left3 : left4;
-            break;
-        case "right":
-            image = spriteNum == 1 ? right1 : spriteNum == 2 ? right2 : spriteNum == 3 ? right3 : right4;
-            break;
+
+
+    // Override the update method
+//    public void update() {
+//        // Roll the dice if the dice roll is requested and it's the player's turn
+//        if (keyH2.diceRollRequested && isTurn) {
+//            rollDice();
+//        }
+//
+//        if (!isTurn) {
+//            // It's not this player's turn, skip the movement logic
+//            return;
+//        }
+//
+//        collisionOn = false;
+//
+//        // Potential new position based on current direction and speed
+//        int newWorldX = worldX;
+//        int newWorldY = worldY;
+//
+//        if (keyH2.wPressed) {
+//            newWorldY -= speed;
+//            direction = "up";
+//        } else if (keyH2.sPressed) {
+//            newWorldY += speed;
+//            direction = "down";
+//        } else if (keyH2.aPressed) {
+//            newWorldX -= speed;
+//            direction = "left";
+//        } else if (keyH2.dPressed) {
+//            newWorldX += speed;
+//            direction = "right";
+//        }
+//
+//        // Collision checking
+//        collisionChecker.checkTile(this);
+//
+//        // If there is no collision, update the world position
+//        if (!collisionOn) {
+//            int objectIndex = collisionChecker.checkObject(this, true);
+//            if(objectIndex == 999) {
+//                worldX = newWorldX;
+//                worldY = newWorldY;
+//            } else {
+//                // Handle object collision event, e.g., pick up a key
+//                pickUpObject(objectIndex);
+//            }
+//        }
+//
+//        // Update screen position based on the world position and camera position
+//        // This part would typically involve adjusting the player's screen position based on the camera logic if your game uses a camera that follows the player
+//        screenX = worldX;
+//        screenY = worldY;
+//
+//        // Update sprite animations
+//        spriteCounter++;
+//        if (spriteCounter > 12) {
+//            spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
+//            spriteCounter = 0;
+//        }
+//    }
+
+
+    // Your existing methods...
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+        switch (direction) {
+            case "up":
+                image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
+                break;
+            case "down":
+                image = spriteNum == 1 ? down1 : spriteNum == 2 ? down2 : spriteNum == 3 ? down3 : down4;
+                break;
+            case "left":
+                image = spriteNum == 1 ? left1 : spriteNum == 2 ? left2 : spriteNum == 3 ? left3 : left4;
+                break;
+            case "right":
+                image = spriteNum == 1 ? right1 : spriteNum == 2 ? right2 : spriteNum == 3 ? right3 : right4;
+                break;
+        }
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
-    g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-}
 
     public void draw1(Graphics2D g2){
 

@@ -1,65 +1,145 @@
+//package com.example.game2d;
+//
+//
+//import java.awt.event.KeyEvent;
+//import java.awt.event.KeyListener;
+//
+//// class created to add movement for the character
+//public class Keyhandler implements KeyListener {
+//
+//    public boolean upPressed, downPressed, rightPressed, leftPressed;
+//
+//    public boolean wPress ,sPress,aPress,dPress;
+//
+//    public boolean rollDiceRequested = false;
+//    @Override // not going to be used
+//    public void keyTyped(KeyEvent e) {
+//    }
+//    // builtin method in JavaFx that I manipulate to control the flow of movement for the player
+//    @Override
+//    public void keyPressed(KeyEvent e) {
+//        //getKeyCode() Returns the integer keyCode associated with the key we pressed
+//        int code = e.getKeyCode();
+//
+//        // thus we need to check the key we entered by the keyboard
+//        if(code == KeyEvent.VK_W){
+//            upPressed = true;
+//        }
+//        if(code == KeyEvent.VK_S){
+//            downPressed = true;
+//        }
+//        if(code == KeyEvent.VK_A){
+//            leftPressed = true;
+//        }
+//        if(code == KeyEvent.VK_D){
+//            rightPressed = true;
+//        }
+//        if(code == KeyEvent.VK_SPACE){
+//            rollDiceRequested = true;
+//        }
+//
+//
+//        // player2
+//        // System.out.println("Key Pressed: " + e.getKeyCode());
+//
+//    }
+//
+//    @Override
+//    public void keyReleased(KeyEvent e) {
+//        int code = e.getKeyCode();
+//        // here when we release the button we should return false
+//        if(code == KeyEvent.VK_W){
+//            upPressed = false;
+//        }
+//        if(code == KeyEvent.VK_S){
+//            downPressed = false;
+//        }
+//        if(code == KeyEvent.VK_A){
+//            leftPressed = false;
+//        }
+//        if(code == KeyEvent.VK_D){
+//            rightPressed = false;
+//        }
+//        if(code == KeyEvent.VK_SPACE){
+//            rollDiceRequested = false;
+//
+//          //  System.out.println("Key released: " + e.getKeyCode());}
+//
+//    }
+//
+//}
+//}
 package com.example.game2d;
-
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-// class created to add movement for the character
+// This class handles keyboard events for player movement
 public class Keyhandler implements KeyListener {
+    // Flags for Player 1
+    public boolean upPressed, downPressed, leftPressed, rightPressed;
 
-    public boolean upPressed, downPressed, rightPressed, leftPressed;
+    public boolean diceRollRequested = false;
 
-    public boolean rollDiceRequested = false;
-    @Override // not going to be used
-    public void keyTyped(KeyEvent e) {
-    }
-    // builtin method in JavaFx that I manipulate to control the flow of movement for the player
+
+
     @Override
+    public void keyTyped(KeyEvent e) {
+        // This method is part of the KeyListener interface but is not used in this class
+        // It's called when a key is typed (pressed and released), but it's not implemented here
+    }
+
+
     public void keyPressed(KeyEvent e) {
-        //getKeyCode() Returns the integer keyCode associated with the key we pressed
         int code = e.getKeyCode();
 
-        // thus we need to check the key we entered by the keyboard
-        if(code == KeyEvent.VK_W){
+        // Player 1 movement
+        if (code == KeyEvent.VK_UP) {
             upPressed = true;
+            //canMoveUp = false;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_DOWN) {
             downPressed = true;
+           // canMoveDown = false;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_LEFT) {
             leftPressed = true;
+          //  canMoveLeft = false;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
+          //  canMoveRight = false;
         }
+
         if(code == KeyEvent.VK_SPACE){
-            rollDiceRequested = true;
+            diceRollRequested = true;
         }
-        System.out.println("Key Pressed: " + e.getKeyCode());
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-        // here when we release the button we should return false
-        if(code == KeyEvent.VK_W){
+
+        // Player 1 movement
+        if (code == KeyEvent.VK_UP) {
             upPressed = false;
+           // canMoveUp = true;
         }
-        if(code == KeyEvent.VK_S){
+        if (code == KeyEvent.VK_DOWN) {
             downPressed = false;
+           // canMoveDown = true;
         }
-        if(code == KeyEvent.VK_A){
+        if (code == KeyEvent.VK_LEFT) {
             leftPressed = false;
+          //  canMoveLeft = true;
         }
-        if(code == KeyEvent.VK_D){
+        if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+           // canMoveRight = true;
         }
         if(code == KeyEvent.VK_SPACE){
-            rollDiceRequested = false;
-
-            System.out.println("Key released: " + e.getKeyCode());}
-
+            diceRollRequested = false;
+        }
     }
-
 }

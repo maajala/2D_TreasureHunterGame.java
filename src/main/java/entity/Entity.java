@@ -41,25 +41,25 @@ public class Entity {
 
         setAction();
 
-        collisionOn=false;
-        gp.collisionChecker.checkTile(this);
-        if (collisionOn == false) {
-            switch (direction) {
-                case "up":
-                    worldY -= speed;//steps; // go up
-                    break;
-                case "down":
-                    worldY += speed; // goes down
-                    break;
-                case "left":
-                    worldX -= speed; // goes to left
-                    break;
-                case "right":
-                    worldX += speed; // goes to right
-                    break;
-            }
-            // movedThisTurn = true;
-        }
+//        collisionOn=false;
+//        gp.collisionChecker.checkTile(this);
+//        if (collisionOn == false) {
+//            switch (direction) {
+//                case "up":
+//                    worldY -= speed;//steps; // go up
+//                    break;
+//                case "down":
+//                    worldY += speed; // goes down
+//                    break;
+//                case "left":
+//                    worldX -= speed; // goes to left
+//                    break;
+//                case "right":
+//                    worldX += speed; // goes to right
+//                    break;
+//            }
+//            // movedThisTurn = true;
+//        }
 
         //sprite counter to update images
         spriteCounter++;

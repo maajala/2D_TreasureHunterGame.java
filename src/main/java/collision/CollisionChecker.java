@@ -1,6 +1,8 @@
 package collision;
 import com.example.game2d.GamePanel;
 import entity.Entity;
+import entity.Player;
+import entity.Player2;
 
 public class CollisionChecker {
 
@@ -17,10 +19,10 @@ public class CollisionChecker {
         }
 
         // bellow are the boundaries of player area of collision
-        int entityLeftWorldX = entity.worldX + entity.solidArea.x;
-        int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
-        int entityTopWorldY = entity.worldY + entity.solidArea.y;
-        int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
+        int entityLeftWorldX = entity.worldX + entity.solidArea.x-5;
+        int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width+10;
+        int entityTopWorldY = entity.worldY + entity.solidArea.y-10;
+        int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height+10;
 
         //now we can get column and row of updated player with collision characteristics by dividing by tileSize
 
@@ -53,7 +55,7 @@ public class CollisionChecker {
                 }
                 break;
             case "left":
-                entityLeftCol = (entityLeftWorldX - entity.speed)/gp.tileSize;
+//                entityLeftCol = (entityLeftWorldX - entity.speed)/gp.tileSize;
                 tileNum1= gp.tileM.mapTileNum[entityLeftCol][entityTopRow];// left col bottom solid area
                 tileNum2= gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];// right col bottom solid area
                 if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true){
@@ -62,7 +64,7 @@ public class CollisionChecker {
                 }
                 break;
             case "right":
-                entityRightCol = (entityRightWorldX + entity.speed)/gp.tileSize;
+//                entityRightCol = (entityRightWorldX + entity.speed)/gp.tileSize;
                 tileNum1= gp.tileM.mapTileNum[entityRightCol][entityTopRow];// left col bottom solid area
                 tileNum2= gp.tileM.mapTileNum[entityRightCol][entityBottomRow];// right col bottom solid area
                 if(gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tileNum2].collision == true){
@@ -72,6 +74,8 @@ public class CollisionChecker {
                 break;
         }
     }
+
+
 
     // check collision with objects
     public int checkObject(Entity entity, boolean player){

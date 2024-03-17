@@ -40,8 +40,8 @@ public class AssetSetter extends SuperObject {
 
      //3 Doors
      gp.obj[2] = new OBJ_Door();
-     gp.obj[2].worldX=gp.tileSize;
-     gp.obj[2].worldY = gp.tileSize;
+     gp.obj[2].worldX=gp.tileSize * 2;
+     gp.obj[2].worldY = gp.tileSize * 2;
 
      //2 More Markets
      gp.obj[3] = new Market();
@@ -49,16 +49,16 @@ public class AssetSetter extends SuperObject {
      gp.obj[3].worldY = 6 * gp.tileSize;
 
      gp.obj[4] = new Market();
-     gp.obj[4].worldX= gp.tileSize;
+     gp.obj[4].worldX= 2*gp.tileSize;
      gp.obj[4].worldY = 9 * gp.tileSize;
      //Treasures
      gp.obj[5] = new WoodenS();
-     gp.obj[5].worldX=7 * gp.tileSize;
+     gp.obj[5].worldX=9 * gp.tileSize;
      gp.obj[5].worldY = 7 * gp.tileSize;
 
      //CRYSTAL
      gp.obj[6] = new Crystal_Goblet();
-     gp.obj[6].worldX= 7 * gp.tileSize;
+     gp.obj[6].worldX= 9 * gp.tileSize;
      gp.obj[6].worldY = 6 * gp.tileSize;
 
      //Paladin Shield
@@ -68,7 +68,7 @@ public class AssetSetter extends SuperObject {
 
      //Golden Goblet
      gp.obj[8] = new Golden_Goblet();
-     gp.obj[8].worldX= 9 * gp.tileSize;
+     gp.obj[8].worldX= 10 * gp.tileSize;
      gp.obj[8].worldY =  gp.tileSize;
 
      //Diamond Ring
@@ -83,7 +83,7 @@ public class AssetSetter extends SuperObject {
 
      //Jewel Sword
      gp.obj[11] = new Jewel_Sword();
-     gp.obj[11].worldX=3* gp.tileSize;
+     gp.obj[11].worldX=5* gp.tileSize;
      gp.obj[11].worldY = 7 * gp.tileSize;
      //Wooden Bow
      gp.obj[12] = new Wooden_Bow();
@@ -92,25 +92,25 @@ public class AssetSetter extends SuperObject {
 
      for(int i=13; i<17; i++){
       gp.obj[i] = new Trap();
-      int currentX = random.nextInt(1,9)*gp.tileSize;
+      int currentX = random.nextInt(3,10)*gp.tileSize;
       int currentY;
       do{
-       currentY= random.nextInt(1,9)* gp.tileSize;
+       currentY= random.nextInt(3,10)* gp.tileSize;
       }while (currentY == 5*gp.tileSize);
       gp.obj[i].worldX = currentX;
       gp.obj[i].worldY = currentY;
      }
      // Lost Items
      gp.obj[18] = new Lost();
-     gp.obj[18].worldX= 8 * gp.tileSize;
+     gp.obj[18].worldX= 9 * gp.tileSize;
      gp.obj[18].worldY = 4 * gp.tileSize;
 
      gp.obj[19] = new Lost();
-     gp.obj[19].worldX= 6 * gp.tileSize;
+     gp.obj[19].worldX= 9 * gp.tileSize;
      gp.obj[19].worldY = 3 * gp.tileSize;
 
      gp.obj[20] = new Lost();
-     gp.obj[20].worldX= 2 * gp.tileSize;
+     gp.obj[20].worldX= 4 * gp.tileSize;
      gp.obj[20].worldY = 6 * gp.tileSize;
 
      gp.obj[21] = new Market();
@@ -134,7 +134,7 @@ public class AssetSetter extends SuperObject {
      gp.obj[25].worldY = 4* gp.tileSize;
 
      gp.obj[26] = new OBJ_Key();
-     gp.obj[26].worldX=  gp.tileSize;
+     gp.obj[26].worldX=  2*gp.tileSize;
      gp.obj[26].worldY = 4* gp.tileSize;
 
      gp.obj[27] = new Heart();
@@ -160,8 +160,8 @@ public class AssetSetter extends SuperObject {
     public void setMonster() throws IOException{
 
      gp.monster[0] = new MON_GreenSlime(gp);
-     gp.monster[0].worldX = gp.tileSize;
-     gp.monster[0].worldY = gp.tileSize*2;
+     gp.monster[0].worldX = 7* gp.tileSize;
+     gp.monster[0].worldY = 4* gp.tileSize*2;
 
     }
 }

@@ -4,11 +4,13 @@ import collision.CollisionChecker;
 import entity.Dice;
 import entity.Entity;
 import entity.Player;
+import entity.Player2;
 import monster.MON_GreenSlime;
 import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.io.IOException;
 
@@ -16,17 +18,17 @@ public class GamePanel extends JPanel implements Runnable{
     // works as game screen ,
     //SCREEN SETTING
     private final int Big_Num = 1000000000;
-    final int originalTileSize =16; // 16 x 16
-    final int scalar = 3;// SCALAR THAT CHANGE THE SIZE OF THE GAME PAGE LATER
+    final int originalTileSize =32; // 16 x 16
+    final int scalar = 2;// SCALAR THAT CHANGE THE SIZE OF THE GAME PAGE LATER
     public final int tileSize = originalTileSize  * scalar; // 48 x 48
-    public final int maxScreenCol = 10;//
-    public final int maxScreenRow = 10;//
+    public final int maxScreenCol = 13;//
+    public final int maxScreenRow = 13;//
     public final int  screenWidth = tileSize * maxScreenCol;//768 pixels // 10> 480
     public final int screenHeight = tileSize * maxScreenRow;//576 pixels
 
     //WORLD SETTING
-    public final int maxWorldCol = 10;//50
-    public final int maxWorldRow = 10;//50
+    public final int maxWorldCol = 13;//50
+    public final int maxWorldRow = 13;//50
    // public final int WorldWidth = tileSize * maxWorldCol;
     //public final int WorldHeight= tileSize * maxWorldRow; // this is going to be our resize
 
@@ -36,24 +38,14 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);// set the color of the background
         this.setDoubleBuffered(true);// for any buffer solve it outside offscreen for more improvement of the performance
         this.addKeyListener(keyH);// this line of code to recognise the controls of class KeyHandler
-      this.addKeyListener(keyH2);
+        this.addKeyListener(keyH2);
         this.setFocusable(true);//With this, GamePanel can be "focused" to receive key input.
     }
-    public GamePanel(KeyHand2 keyH) throws IOException {
-        this.setPreferredSize(new Dimension(screenWidth,screenHeight));// set dimensions for the game panel
-        this.setBackground(Color.GRAY);// set the color of the background
-        this.setDoubleBuffered(true);// for any buffer solve it outside offscreen for more improvement of the performance
-        //this.addKeyListener(keyH);// this line of code to recognise the controls of class KeyHandler
-        this.addKeyListener(keyH);
-        this.setFocusable(true);//With this, GamePanel can be "focused" to receive key input.
-    }
-
-
     //IT IS IMPORTANT TO CALL THIS GAME METHOD BEFORE GAME STARTS
     public void setUpGame() throws IOException {
         assetSetter.setObject();
-        assetSetter.setNPC();
-        assetSetter.setMonster();
+  //      assetSetter.setNPC();
+//       assetSetter.setMonster();
     }
 
     //FPS
@@ -61,18 +53,25 @@ public class GamePanel extends JPanel implements Runnable{
 
     //SYSTEM
     Keyhandler keyH = new Keyhandler(); //FOR PLAYER 1 MOVEMENT
-    KeyHand2 keyH2 = new KeyHand2(); //FOR PLAYER 2 MOVEMENT
+   KeyHandler2 keyH2 = new KeyHandler2();
+    //FOR PLAYER 2 MOVEMENT
     Thread gameThread;// calling thread later will invoke the run method down
 
     public TileManager tileM = new TileManager(this); // this is related to this Game Panel
 
-    public CollisionChecker collisionChecker = new CollisionChecker(this);// instantiate collision checker
+    //INSTANTIATE COLLISION CHECKER FOR BOTH PLAYERS
+    public CollisionChecker collisionChecker1 = new CollisionChecker(this);// instantiate collision checker
+    public CollisionChecker collisionChecker2 = new CollisionChecker(this);// instantiate collision checker
 
     public AssetSetter assetSetter = new AssetSetter(this);
+    //DICE INSTANTIATION
+    Dice dice = new Dice();
+    public boolean playerTurn = true;// Add a variable to track the
+    // current turn; true for player1's turn, false for player2's turn
 
     //Entity and Objects
-    public Player player1 = new Player(this,keyH);
-    public Player player2 = new Player(this,keyH2);
+    public Player player1 = new Player(this,keyH,collisionChecker1);
+   public Player2 player2 = new Player2(this,keyH2,collisionChecker2);
     public SuperObject obj[] = new SuperObject[30]; // we prepare an array of size 10 for objects // we will use it in another class
     // THAT MEANS WE CAN DISPLAY 25 OBJECTS AT THE SAME TIME
     public Entity npc[] = new Entity[10];// create npc from entity
@@ -82,6 +81,8 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();// start the thread
     }
 
+
+    //METHOD TO CHANGE TURNS
    @Override
     public void run() {
         double drawInterval = Big_Num/FPS; // 0.0166 seconds
@@ -112,9 +113,8 @@ public class GamePanel extends JPanel implements Runnable{
     // method to update screen information
     public void update() {
 
-        player1.update(keyH);
-
-        player2.update1(keyH2);
+       player1.update();
+       player2.update();
 
         for(int i=0 ;i< npc.length; i++)
         {
@@ -132,11 +132,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     }
-
-    public void updatePlayer2(){
-
-    }
-    // method to paint or draw the component
+    // METHOD TO PAINT COMPONENT ON SCREEN
     public void paintComponent(Graphics g){
 
         super.paintComponent(g);
@@ -165,9 +161,9 @@ public class GamePanel extends JPanel implements Runnable{
                 monster[i].draw(g2);
         }
         //Player1
-        player1.draw(g2);
+       player1.draw(g2);
         //player 2
-        //player2.draw1(g2);
+        player2.draw(g2);
 
         //to save some memory use dispose
         g2.dispose();

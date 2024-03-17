@@ -12,6 +12,7 @@ public class Main {
         JFrame window = new JFrame();
         // to close the window after usage
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         window.setResizable(false);
         window.setTitle("Salesmen Go");
 
