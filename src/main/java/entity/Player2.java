@@ -23,7 +23,8 @@ public class Player2 extends Entity{
     // Player Tools
     public int keyCountB=0;
     public double walletB=0;
-    public int strengthB;
+    public int maxLife2;
+    public int life2;
     CollisionChecker collisionChecker;
     public boolean isTurn =false;
 
@@ -55,7 +56,7 @@ public class Player2 extends Entity{
 
 
         setDefaultValues();
-        int player1Health = 100;
+        int maxLife2 = 6;
         try {
             getPlayerImage();
         } catch (IOException e) {
@@ -96,7 +97,8 @@ public class Player2 extends Entity{
         worldY = gp.maxWorldCol/2 * gp.tileSize;
         speed = 4;
         direction = "down"; // can be chosen any direction as default
-
+        maxLife2=6;//max life to be reached
+        life2 = maxLife2;// current life to be used
     }
 
 
@@ -270,15 +272,19 @@ public class Player2 extends Entity{
                 case "Key"://COLLECTING KEY TO OPEN DOORS
                     keyCountB++;
                     gp.obj[i]=null;
-                    System.out.println("Player 2 has now "+keyCountB+" key(s)");
+                   gp.ui.showMessage("Player2 GOT A KEY!");
                     break;
                 case "Door":// OPEN DOOR ACCORDING TO THE KEYS WE HAVE
                     if(keyCountB>0)
                     {
                         gp.obj[i] = null;
                         keyCountB--;
+                        gp.ui.showMessage("Player2 OPENED A DOOR");
+                    }else
+                    {
+                        gp.ui.showMessage("Player2 Needs a Key to Open Door");
                     }
-                    System.out.println("Player 2 has now "+keyCountB+" key(s)");
+
                     break;
                 case "Diamond Ring":// Worth 40.25$
                     walletB +=40.25;
@@ -320,6 +326,17 @@ public class Player2 extends Entity{
                         gp.obj[i] = null;
                         System.out.println("Player 2 equipped a Wooden Bow now");}
 
+                    break;
+                case "Castle":
+                    if(keyCountB==3){
+                        gp.ui.gameFinished = true;
+                        keyCountB -=3;
+                        gp.obj[i]=null;
+                        this.winnerPlayer = true;
+                        gp.ui.showMessage("Player2 WON !");
+                    }else {
+                        gp.ui.showMessage("Need  3 keys to WIN");
+                    }
                     break;
             }
         }

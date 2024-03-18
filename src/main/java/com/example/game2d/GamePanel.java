@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     //SYSTEM
     Keyhandler keyH = new Keyhandler(); //FOR PLAYER 1 MOVEMENT
-   KeyHandler2 keyH2 = new KeyHandler2();
+    KeyHandler2 keyH2 = new KeyHandler2();
     //FOR PLAYER 2 MOVEMENT
     Thread gameThread;// calling thread later will invoke the run method down
 
@@ -64,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
     public CollisionChecker collisionChecker2 = new CollisionChecker(this);// instantiate collision checker
 
     public AssetSetter assetSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
     //DICE INSTANTIATION
     Dice dice = new Dice();
     public boolean playerTurn = true;// Add a variable to track the
@@ -124,25 +125,23 @@ public class GamePanel extends JPanel implements Runnable{
                 player1.prepareTurn(); // Prepare Player 1 for their turn
             }
         }
-
-        for(int i=0 ;i< npc.length; i++)
-        {
-            if(npc[i] != null){
-             npc[i].update();
-            }
-        }
-
-        for(int i=0 ;i< monster.length; i++)
-        {
-            if(monster[i] != null){
-                monster[i].update();
-            }
-        }
-
-
+//        for(int i=0 ;i< npc.length; i++)
+//        {
+//            if(npc[i] != null){
+//             npc[i].update();
+//            }
+//        }
+//
+//        for(int i=0 ;i< monster.length; i++)
+//        {
+//            if(monster[i] != null){
+//                monster[i].update();
+//            }
+//        }
     }
     // METHOD TO PAINT COMPONENT ON SCREEN
     public void paintComponent(Graphics g){
+
 
         super.paintComponent(g);
         // I will transform this graphics to 2d ones to have more control
@@ -159,20 +158,23 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
 
-        // NPC
-        for(int i=0 ; i< npc.length; i++){
-            if(npc[i] !=null)
-                npc[i].draw(g2);
-        }
-        //monster
-        for(int i=0 ; i< monster.length; i++){
-            if(monster[i] !=null)
-                monster[i].draw(g2);
-        }
+//        // NPC
+//        for(int i=0 ; i< npc.length; i++){
+//            if(npc[i] !=null)
+//                npc[i].draw(g2);
+//        }
+//        //monster
+//        for(int i=0 ; i< monster.length; i++){
+//            if(monster[i] !=null)
+//                monster[i].draw(g2);
+//        }
         //Player1
-       player1.draw(g2);
+        player1.draw(g2);
         //player 2
         player2.draw(g2);
+
+        //UI
+        ui.draw(g2);
 
         //to save some memory use dispose
         g2.dispose();

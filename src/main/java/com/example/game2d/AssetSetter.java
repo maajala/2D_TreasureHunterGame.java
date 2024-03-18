@@ -139,32 +139,19 @@ public class AssetSetter extends SuperObject {
      gp.obj[26] = new OBJ_Key();
      gp.obj[26].worldX=  2*gp.tileSize;
      gp.obj[26].worldY = 4* gp.tileSize;
-
-     gp.obj[27] = new Heart();
-     gp.obj[27].worldX=  0*gp.tileSize;
-     gp.obj[27].worldY = 0*gp.tileSize;
-
-     gp.obj[28] = new Heart();
-     gp.obj[28].worldX=  gp.tileSize;
-     gp.obj[28].worldY = 0*gp.tileSize;
-
-     gp.obj[29] = new Heart();
-     gp.obj[29].worldX=  2*gp.tileSize;
-     gp.obj[29].worldY = 0*gp.tileSize;
-
     }
 
-    public void setNPC() throws IOException {
-     gp.npc[0] = new NPC_OldMan(gp);
-     gp.npc[0].worldX = gp.tileSize * 3;
-     gp.npc[0].worldY = gp.tileSize * 2;
-    }
+//    public void setNPC() throws IOException {
+//     gp.npc[0] = new NPC_OldMan(gp);
+//     gp.npc[0].worldX = gp.tileSize * 3;
+//     gp.npc[0].worldY = gp.tileSize * 2;
+//    }
 
-    public void setMonster() throws IOException{
-
-     gp.monster[0] = new MON_GreenSlime(gp);
-     gp.monster[0].worldX = 7* gp.tileSize;
-     gp.monster[0].worldY = 4* gp.tileSize*2;
-
-    }
+//    public void setMonster() throws IOException{
+//
+//     gp.monster[0] = new MON_GreenSlime(gp);
+//     gp.monster[0].worldX = 7* gp.tileSize;
+//     gp.monster[0].worldY = 4* gp.tileSize*2;
+//
+//    }
 }

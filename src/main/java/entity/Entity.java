@@ -23,8 +23,7 @@ public class Entity {
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
-    public boolean isTurn1 = false;
-    public boolean isTurn2=true ;
+    public boolean winnerPlayer = false;
 
    // public int actionCounter;// for NPCes and Monsters
 
