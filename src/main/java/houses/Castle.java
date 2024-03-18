@@ -10,7 +10,7 @@ public class Castle extends SuperObject {
     public Castle() {
         name = "Castle";
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/yellow.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/castle.png")));
 
         } catch (IOException e) {
             e.printStackTrace();

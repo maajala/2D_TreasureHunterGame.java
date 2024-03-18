@@ -79,7 +79,7 @@ public class KeyHandler2 implements KeyListener {
     // Flags for Player 2
     public boolean wPressed, sPressed, aPressed, dPressed;
 
-    public boolean diceRollRequested = false;
+    public boolean diceRollPressed= false;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -109,7 +109,7 @@ public class KeyHandler2 implements KeyListener {
             //  canMoveRight = false;
         }
         if (code == KeyEvent.VK_SPACE){
-            diceRollRequested = true;
+            diceRollPressed = true;
         }
 
     }
@@ -136,7 +136,7 @@ public class KeyHandler2 implements KeyListener {
             // canMoveRight = true;
         }
         if (code == KeyEvent.VK_SPACE){
-            diceRollRequested = false;
+            diceRollPressed = false;
         }
 
     }

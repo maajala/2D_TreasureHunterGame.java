@@ -79,7 +79,7 @@ public class Keyhandler implements KeyListener {
     // Flags for Player 1
     public boolean upPressed, downPressed, leftPressed, rightPressed;
 
-    public boolean diceRollRequested = false;
+    public boolean diceRollPressed = false;
 
 
 
@@ -112,7 +112,7 @@ public class Keyhandler implements KeyListener {
         }
 
         if(code == KeyEvent.VK_SPACE){
-            diceRollRequested = true;
+            diceRollPressed = true;
         }
 
     }
@@ -139,7 +139,7 @@ public class Keyhandler implements KeyListener {
            // canMoveRight = true;
         }
         if(code == KeyEvent.VK_SPACE){
-            diceRollRequested = false;
+            diceRollPressed = false;
         }
     }
 }

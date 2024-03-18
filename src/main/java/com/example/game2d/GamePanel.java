@@ -81,7 +81,6 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();// start the thread
     }
 
-
     //METHOD TO CHANGE TURNS
    @Override
     public void run() {
@@ -112,9 +111,19 @@ public class GamePanel extends JPanel implements Runnable{
 
     // method to update screen information
     public void update() {
-
-       player1.update();
-       player2.update();
+        if (playerTurn) {
+            player1.update();
+            if (player1.steps <= 0) {
+                playerTurn = false; // Switch to Player 2's turn
+                player2.prepareTurn(); // Prepare Player 2 for their turn
+            }
+        } else {
+            player2.update();
+            if (player2.steps <= 0) {
+                playerTurn = true; // Switch back to Player 1's turn
+                player1.prepareTurn(); // Prepare Player 1 for their turn
+            }
+        }
 
         for(int i=0 ;i< npc.length; i++)
         {

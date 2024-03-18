@@ -23,12 +23,12 @@ public class Entity {
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+    public boolean isTurn1 = false;
+    public boolean isTurn2=true ;
 
    // public int actionCounter;// for NPCes and Monsters
 
     //CHARACTER STATUS
-    public int maxLife;
-    public int life;
 
     public Entity(GamePanel gp){//abstract
         this.gp = gp;

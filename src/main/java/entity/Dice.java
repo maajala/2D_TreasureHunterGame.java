@@ -1,7 +1,7 @@
 package entity;
 import java.util.Random;
 public class Dice {
-    private final Random random;
+     public Random random;
 
     public Dice() {
         this.random = new Random();

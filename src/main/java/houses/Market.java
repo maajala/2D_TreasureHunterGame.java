@@ -12,7 +12,7 @@ public class Market extends SuperObject {
     public Market(){
         name = "Market";
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/orange.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/market.png")));
 
         }catch (IOException e){
             e.printStackTrace();

@@ -10,7 +10,7 @@ public class Trap extends SuperObject {
     public Trap() {
         name = "Trap";
         try{
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/red.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/burned.png")));
 
         }catch (IOException e){
             e.printStackTrace();

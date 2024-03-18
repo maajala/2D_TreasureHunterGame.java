@@ -22,11 +22,12 @@ public class Player extends Entity{
     // Player Tools
     public int keyCountA=0;
     public double walletA=0;
+    public int strengthA;
    CollisionChecker collisionChecker;
 
    public boolean isTurn = false ;
    public Random random; // For rolling the dice
-
+    Dice dice = new Dice();
     public int steps = 0; // Steps remaining for the player's current turn
 
     // constructor for player one
@@ -97,9 +98,6 @@ public class Player extends Entity{
         speed = 4;
         direction = "down"; // can be chosen any direction as default
 
-        //Player Status
-        maxLife =6;//6 heart means 3 hearts
-        life = maxLife; // 1 life means 1/2 heart that's why 6 hearts
     }
 
 
@@ -161,39 +159,53 @@ public class Player extends Entity{
                 newWorldX += speed;
                 direction = "right";
             }
+
             // Collision checking
             collisionChecker.checkTile(this);
 
             // If there is no collision, update the world position
             if (!collisionOn) {
-                int objectIndex = collisionChecker.checkObject(this,true);
-                if(objectIndex == 999)
-                {
-                        worldX = newWorldX;
-                        worldY = newWorldY;
+                int objectIndex = collisionChecker.checkObject(this, true);
+                if (objectIndex == 999) {
+                    worldX = newWorldX;
+                    worldY = newWorldY;
 
-                }else {
+                } else {
                     // Handle object collision event, e.g., pick up a key
                     pickUpObject(objectIndex);
                 }
             }
+//            if ( !isTurn) {
+//                int diceResult = dice.roll();
+//                steps = diceResult *2;// Assign the # steps the player can move
+//                System.out.println("The steps here are: "+steps+" for player 1");
+//                isTurn = true;//Indicate the player's turn has started
+//                keyHand.diceRollPressed = false;//Reset the roll dice request
+//            }
 
-        //}
+            //}
 
 
-        // Update screen position based on the world position and camera position
-        // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
-        // For a static camera, it would just be a direct assignment like below:
-        screenX = worldX;
-        screenY = worldY;
+            // Update screen position based on the world position and camera position
+            // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
+            // For a static camera, it would just be a direct assignment like below:
+            screenX = worldX;
+            screenY = worldY;
 
-        // Update sprite animations
-        spriteCounter++;
-        if (spriteCounter > 12) {
-            spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
-            spriteCounter = 0;
+            // Update sprite animations
+            spriteCounter++;
+            if (spriteCounter > 12) {
+                spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
+                spriteCounter = 0;
+            }
+            if (isTurn && (keyHand.upPressed || keyHand.downPressed || keyHand.leftPressed || keyHand.rightPressed)) {
+                steps--; // Decrease the number of steps as the player moves
+                if (steps <= 0) {
+                    isTurn = false; // End the player's turn when steps run out
+                }
+            }
         }
-    }
+
 //    public void update(Keyhandler keyH) {
 //        // copied from gamePanel
 //        // System.out.println("Player Update Called");
@@ -324,6 +336,15 @@ public class Player extends Entity{
     // Helper method to handle movement and collision
     // The move method should include collision checking and decrementing of steps
 
+    public void prepareTurn() {
+        if (!isTurn) { // Check if it's this player's turn
+            int diceResult = dice.roll(); // Roll the dice to determine steps
+            steps = diceResult*15; // Set the number of steps the player can take this turn
+            System.out.println("The steps here are: "+steps/15+" for player 1");
+            isTurn = true; // Mark it as the player's turn
+            // Optionally, add any additional logic needed at the start of a turn
+        }
+    }
     public void pickUpObject(int i){
       //Object Being Collected
         if(i !=999)// any index not used in the object array

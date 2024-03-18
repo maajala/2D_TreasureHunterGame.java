@@ -2,9 +2,12 @@ package com.example.game2d;
 
 import entity.NPC_OldMan;
 import houses.Castle;
-import houses.Lost;
+import lost_Items.Diamond;
+import lost_Items.Lost;
 import houses.Market;
 import houses.Trap;
+import lost_Items.crystalRose;
+import lost_Items.moneyBag;
 import monster.MON_GreenSlime;
 import object.Heart;
 import object.OBJ_Door;
@@ -69,7 +72,7 @@ public class AssetSetter extends SuperObject {
      //Golden Goblet
      gp.obj[8] = new Golden_Goblet();
      gp.obj[8].worldX= 10 * gp.tileSize;
-     gp.obj[8].worldY =  gp.tileSize;
+     gp.obj[8].worldY =  2*gp.tileSize;
 
      //Diamond Ring
      gp.obj[9] = new Diamond_Ring();
@@ -101,24 +104,24 @@ public class AssetSetter extends SuperObject {
       gp.obj[i].worldY = currentY;
      }
      // Lost Items
-     gp.obj[18] = new Lost();
+     gp.obj[18] = new moneyBag();
      gp.obj[18].worldX= 9 * gp.tileSize;
      gp.obj[18].worldY = 4 * gp.tileSize;
 
-     gp.obj[19] = new Lost();
+     gp.obj[19] = new Diamond();
      gp.obj[19].worldX= 9 * gp.tileSize;
      gp.obj[19].worldY = 3 * gp.tileSize;
 
-     gp.obj[20] = new Lost();
-     gp.obj[20].worldX= 4 * gp.tileSize;
+     gp.obj[20] = new crystalRose();
+     gp.obj[20].worldX= 3 * gp.tileSize;
      gp.obj[20].worldY = 6 * gp.tileSize;
 
      gp.obj[21] = new Market();
-     gp.obj[21].worldX= gp.tileSize * 3;
+     gp.obj[21].worldX= 5* gp.tileSize * 3;
      gp.obj[21].worldY = 6 * gp.tileSize;
 
      gp.obj[22] = new Market();
-     gp.obj[22].worldX= 0;
+     gp.obj[22].worldX= 7* gp.tileSize;
      gp.obj[22].worldY = 4 * gp.tileSize;
 
      gp.obj[23] = new Market();
@@ -127,7 +130,7 @@ public class AssetSetter extends SuperObject {
 
      gp.obj[24] = new OBJ_Key();
      gp.obj[24].worldX=7 * gp.tileSize;
-     gp.obj[24].worldY =  gp.tileSize;
+     gp.obj[24].worldY = 2 *gp.tileSize;
 
      gp.obj[25] = new OBJ_Key();
      gp.obj[25].worldX=3 * gp.tileSize;

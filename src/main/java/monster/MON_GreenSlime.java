@@ -17,7 +17,6 @@ public class MON_GreenSlime extends Entity {
         // each npc needs life and speed with name
         name = "Slime Green";// name for identity
         speed = 1;//Speed for movement
-        maxLife = 4;//Life For the Monster
         direction = "left";
 
         solidArea.x =3;// here it should be less than npc logically

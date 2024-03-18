@@ -1,4 +1,4 @@
-package houses;
+package lost_Items;
 
 import object.SuperObject;
 
@@ -10,7 +10,7 @@ public class Lost extends SuperObject {
     public Lost() {
         name = "Lost Items";
         try{
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/blue.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/lost/badge.png")));
 
         }catch (IOException e){
             e.printStackTrace();

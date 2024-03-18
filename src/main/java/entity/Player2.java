@@ -23,10 +23,14 @@ public class Player2 extends Entity{
     // Player Tools
     public int keyCountB=0;
     public double walletB=0;
+    public int strengthB;
     CollisionChecker collisionChecker;
+    public boolean isTurn =false;
 
-    public boolean isTurn = true; // Let's assume Player 1 starts
-    public Random random = new Random();
+    Dice dice = new Dice();
+    public int steps = 0;
+
+
 
     // constructor for player one
     public Player2 (GamePanel gp, KeyHandler2 keyH2, CollisionChecker collisionChecker) {
@@ -93,9 +97,6 @@ public class Player2 extends Entity{
         speed = 4;
         direction = "down"; // can be chosen any direction as default
 
-        //Player Status
-        maxLife =6;//6 heart means 3 hearts
-        life = maxLife; // 1 life means 1/2 heart that's why 6 hearts
     }
 
 
@@ -137,6 +138,7 @@ public class Player2 extends Entity{
 
     // Update player position based on key input
     public void update() {
+
         collisionOn = false;
 
         // Potential new position
@@ -175,6 +177,13 @@ public class Player2 extends Entity{
                 pickUpObject(objectIndex);
             }
         }
+//        if(keyH2.diceRollPressed && !isTurn){
+//            int diceResult = dice.roll();
+//            steps = diceResult*gp.tileSize;// Assign the # steps the player can move
+//            System.out.println("The steps here are: "+steps+"  for");
+//            isTurn = true;//Indicate the player's turn has started
+//            keyH2.diceRollPressed = false;//Reset the roll dice request
+//        }
 
         // Update screen position based on the world position and camera position
         // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
@@ -187,6 +196,67 @@ public class Player2 extends Entity{
         if (spriteCounter > 12) {
             spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
             spriteCounter = 0;
+        }
+        if (isTurn && (keyH2.wPressed || keyH2.sPressed || keyH2.aPressed || keyH2.dPressed)) {
+            steps--; // Decrease the number of steps as the player moves
+            if (steps <= 0) {
+                isTurn = false; // End the player's turn when steps run out
+            }
+    }
+    }
+    public void update2() {
+        if (isTurn && steps > 0) {
+            collisionOn = false;
+            int newWorldX = worldX;
+            int newWorldY = worldY;
+            boolean moved = false;
+
+            if (keyH2.wPressed) {
+                newWorldY -= speed;
+                direction = "up";
+                moved = true;
+            } else if (keyH2.sPressed) {
+                newWorldY += speed;
+                direction = "down";
+                moved = true;
+            } else if (keyH2.aPressed) {
+                newWorldX -= speed;
+                direction = "left";
+                moved = true;
+            } else if (keyH2.dPressed) {
+                newWorldX += speed;
+                direction = "right";
+                moved = true;
+            }
+
+            if (moved) {
+                collisionChecker.checkTile(this);
+                if (!collisionOn) {
+                    int objectIndex = collisionChecker.checkObject(this, true);
+                    if (objectIndex == 999) {
+                        worldX = newWorldX;
+                        worldY = newWorldY;
+                        steps -= gp.tileSize; // or decrement by a constant if one step isn't equal to tileSize
+                    } else {
+                        pickUpObject(objectIndex);
+                    }
+                }
+            }
+
+            if (steps <= 0) {
+                isTurn = false; // End of the player's turn
+            }
+        }
+    }
+
+
+    public void prepareTurn() {
+        if (!isTurn) { // Check if it's this player's turn
+            int diceResult = dice.roll() ; // Roll the dice to determine steps
+            steps = diceResult * 15; // Set the number of steps the player can take this turn
+            System.out.println("The steps here are: "+steps/15+" for player 2");
+            isTurn = true; // Mark it as the player's turn
+            // Optionally, add any additional logic needed at the start of a turn
         }
     }
 
@@ -513,3 +583,47 @@ public class Player2 extends Entity{
     }
 
 }
+
+/*public void update() {
+    // Ensure player can move only if there are steps left
+    if (isTurn && steps > 0) {
+        int newWorldX = worldX;
+        int newWorldY = worldY;
+        boolean moved = false; // Flag to check if movement happens
+
+        if (keyHand.upPressed && !lastDirection.equals("up")) {
+            newWorldY -= tileSize; // Assuming movement is by tile size
+            lastDirection = "up";
+            moved = true;
+        } else if (keyHand.downPressed && !lastDirection.equals("down")) {
+            newWorldY += tileSize;
+            lastDirection = "down";
+            moved = true;
+        } else if (keyHand.leftPressed && !lastDirection.equals("left")) {
+            newWorldX -= tileSize;
+            lastDirection = "left";
+            moved = true;
+        } else if (keyHand.rightPressed && !lastDirection.equals("right")) {
+            newWorldX += tileSize;
+            lastDirection = "right";
+            moved = true;
+        }
+
+        // Process movement if there's no collision
+        if (moved) {
+            collisionChecker.checkTile(this);
+            if (!collisionOn) {
+                worldX = newWorldX;
+                worldY = newWorldY;
+                steps--; // Decrement steps after a successful move
+            }
+        }
+
+        // Reset turn if no steps left
+        if (steps <= 0) {
+            isTurn = false;
+            lastDirection = ""; // Reset direction after turn ends
+        }
+    }
+}
+*/
