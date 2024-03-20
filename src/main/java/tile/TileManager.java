@@ -191,6 +191,7 @@
 package tile;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,6 +199,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 
 import com.example.game2d.GamePanel;
+import com.example.game2d.UtilityTool;
 
 import javax.imageio.ImageIO;
 
@@ -218,53 +220,87 @@ public class TileManager {
     }
 
 
+//    public void getTileImage(){
+//        try{ // should create objects of buffered images for each tile from the Tile[] tile created in this class
+//            //GRASS
+//            tile[0] = new Tile();
+//            tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/grass.png")));
+//
+//
+//            BufferedImage scaledImage = new BufferedImage(gp.tileSize, gp.tileSize, tile[0].image.getType());
+//            Graphics2D g2 = scaledImage.createGraphics();//used to draw into this bufferedImage
+//            g2.drawImage(tile[0].image,0,0,gp.tileSize,gp.tileSize,null);
+//            tile[0].image = scaledImage;
+//
+//            //WALL
+//            tile[1] = new Tile();
+//            tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
+//            tile[1].collision = true;
+//
+//            //Blue
+//            tile[2] = new Tile();
+//            tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/blue.png")));
+//            tile[2].collision = true;
+//
+//            //EARTH
+//            tile[3] = new Tile();
+//            tile[3].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+//
+//            //TREE
+//            tile[4] = new Tile();
+//            tile[4].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tree.png")));
+//            tile[4].collision = true;
+//
+//            //SAND
+//            tile[5] = new Tile();
+//            tile[5].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/sand.png")));
+//
+//            //CASTLE BLOCK
+//            tile[6] = new Tile();
+//            tile[6].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/black.png")));
+//            //tile[6].collision = true;
+//
+//            //STONE
+//            tile[7] = new Tile();
+//            tile[7].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/green.png")));
+//            //tile[7].collision = true;
+//
+//            //TETRIS
+//            tile[8] = new Tile();
+//            tile[8].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tetris.png")));
+//            //tile[8].collision = true;
+//            //
+//            // 9 Red 8 yellow 7 Green 6 Black 5 Orange 2 Blue
+//        }
+//        catch (IOException e){
+//            e.printStackTrace();
+//        }
+//    }
     public void getTileImage(){
-        try{ // should create objects of buffered images for each tile from the Tile[] tile created in this class
-            //GRASS
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/grass.png")));
+       // should create objects of buffered images for each tile from the Tile[] tile created in this class
 
-            //WALL
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
-            tile[1].collision = true;
+            setup(0,"grass",false);
+            setup(1,"wall",true);
+            setup(2,"blue",true);
+            setup(3,"earth",false);
+            setup(4,"tree",true);
+            setup(5,"sand",false);
+            setup(6,"black",false);
+            setup(7,"green",false);
+            setup(8,"tetris",true);
 
-            //Blue
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/blue.png")));
-            tile[2].collision = true;
+    }
 
-            //EARTH
-            tile[3] = new Tile();
-            tile[3].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+    public void setup(int index , String imageName, boolean collision){
+        // THIS METHOD'S PURPOSE WAS TO MAKE TILES FITS EXACTLY THE SIZE OF TILES IN MY SCREEN
+        UtilityTool uTool = new UtilityTool();
+        try{
+            tile[index] = new Tile();
+            tile[index].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/"+ imageName +".png")));
+            tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+            tile[index].collision = collision;
 
-            //TREE
-            tile[4] = new Tile();
-            tile[4].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tree.png")));
-            tile[4].collision = true;
-
-            //SAND
-            tile[5] = new Tile();
-            tile[5].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/sand.png")));
-
-            //CASTLE BLOCK
-            tile[6] = new Tile();
-            tile[6].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/black.png")));
-            //tile[6].collision = true;
-
-            //STONE
-            tile[7] = new Tile();
-            tile[7].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/green.png")));
-            //tile[7].collision = true;
-
-            //TETRIS
-            tile[8] = new Tile();
-            tile[8].image =  ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/tetris.png")));
-            //tile[8].collision = true;
-            //
-            // 9 Red 8 yellow 7 Green 6 Black 5 Orange 2 Blue
-        }
-        catch (IOException e){
+        }catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -312,7 +348,8 @@ public class TileManager {
 
             int tileNum = mapTileNum[col][row];
 
-            g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
+           // g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(tile[tileNum].image, x, y, null);
             col ++;
             x += gp.tileSize;
 

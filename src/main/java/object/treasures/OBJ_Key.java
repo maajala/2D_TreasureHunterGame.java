@@ -1,5 +1,6 @@
 package object.treasures;
 
+import com.example.game2d.GamePanel;
 import object.SuperObject;
 
 import javax.imageio.ImageIO;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 public class OBJ_Key extends SuperObject {
     // creat a constructor for this class
+
     public OBJ_Key (){
 
 

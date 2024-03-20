@@ -76,13 +76,23 @@ import java.awt.event.KeyListener;
 
 // This class handles keyboard events for player movement
 public class Keyhandler implements KeyListener {
+    GamePanel gp;
     // Flags for Player 1
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    //public boolean canMoveUp = true, canMoveDown = true, canMoveLeft = true, canMoveRight = true;
 
     public boolean diceRollPressed = false;
+    public boolean enterPressed = false;
+    public boolean playPressed= false;
+    public boolean upFirstPressed = false; // Add these flags
+    public boolean downFirstPressed = false; // Add these flags
+    public boolean leftFirstPressed = false; // Add these flags
+    public boolean rightFirstPressed = false; // Add these flags
 
-
-
+    public Keyhandler(){};
+    public Keyhandler(GamePanel gp){
+        this.gp = gp;
+    }
     @Override
     public void keyTyped(KeyEvent e) {
         // This method is part of the KeyListener interface but is not used in this class
@@ -95,24 +105,43 @@ public class Keyhandler implements KeyListener {
 
         // Player 1 movement
         if (code == KeyEvent.VK_UP) {
-            upPressed = true;
-            //canMoveUp = false;
+//         if(!upPressed){// only trigger on first press
+//             upFirstPressed = true;
+//         }
+         upPressed = true;
         }
         if (code == KeyEvent.VK_DOWN) {
+//            if(!downPressed){// only trigger on first press
+//                downFirstPressed = true;
+//            }
             downPressed = true;
-           // canMoveDown = false;
         }
         if (code == KeyEvent.VK_LEFT) {
+//            if(!leftPressed){// only trigger on first press
+//                leftFirstPressed = true;
+//            }
             leftPressed = true;
-          //  canMoveLeft = false;
         }
         if (code == KeyEvent.VK_RIGHT) {
+//            if(!rightPressed){// only trigger on first press
+//                rightFirstPressed = true;
+//            }
             rightPressed = true;
-          //  canMoveRight = false;
         }
 
         if(code == KeyEvent.VK_SPACE){
             diceRollPressed = true;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            enterPressed = true;
+        }
+        if(code == KeyEvent.VK_P){//if pressed P
+            if(gp.gameState == gp.playState){// if game state was play
+                gp.gameState = gp.pauseState;//pause the game
+            }else if(gp.gameState == gp.pauseState){
+                gp.gameState = gp.playState;
+            }
+
         }
 
     }
@@ -124,22 +153,28 @@ public class Keyhandler implements KeyListener {
         // Player 1 movement
         if (code == KeyEvent.VK_UP) {
             upPressed = false;
-           // canMoveUp = true;
+         //  upFirstPressed =false;//reset on release
         }
         if (code == KeyEvent.VK_DOWN) {
             downPressed = false;
-           // canMoveDown = true;
+         //  downFirstPressed =false;
         }
         if (code == KeyEvent.VK_LEFT) {
             leftPressed = false;
-          //  canMoveLeft = true;
+            //leftFirstPressed =false;
         }
         if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
-           // canMoveRight = true;
+           // rightFirstPressed =false;
         }
         if(code == KeyEvent.VK_SPACE){
             diceRollPressed = false;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            enterPressed = false;
+        }
+        if(code == KeyEvent.VK_P){
+            playPressed = false;
         }
     }
 }

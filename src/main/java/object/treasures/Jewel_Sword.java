@@ -11,6 +11,7 @@ public class Jewel_Sword extends SuperObject {
 
 
         name ="Jewel Sword"; // for chest object
+        worth = 27.5;
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/jewelSword.png")));
         }catch (IOException e){

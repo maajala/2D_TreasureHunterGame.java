@@ -80,6 +80,7 @@ public class KeyHandler2 implements KeyListener {
     public boolean wPressed, sPressed, aPressed, dPressed;
 
     public boolean diceRollPressed= false;
+    public boolean shiftPressed = false;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -111,6 +112,9 @@ public class KeyHandler2 implements KeyListener {
         if (code == KeyEvent.VK_SPACE){
             diceRollPressed = true;
         }
+        if(code == KeyEvent.VK_SHIFT){
+            shiftPressed = true;
+        }
 
     }
 
@@ -137,6 +141,9 @@ public class KeyHandler2 implements KeyListener {
         }
         if (code == KeyEvent.VK_SPACE){
             diceRollPressed = false;
+        }
+        if(code == KeyEvent.VK_SHIFT){
+            shiftPressed = false;
         }
 
     }

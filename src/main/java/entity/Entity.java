@@ -16,20 +16,21 @@ public class Entity {
     //It describes an Image with an accessible buffer of image data.
     //(We use this to store our image files)
     public BufferedImage up1 ,up2 ,up3,up4, down1, down2,down3,down4, left1 , left2 ,left3,left4, right1, right2, right3,right4;
+    public BufferedImage attack_up1 , attack_up2, attack_right1,
+            attack_right2 , attack_left1, attack_left2,attack_down1,attack_down2;
     //will be useful for the image of the character where it will be using the direction that will be created
     public String direction;//will be acting as updater for the direction of player
     public int spriteCounter = 0;
     public int spriteNum =1;
     public Rectangle solidArea;
     public int solidAreaDefaultX, solidAreaDefaultY;
-    public boolean collisionOn = false;
-    public boolean winnerPlayer = false;
-
-   // public int actionCounter;// for NPCes and Monsters
 
     //CHARACTER STATUS
+    public boolean collisionOn = false;
+    public boolean winnerPlayer = false;
+    public boolean attacking = false; // default no attack until we handle a collision
 
-    public Entity(GamePanel gp){//abstract
+     public Entity(GamePanel gp){//abstract
         this.gp = gp;
         solidArea = new Rectangle(0, 0, 48 ,48);
     }
@@ -39,26 +40,6 @@ public class Entity {
     public void update(){
 
         setAction();
-
-//        collisionOn=false;
-//        gp.collisionChecker.checkTile(this);
-//        if (collisionOn == false) {
-//            switch (direction) {
-//                case "up":
-//                    worldY -= speed;//steps; // go up
-//                    break;
-//                case "down":
-//                    worldY += speed; // goes down
-//                    break;
-//                case "left":
-//                    worldX -= speed; // goes to left
-//                    break;
-//                case "right":
-//                    worldX += speed; // goes to right
-//                    break;
-//            }
-//            // movedThisTurn = true;
-//        }
 
         //sprite counter to update images
         spriteCounter++;
@@ -150,7 +131,4 @@ public class Entity {
             g2.drawImage(image, screenX , screenY , gp.tileSize, gp.tileSize, null);
         }
     }
-
-    // for NPC movements
-
 }

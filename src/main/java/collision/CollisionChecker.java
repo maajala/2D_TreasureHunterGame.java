@@ -4,6 +4,8 @@ import entity.Entity;
 import entity.Player;
 import entity.Player2;
 
+import java.awt.*;
+
 public class CollisionChecker {
 
     GamePanel gp;
@@ -147,6 +149,23 @@ public class CollisionChecker {
            }
        }
        return index;
+    }
+
+
+        // Method to check collision between Player1 and Player2
+   public boolean checkPlayerCollision(Entity player1, Entity player2) {
+            // Calculate the current solidArea positions for both players
+            int p1X = player1.worldX + player1.solidArea.x;
+            int p1Y = player1.worldY + player1.solidArea.y;
+            Rectangle p1Rect = new Rectangle(p1X, p1Y, player1.solidArea.width, player1.solidArea.height);
+
+            int p2X = player2.worldX + player2.solidArea.x;
+            int p2Y = player2.worldY + player2.solidArea.y;
+            Rectangle p2Rect = new Rectangle(p2X, p2Y, player2.solidArea.width, player2.solidArea.height);
+
+            // Check if the solidAreas intersect
+            return p1Rect.intersects(p2Rect);
+
     }
 
     //NPC or Monster

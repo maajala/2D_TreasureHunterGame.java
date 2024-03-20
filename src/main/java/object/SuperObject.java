@@ -1,6 +1,7 @@
 package object;
 
 import com.example.game2d.GamePanel;
+import com.example.game2d.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,13 +11,12 @@ public class SuperObject { // game objects
 
     public BufferedImage image, image2 , image3, image4; // to capture image of each object
     public String name;// name for each object
+    public double worth;
     public boolean collision = false ; // for collision checker
     public Rectangle solidArea = new Rectangle(0 , 0, 48 ,48);// create a border around each object
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY=0;
-    public int worldX, worldY; // we need to creat object class for keyHandling
-
-
+    public int worldX, worldY; // we need to creat object class for keyHandler
     public void draw(Graphics2D g2, GamePanel gp) {
      
 

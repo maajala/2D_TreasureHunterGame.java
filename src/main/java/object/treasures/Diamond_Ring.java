@@ -11,6 +11,7 @@ public class Diamond_Ring extends SuperObject {
 
 
         name ="Diamond Ring"; // for chest object
+        worth = 40.25;
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/diamondRing.png")));
         }catch (IOException e){

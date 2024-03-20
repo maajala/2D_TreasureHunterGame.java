@@ -10,6 +10,7 @@ public class Crystal_Goblet extends SuperObject {
     public Crystal_Goblet(){
 
         name ="Crystal Goblet"; // for chest object
+        worth = 45.5;// worth of a treasure
         try{
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/crystal.png")));
         }catch (IOException e){

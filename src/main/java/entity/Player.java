@@ -3,6 +3,7 @@ package entity;
 import collision.CollisionChecker;
 import com.example.game2d.GamePanel;
 import com.example.game2d.Keyhandler;
+import com.example.game2d.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,6 +28,9 @@ public class Player extends Entity{
    CollisionChecker collisionChecker;
 
    public boolean isTurn = false ;
+
+    // Inside your game loop or update method
+    public boolean collisionWithPlayer2 = false;
    public Random random; // For rolling the dice
     Dice dice = new Dice();
     public int steps = 0; // Steps remaining for the player's current turn
@@ -47,8 +51,8 @@ public class Player extends Entity{
         solidArea = new Rectangle();
         solidArea.x = 8;// changed from 0 to 8 after cut of collision
         solidArea.y = 16;// changed from 0 to 16 after cut // it is optional
-        solidArea.width = 32;//changed from tileSize(48) to 32 as the desired cut
-        solidArea.height= 32;;
+        solidArea.width = 48;//changed from tileSize(48) to 32 as the desired cut
+        solidArea.height= 48;;
         solidAreaDefaultX = solidArea.x;// default values helpful to retrieve
         solidAreaDefaultY = solidArea.y;// the default values when changing them later
 
@@ -89,6 +93,7 @@ public class Player extends Entity{
 //        }
 //    }
 
+    // Inside your game loop or update method
 
     public void setDefaultValues() {
         // same what we did in GamePanel for player position
@@ -106,44 +111,169 @@ public class Player extends Entity{
 
 
     // to get image of player
+//    public void getPlayerImage() throws IOException{
+//        try {// snap of every image of the player
+//            up1 = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png"))));
+//            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
+//            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
+//            up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_4.png")));
+//
+//            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
+//            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
+//            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
+//            down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_4.png")));
+//
+//            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
+//            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_4.png")));
+//            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
+//            left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
+//
+//
+//            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
+//            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
+//            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
+//            right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_4.png")));
+//
+//
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//            throw new IOException("Error loading player images", e);
+//
+//        }
+//
+//    }
+
+
+   // Another Fast Way to Draw or Call PLayers Image
     public void getPlayerImage() throws IOException{
-        try {// snap of every image of the player
-            up1 = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png"))));
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
-            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
-            up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_4.png")));
+            up1 = setup("player_up_1",gp.tileSize,gp.tileSize);
+            up2 = setup("player_up_2",gp.tileSize,gp.tileSize);
+            up3 = setup("player_up_3",gp.tileSize,gp.tileSize);
+            up4 = setup("player_up_4",gp.tileSize,gp.tileSize);
 
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
-            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
-            down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_4.png")));
+            down1=setup("player_down_3",gp.tileSize,gp.tileSize);
+            down2=setup("player_down_2",gp.tileSize,gp.tileSize);
+            down3=setup("player_down_1",gp.tileSize,gp.tileSize);
+            down4=setup("player_down_4",gp.tileSize,gp.tileSize);
 
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_4.png")));
-            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
-            left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
+            right1=setup("player_right_1",gp.tileSize,gp.tileSize);
+            right2=setup("player_right_2",gp.tileSize,gp.tileSize);
+            right3=setup("player_right_3",gp.tileSize,gp.tileSize);
+            right4=setup("player_right_4",gp.tileSize,gp.tileSize);
 
-
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
-            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
-            right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_4.png")));
-
-
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            throw new IOException("Error loading player images", e);
-
-        }
-
+            left1=setup("player_left_1",gp.tileSize,gp.tileSize);
+            left2=setup("player_left_4",gp.tileSize,gp.tileSize);
+            left3=setup("player_left_3",gp.tileSize,gp.tileSize);
+            left4=setup("player_left_2",gp.tileSize,gp.tileSize);
     }
-    // update method is called 60 times /second , every
+   // Buffered IMage to scale it as tiles into game tile size screen
+    public BufferedImage setup(String imageName , int width , int height){
+        //instantiate Utility Tool class to scale
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try{
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/"+imageName+".png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return image;
+    }
 
+    public void getPlayerAttackImage1(){
+
+        up1 = setup("boy_up_1",gp.tileSize,gp.tileSize*2);
+        up2 = setup("boy_up_2",gp.tileSize,gp.tileSize*2);
+        up3 = setup("boy_up_1",gp.tileSize,gp.tileSize*2);
+        up4 = setup("boy_up_2",gp.tileSize,gp.tileSize*2);
+
+        down1=setup("boy_down_1",gp.tileSize,gp.tileSize*2);
+        down2=setup("boy_down_2",gp.tileSize,gp.tileSize*2);
+        down3=setup("boy_down_1",gp.tileSize,gp.tileSize*2);
+        down4=setup("boy_down_2",gp.tileSize,gp.tileSize*2);
+
+        right1=setup("boy_right_1",gp.tileSize*2,gp.tileSize);
+        right2=setup("boy_right_2",gp.tileSize*2,gp.tileSize);
+        right3=setup("boy_right_1",gp.tileSize*2,gp.tileSize);
+        right4=setup("boy_right_2",gp.tileSize*2,gp.tileSize);
+
+        left1=setup("boy_left_1",gp.tileSize*2,gp.tileSize);
+        left2=setup("boy_left_2",gp.tileSize*2,gp.tileSize);
+        left3=setup("boy_left_1",gp.tileSize*2,gp.tileSize);
+        left4=setup("boy_left_2",gp.tileSize*2,gp.tileSize);
+    }
 
     // Update player position based on key input
+
+    public void update3() {
+        // Check if there are steps remaining and a movement key was first pressed.
+        if (steps > 0 && (keyHand.upFirstPressed || keyHand.downFirstPressed || keyHand.leftFirstPressed || keyHand.rightFirstPressed)) {
+            // Calculate potential new position based on direction.
+            int newWorldX = worldX;
+            int newWorldY = worldY;
+
+            if (keyHand.upFirstPressed) {
+                newWorldY -= gp.tileSize; // Move up by one tileSize
+                direction = "up";
+                keyHand.upFirstPressed = false; // Reset the first press indicator
+            } else if (keyHand.downFirstPressed) {
+                newWorldY += gp.tileSize; // Move down by one tileSize
+                direction = "down";
+                keyHand.downFirstPressed = false;
+            } else if (keyHand.leftFirstPressed) {
+                newWorldX -= gp.tileSize; // Move left by one tileSize
+                direction = "left";
+                keyHand.leftFirstPressed = false;
+            } else if (keyHand.rightFirstPressed) {
+                newWorldX += gp.tileSize; // Move right by one tileSize
+                direction = "right";
+                keyHand.rightFirstPressed = false;
+            }
+
+            // Perform collision checking and update world position if no collision.
+            // Your existing collision check logic here, assuming it prevents the move if there's a collision.
+            collisionChecker.checkTile(this);
+            if (!collisionOn) {
+                worldX = newWorldX;
+                worldY = newWorldY;
+                steps--; // Decrement steps after moving.
+            }
+            else{
+                return;
+            }
+        }
+
+        // Handle collision with another player.
+        // Existing logic for handling collision with Player 2.
+        collisionWithPlayer2 = collisionChecker.checkPlayerCollision(this, gp.player2);
+        if (collisionWithPlayer2) {
+            if (keyHand.enterPressed) {
+                attacking();
+                gp.player2.life2 -= 1;
+            }
+            System.out.println("Player 1 hits Player 2!");
+        }
+
+        // Update screen position based on world position.
+        screenX = worldX;
+        screenY = worldY;
+
+        // Update sprite animations.
+        updateSpriteAnimation();
+    }
+
+    private void updateSpriteAnimation() {
+        spriteCounter++;
+        if (spriteCounter > 12) {
+            spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
+            spriteCounter = 0;
+        }
+    }
+
     public void update() {
 //        if(!isTurn){
+
+
             collisionOn = false;
 
             // Potential new position
@@ -169,6 +299,8 @@ public class Player extends Entity{
 
             // If there is no collision, update the world position
             if (!collisionOn) {
+                worldX = newWorldX;
+                worldY = newWorldY;
                 int objectIndex = collisionChecker.checkObject(this, true);
                 if (objectIndex == 999) {
                     worldX = newWorldX;
@@ -179,20 +311,22 @@ public class Player extends Entity{
                     pickUpObject(objectIndex);
                 }
             }
-//            if ( !isTurn) {
-//                int diceResult = dice.roll();
-//                steps = diceResult *2;// Assign the # steps the player can move
-//                System.out.println("The steps here are: "+steps+" for player 1");
-//                isTurn = true;//Indicate the player's turn has started
-//                keyHand.diceRollPressed = false;//Reset the roll dice request
-//            }
 
-            //}
+        // Then check collision with the other player using their current position and your new potential position
+        collisionWithPlayer2 = collisionChecker.checkPlayerCollision(this, gp.player2);
 
+        // If no collision with the environment or the other player, update position
+        if (!collisionWithPlayer2) {
 
-            // Update screen position based on the world position and camera position
-            // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
-            // For a static camera, it would just be a direct assignment like below:
+        } else {
+            if(keyHand.enterPressed){
+                attacking();
+                gp.player2.life2 -=1;
+            }
+            System.out.println("Player 1 hits PLayer 2 !");
+            // Handle collision (e.g., stop movement, play sound, etc.)
+        }
+
             screenX = worldX;
             screenY = worldY;
 
@@ -209,6 +343,7 @@ public class Player extends Entity{
                 }
             }
         }
+
 
 //    public void update(Keyhandler keyH) {
 //        // copied from gamePanel
@@ -349,6 +484,30 @@ public class Player extends Entity{
             // Optionally, add any additional logic needed at the start of a turn
         }
     }
+
+    public void attacking(){
+        spriteCounter++;
+
+        if(spriteCounter <= 5){
+            spriteNum =1;
+        }
+        if(spriteCounter >5 && spriteCounter <= 25){
+            spriteNum =2;
+        }
+        if(spriteCounter >25 && spriteCounter <= 45){
+            spriteNum =3;
+        }
+        if(spriteCounter >45 && spriteCounter <= 65){
+            spriteNum =4;
+        }
+        if(spriteCounter >65){
+            spriteNum =1;
+            spriteCounter=0;
+            attacking = false;
+        }
+
+    }
+
     public void pickUpObject(int i){
       //Object Being Collected
         if(i !=999)// any index not used in the object array
@@ -437,6 +596,7 @@ public class Player extends Entity{
         if(i != 999)
             System.out.println("Player Touches a Monster");
     }
+
 //    public void draw(Graphics2D g2){
 //
 //        BufferedImage image = null;
@@ -532,17 +692,43 @@ public void draw(Graphics2D g2) {
     BufferedImage image = null;
     switch (direction) {
         case "up":
-            image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
+            if(attacking == false){
+                image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
+            }
+            if(attacking == true){
+                if(spriteNum == 1){ image = attack_up1;}
+                if(spriteNum == 2){ image = attack_up2;}
+            }
+//            image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
             break;
         case "down":
+            if(attacking==false){
             image = spriteNum == 1 ? down1 : spriteNum == 2 ? down2 : spriteNum == 3 ? down3 : down4;
+            }
+            if(attacking== true){
+                if(spriteNum == 1){ image = attack_down1;}
+                if(spriteNum == 2){ image = attack_down2;}
+            }
             break;
         case "left":
+            if(attacking==false){
             image = spriteNum == 1 ? left1 : spriteNum == 2 ? left2 : spriteNum == 3 ? left3 : left4;
+            }
+            if(attacking== true){
+                if(spriteNum == 1){ image = attack_left1;}
+                if(spriteNum == 2){ image = attack_left2;}
+            }
             break;
         case "right":
-            image = spriteNum == 1 ? right1 : spriteNum == 2 ? right2 : spriteNum == 3 ? right3 : right4;
+            if(attacking == false){
+                 image = spriteNum == 1 ? right1 : spriteNum == 2 ? right2 : spriteNum == 3 ? right3 : right4;
+            }
+            if(attacking== true){
+                if(spriteNum == 1){ image = attack_right1;}
+                if(spriteNum == 2){ image = attack_right2;}
+            }
             break;
+
     }
     g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 }
@@ -619,3 +805,26 @@ public void draw(Graphics2D g2) {
     }
 
 }
+
+//comments
+//// Inside your game loop or update method
+//boolean collision = collisionChecker.checkPlayerCollision(player1, player2);
+//if (collision) {
+//    // Handle player collision here (e.g., stop movement, trigger an event, etc.)
+//    System.out.println("Players have collided!");
+//}
+
+//            if ( !isTurn) {
+//                int diceResult = dice.roll();
+//                steps = diceResult *2;// Assign the # steps the player can move
+//                System.out.println("The steps here are: "+steps+" for player 1");
+//                isTurn = true;//Indicate the player's turn has started
+//                keyHand.diceRollPressed = false;//Reset the roll dice request
+//            }
+
+//}
+
+
+// Update screen position based on the world position and camera position
+// If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
+// For a static camera, it would just be a direct assignment like below:

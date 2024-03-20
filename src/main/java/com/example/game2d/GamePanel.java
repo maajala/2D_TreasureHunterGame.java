@@ -26,6 +26,11 @@ public class GamePanel extends JPanel implements Runnable{
     public final int  screenWidth = tileSize * maxScreenCol;//768 pixels // 10> 480
     public final int screenHeight = tileSize * maxScreenRow;//576 pixels
 
+    //Game State
+    public int gameState;//making  state for the game
+    public final int playState = 1;
+    public final int pauseState = 2;
+
     //WORLD SETTING
     public final int maxWorldCol = 13;//50
     public final int maxWorldRow = 13;//50
@@ -43,16 +48,19 @@ public class GamePanel extends JPanel implements Runnable{
     }
     //IT IS IMPORTANT TO CALL THIS GAME METHOD BEFORE GAME STARTS
     public void setUpGame() throws IOException {
-        assetSetter.setObject();
-  //      assetSetter.setNPC();
-//       assetSetter.setMonster();
+
+        //assetSetter.setNPC();
+        //assetSetter.setMonster();
+      // assetSetter.setObject();
+       gameState = playState;// State calls to play
+
     }
 
     //FPS
     int FPS = 60;
 
     //SYSTEM
-    Keyhandler keyH = new Keyhandler(); //FOR PLAYER 1 MOVEMENT
+    Keyhandler keyH = new Keyhandler(this); //FOR PLAYER 1 MOVEMENT
     KeyHandler2 keyH2 = new KeyHandler2();
     //FOR PLAYER 2 MOVEMENT
     Thread gameThread;// calling thread later will invoke the run method down
@@ -72,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     //Entity and Objects
     public Player player1 = new Player(this,keyH,collisionChecker1);
-   public Player2 player2 = new Player2(this,keyH2,collisionChecker2);
+   public Player2 player2 = new Player2(this,keyH,collisionChecker2);
     public SuperObject obj[] = new SuperObject[30]; // we prepare an array of size 10 for objects // we will use it in another class
     // THAT MEANS WE CAN DISPLAY 25 OBJECTS AT THE SAME TIME
     public Entity npc[] = new Entity[10];// create npc from entity
@@ -112,19 +120,25 @@ public class GamePanel extends JPanel implements Runnable{
 
     // method to update screen information
     public void update() {
-        if (playerTurn) {
-            player1.update();
-            if (player1.steps <= 0) {
-                playerTurn = false; // Switch to Player 2's turn
-                player2.prepareTurn(); // Prepare Player 2 for their turn
-            }
-        } else {
-            player2.update();
-            if (player2.steps <= 0) {
-                playerTurn = true; // Switch back to Player 1's turn
-                player1.prepareTurn(); // Prepare Player 1 for their turn
+        if(gameState == playState){
+            if (playerTurn) {
+                player1.update();
+                if (player1.steps <= 0) {
+                    playerTurn = false; // Switch to Player 2's turn
+                    player2.prepareTurn(); // Prepare Player 2 for their turn
+                }
+            } else {
+                player2.update();
+                if (player2.steps <= 0) {
+                    playerTurn = true; // Switch back to Player 1's turn
+                    player1.prepareTurn(); // Prepare Player 1 for their turn
+                }
             }
         }
+        if(gameState == pauseState){
+            ui.drawPauseScreen();
+        }
+
 //        for(int i=0 ;i< npc.length; i++)
 //        {
 //            if(npc[i] != null){
@@ -176,7 +190,20 @@ public class GamePanel extends JPanel implements Runnable{
         //UI
         ui.draw(g2);
 
+        //draw grid
+        drawGrid(g);
         //to save some memory use dispose
         g2.dispose();
+    }
+    private void drawGrid(Graphics g) {
+        g.setColor(Color.black);
+        // Draw the vertical lines
+        for (int x = 0; x <= screenWidth; x += tileSize) {
+            g.drawLine(x, 0, x, screenHeight);
+        }
+        // Draw the horizontal lines
+        for (int y = 0; y <= screenHeight; y += tileSize) {
+            g.drawLine(0, y, screenWidth, y);
+        }
     }
 }

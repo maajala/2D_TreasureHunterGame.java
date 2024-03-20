@@ -4,6 +4,7 @@ import collision.CollisionChecker;
 import com.example.game2d.GamePanel;
 import com.example.game2d.KeyHandler2;
 import com.example.game2d.Keyhandler;
+import com.example.game2d.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class Player2 extends Entity{
 
     //we can delete it we have super in each constructor from Entity
     GamePanel gp;// use game panel created
-    KeyHandler2 keyH2;
+    Keyhandler keyH2;
 
     public int screenX;// where we draw player on screen x-axis
     public int screenY; // and y-axis
@@ -26,6 +27,7 @@ public class Player2 extends Entity{
     public int maxLife2;
     public int life2;
     CollisionChecker collisionChecker;
+    public boolean collisionWithPlayer1 = false;
     public boolean isTurn =false;
 
     Dice dice = new Dice();
@@ -34,7 +36,7 @@ public class Player2 extends Entity{
 
 
     // constructor for player one
-    public Player2 (GamePanel gp, KeyHandler2 keyH2, CollisionChecker collisionChecker) {
+    public Player2 (GamePanel gp, Keyhandler keyH2, CollisionChecker collisionChecker) {
         super(gp);
         this.gp = gp;//we can delete
         this.keyH2 = keyH2;
@@ -49,8 +51,8 @@ public class Player2 extends Entity{
         solidArea = new Rectangle();
         solidArea.x = 8;// changed from 0 to 8 after cut of collision
         solidArea.y = 16;// changed from 0 to 16 after cut // it is optional
-        solidArea.width = 32;//changed from tileSize(48) to 32 as the desired cut
-        solidArea.height= 32;;
+        solidArea.width = 35;//changed from tileSize(48) to 32 as the desired cut
+        solidArea.height= 35;;
         solidAreaDefaultX = solidArea.x;// default values helpful to retrieve
         solidAreaDefaultY = solidArea.y;// the default values when changing them later
 
@@ -93,8 +95,8 @@ public class Player2 extends Entity{
         // same what we did in GamePanel for player position
         //worldX = gp.tileSize * 23;// starting point , player position in world map // was 23
         //worldY = gp.tileSize * 21;// was 21
-        worldX = 11 * gp.tileSize;// this is for 10x10 map
-        worldY = gp.maxWorldCol/2 * gp.tileSize;
+        worldX = gp.player1.worldX *11;// this is for 10x10 map
+        worldY = gp.player1.worldY;
         speed = 4;
         direction = "down"; // can be chosen any direction as default
         maxLife2=6;//max life to be reached
@@ -102,8 +104,8 @@ public class Player2 extends Entity{
     }
 
 
-    // to get image of player
-    public void getPlayerImage() throws IOException{
+    // to get image of player // previous getPlayerImage
+    public void getPlayerImage2() throws IOException{
         try {// snap of every image of the player
             up1 = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png"))));
             up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
@@ -133,10 +135,66 @@ public class Player2 extends Entity{
             throw new IOException("Error loading player images", e);
 
         }
-
     }
-    // update method is called 60 times /second , every
 
+
+    // Another Fast Way to Draw or Call PLayers Image
+    public void getPlayerImage() throws IOException{
+        up1 = setup("player_up_1",gp.tileSize,gp.tileSize);
+        up2 = setup("player_up_2",gp.tileSize,gp.tileSize);
+        up3 = setup("player_up_3",gp.tileSize,gp.tileSize);
+        up4 = setup("player_up_4",gp.tileSize,gp.tileSize);
+
+        down1=setup("player_down_3",gp.tileSize,gp.tileSize);
+        down2=setup("player_down_2",gp.tileSize,gp.tileSize);
+        down3=setup("player_down_1",gp.tileSize,gp.tileSize);
+        down4=setup("player_down_4",gp.tileSize,gp.tileSize);
+
+        right1=setup("player_right_1",gp.tileSize,gp.tileSize);
+        right2=setup("player_right_2",gp.tileSize,gp.tileSize);
+        right3=setup("player_right_3",gp.tileSize,gp.tileSize);
+        right4=setup("player_right_4",gp.tileSize,gp.tileSize);
+
+        left1=setup("player_left_1",gp.tileSize,gp.tileSize);
+        left2=setup("player_left_4",gp.tileSize,gp.tileSize);
+        left3=setup("player_left_3",gp.tileSize,gp.tileSize);
+        left4=setup("player_left_2",gp.tileSize,gp.tileSize);
+    }
+    // Buffered IMage to scale it as tiles into game tile size screen
+    public BufferedImage setup(String imageName , int width , int height){
+        //instantiate Utility Tool class to scale
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try{
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/"+imageName+".png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    public void getPlayerAttackImage2(){
+
+        up1 = setup("player_up_1",gp.tileSize,gp.tileSize*2);
+        up2 = setup("player_up_2",gp.tileSize,gp.tileSize*2);
+        up3 = setup("player_up_3",gp.tileSize,gp.tileSize*2);
+        up4 = setup("player_up_4",gp.tileSize,gp.tileSize*2);
+
+        down1=setup("player_down_3",gp.tileSize,gp.tileSize*2);
+        down2=setup("player_down_2",gp.tileSize,gp.tileSize*2);
+        down3=setup("player_down_1",gp.tileSize,gp.tileSize*2);
+        down4=setup("player_down_4",gp.tileSize,gp.tileSize*2);
+
+        right1=setup("player_right_1",gp.tileSize*2,gp.tileSize);
+        right2=setup("player_right_2",gp.tileSize*2,gp.tileSize);
+        right3=setup("player_right_3",gp.tileSize*2,gp.tileSize);
+        right4=setup("player_right_4",gp.tileSize*2,gp.tileSize);
+
+        left1=setup("player_left_1",gp.tileSize*2,gp.tileSize);
+        left2=setup("player_left_4",gp.tileSize*2,gp.tileSize);
+        left3=setup("player_left_3",gp.tileSize*2,gp.tileSize);
+        left4=setup("player_left_2",gp.tileSize*2,gp.tileSize);
+    }
 
     // Update player position based on key input
     public void update() {
@@ -147,21 +205,19 @@ public class Player2 extends Entity{
         int newWorldX = worldX;
         int newWorldY = worldY;
 
-        if (keyH2.wPressed) {
+        if (keyH2.upPressed) {
             newWorldY -= speed;
             direction = "up";
-        } else if (keyH2.sPressed) {
+        } else if (keyH2.downPressed) {
             newWorldY += speed;
             direction = "down";
-        } else if (keyH2.aPressed) {
+        } else if (keyH2.leftPressed) {
             newWorldX -= speed;
             direction = "left";
-        } else if (keyH2.dPressed) {
+        } else if (keyH2.rightPressed) {
             newWorldX += speed;
             direction = "right";
         }
-
-
 
         // Collision checking
         collisionChecker.checkTile(this);
@@ -179,17 +235,22 @@ public class Player2 extends Entity{
                 pickUpObject(objectIndex);
             }
         }
-//        if(keyH2.diceRollPressed && !isTurn){
-//            int diceResult = dice.roll();
-//            steps = diceResult*gp.tileSize;// Assign the # steps the player can move
-//            System.out.println("The steps here are: "+steps+"  for");
-//            isTurn = true;//Indicate the player's turn has started
-//            keyH2.diceRollPressed = false;//Reset the roll dice request
-//        }
 
-        // Update screen position based on the world position and camera position
-        // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
-        // For a static camera, it would just be a direct assignment like below:
+        // Then check collision with the other player using their current position and your new potential position
+        collisionWithPlayer1 = collisionChecker.checkPlayerCollision(this, gp.player1);
+
+        // If no collision with the environment or the other player, update position
+        if (!collisionWithPlayer1) {
+
+        }
+        else {
+            if(keyH2.enterPressed){
+                attacking();
+                gp.player1.life1 -=1 ;
+            }
+            System.out.println("Player 2 hits PLayer 1 !");
+            // Handle collision (e.g., stop movement, play sound, etc.)
+        }
         screenX = worldX;
         screenY = worldY;
 
@@ -199,7 +260,7 @@ public class Player2 extends Entity{
             spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
             spriteCounter = 0;
         }
-        if (isTurn && (keyH2.wPressed || keyH2.sPressed || keyH2.aPressed || keyH2.dPressed)) {
+        if (isTurn && (keyH2.upPressed || keyH2.downPressed || keyH2.leftPressed || keyH2.rightPressed)) {
             steps--; // Decrease the number of steps as the player moves
             if (steps <= 0) {
                 isTurn = false; // End the player's turn when steps run out
@@ -213,19 +274,19 @@ public class Player2 extends Entity{
             int newWorldY = worldY;
             boolean moved = false;
 
-            if (keyH2.wPressed) {
+            if (keyH2.upPressed) {
                 newWorldY -= speed;
                 direction = "up";
                 moved = true;
-            } else if (keyH2.sPressed) {
+            } else if (keyH2.downPressed) {
                 newWorldY += speed;
                 direction = "down";
                 moved = true;
-            } else if (keyH2.aPressed) {
+            } else if (keyH2.leftPressed) {
                 newWorldX -= speed;
                 direction = "left";
                 moved = true;
-            } else if (keyH2.dPressed) {
+            } else if (keyH2.rightPressed) {
                 newWorldX += speed;
                 direction = "right";
                 moved = true;
@@ -261,7 +322,28 @@ public class Player2 extends Entity{
             // Optionally, add any additional logic needed at the start of a turn
         }
     }
+    public void attacking(){
+        spriteCounter++;
 
+        if(spriteCounter <= 100){
+            spriteNum =1;
+        }
+        if(spriteCounter >100 && spriteCounter <= 200){
+            spriteNum =2;
+        }
+        if(spriteCounter >200 && spriteCounter <= 300){
+            spriteNum =3;
+        }
+        if(spriteCounter >300 && spriteCounter <= 400){
+            spriteNum =4;
+        }
+        if(spriteCounter >400){
+            spriteNum =1;
+            spriteCounter=0;
+            attacking = false;
+        }
+
+    }
     public void pickUpObject(int i){
         //Object Being Collected
         if(i !=999)// any index not used in the object array
@@ -513,17 +595,43 @@ public class Player2 extends Entity{
         BufferedImage image = null;
         switch (direction) {
             case "up":
-                image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
+                if(attacking == false){
+                    image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
+                }
+                if(attacking == true){
+                    if(spriteNum == 1){ image = attack_up1;}
+                    if(spriteNum == 2){ image = attack_up2;}
+                }
+//            image = spriteNum == 1 ? up1 : spriteNum == 2 ? up2 : spriteNum == 3 ? up3 : up4;
                 break;
             case "down":
-                image = spriteNum == 1 ? down1 : spriteNum == 2 ? down2 : spriteNum == 3 ? down3 : down4;
+                if(attacking==false){
+                    image = spriteNum == 1 ? down1 : spriteNum == 2 ? down2 : spriteNum == 3 ? down3 : down4;
+                }
+                if(attacking== true){
+                    if(spriteNum == 1){ image = attack_down1;}
+                    if(spriteNum == 2){ image = attack_down2;}
+                }
                 break;
             case "left":
-                image = spriteNum == 1 ? left1 : spriteNum == 2 ? left2 : spriteNum == 3 ? left3 : left4;
+                if(attacking==false){
+                    image = spriteNum == 1 ? left1 : spriteNum == 2 ? left2 : spriteNum == 3 ? left3 : left4;
+                }
+                if(attacking== true){
+                    if(spriteNum == 1){ image = attack_left1;}
+                    if(spriteNum == 2){ image = attack_left2;}
+                }
                 break;
             case "right":
-                image = spriteNum == 1 ? right1 : spriteNum == 2 ? right2 : spriteNum == 3 ? right3 : right4;
+                if(attacking == false){
+                    image = spriteNum == 1 ? right1 : spriteNum == 2 ? right2 : spriteNum == 3 ? right3 : right4;
+                }
+                if(attacking== true){
+                    if(spriteNum == 1){ image = attack_right1;}
+                    if(spriteNum == 2){ image = attack_right2;}
+                }
                 break;
+
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
@@ -600,47 +708,3 @@ public class Player2 extends Entity{
     }
 
 }
-
-/*public void update() {
-    // Ensure player can move only if there are steps left
-    if (isTurn && steps > 0) {
-        int newWorldX = worldX;
-        int newWorldY = worldY;
-        boolean moved = false; // Flag to check if movement happens
-
-        if (keyHand.upPressed && !lastDirection.equals("up")) {
-            newWorldY -= tileSize; // Assuming movement is by tile size
-            lastDirection = "up";
-            moved = true;
-        } else if (keyHand.downPressed && !lastDirection.equals("down")) {
-            newWorldY += tileSize;
-            lastDirection = "down";
-            moved = true;
-        } else if (keyHand.leftPressed && !lastDirection.equals("left")) {
-            newWorldX -= tileSize;
-            lastDirection = "left";
-            moved = true;
-        } else if (keyHand.rightPressed && !lastDirection.equals("right")) {
-            newWorldX += tileSize;
-            lastDirection = "right";
-            moved = true;
-        }
-
-        // Process movement if there's no collision
-        if (moved) {
-            collisionChecker.checkTile(this);
-            if (!collisionOn) {
-                worldX = newWorldX;
-                worldY = newWorldY;
-                steps--; // Decrement steps after a successful move
-            }
-        }
-
-        // Reset turn if no steps left
-        if (steps <= 0) {
-            isTurn = false;
-            lastDirection = ""; // Reset direction after turn ends
-        }
-    }
-}
-*/
