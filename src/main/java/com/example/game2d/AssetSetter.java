@@ -16,6 +16,10 @@ import object.treasures.*;
 import object.treasures.WoodenS;
 import object.treasures.OBJ_Key;
 import object.treasures.Paladin_Shield;
+import object.weapons.Axe;
+import object.weapons.Cursed_Sword;
+import object.weapons.NormalSword;
+import object.weapons.fireAxe;
 
 import java.io.IOException;
 import java.util.Random;
@@ -24,11 +28,14 @@ public class AssetSetter extends SuperObject {
     GamePanel gp;
 
     Random random = new Random();
+
+
     //CONSTRUCTOR
     public AssetSetter(GamePanel gp){
         this.gp = gp;
     }
     // create a method to instantiate default objects
+
     public void setObject(){
      //HERE THE OBJECT ARRAY WE CREATED COMES IN PLAY
      //3 keys
@@ -137,8 +144,24 @@ public class AssetSetter extends SuperObject {
      gp.obj[25].worldY = 4* gp.tileSize;
 
      gp.obj[26] = new OBJ_Key();
-     gp.obj[26].worldX=  2*gp.tileSize;
-     gp.obj[26].worldY = 4* gp.tileSize;
+     gp.obj[26].worldX=  6*gp.tileSize;
+     gp.obj[26].worldY = 2* gp.tileSize;
+
+     gp.obj[27] = new Axe();
+     gp.obj[27].worldX=  3*gp.tileSize;
+     gp.obj[27].worldY = 2* gp.tileSize;
+
+     gp.obj[28] = new fireAxe();
+     gp.obj[28].worldX=  3*gp.tileSize;
+     gp.obj[28].worldY = 3* gp.tileSize;
+
+     gp.obj[29] = new Cursed_Sword();
+     gp.obj[29].worldX=  3*gp.tileSize;
+     gp.obj[29].worldY = 8* gp.tileSize;
+
+     gp.obj[30] = new NormalSword();
+     gp.obj[30].worldX=  8*gp.tileSize;
+     gp.obj[30].worldY = 9* gp.tileSize;
     }
 
 //    public void setNPC() throws IOException {

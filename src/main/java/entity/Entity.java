@@ -59,6 +59,8 @@ public class Entity {
         int screenX= worldX - gp.player1.worldX + gp.player1.screenX;// if worldX(0),i.e; -500+screenX in player(center)
         int screenY= worldY - gp.player1.worldY  + gp.player1.screenY;// same for y see the screenshots for more understanding
 
+        //A series of if statements check whether the
+        // Player is within the visible area of the screen
         if(worldX + gp.tileSize > gp.player1.worldX - gp.player1.screenX &&
                 worldX - gp.tileSize < gp.player1.worldX + gp.player1.screenX &&
                 worldY + gp.tileSize > gp.player1.worldY - gp.player1.screenY &&

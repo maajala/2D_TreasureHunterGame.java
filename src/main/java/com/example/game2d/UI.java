@@ -84,19 +84,25 @@ public class UI {
             //Stop The game
             gp.gameThread = null;
 
-        }else {
+        }else {// IF GAME IS NOT FINISHED YET DRAW NORMALLY ON SCREEN THE INFOS
             // method to display text on screen for update
-            g2.setFont(arial_40);
+            g2.setFont(arial_40);//FONT USED TO DRAW
             g2.setColor(Color.white);// color of Font
             //For Player 1 KEY and DICE
             g2.drawImage(keyImage,gp.tileSize/2+10,gp.tileSize/2,gp.tileSize,gp.tileSize,null);//coordinates of the key on screen
             g2.drawString("x "+gp.player1.keyCountA, 100, 80);
             g2.drawString("#DICE: "+gp.player1.steps/15,100,gp.tileSize*2-5);
+            g2.drawString("$:"+dFormat.format(gp.player1.walletA),gp.tileSize/2,gp.tileSize*5);
+            g2.drawString("power:"+gp.player1.powerA,gp.tileSize,gp.tileSize*12);
+            //SAME CONCEPT FOR WALLET FOR A AND B
+
 
             //For Player 2
             g2.drawImage(keyImage,gp.tileSize*12-10,gp.tileSize/2,gp.tileSize,gp.tileSize,null);//coordinates of the key on screen
             g2.drawString(gp.player2.keyCountB+" x", gp.tileSize*11, 80);
             g2.drawString("#DICE:"+gp.player2.steps/15,gp.tileSize*9,gp.tileSize*2-5);
+            g2.drawString(dFormat.format(gp.player2.walletB)+":$",gp.tileSize*11,gp.tileSize*5);
+            g2.drawString("power:"+gp.player2.powerB,gp.tileSize*9,gp.tileSize*12);
 
             //TIME TAKEN
             playTime += (double)1/60;// we divide by our FPS which is 60

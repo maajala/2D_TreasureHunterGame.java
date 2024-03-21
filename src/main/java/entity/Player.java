@@ -21,18 +21,20 @@ public class Player extends Entity{
     public int screenY; // and y-axis
 
     // Player Tools
-    public int keyCountA=0;
-    public double walletA=0;
-    public int maxLife1;
-    public int life1;
+    public int keyCountA=0;//key in pocket
+    public double walletA=0;//money at moment
+    public int maxLife1;//initial health
+    public int life1;//varying health
+    public int powerA;//initial power
+    public int hasWeapons;
    CollisionChecker collisionChecker;
 
    public boolean isTurn = false ;
 
     // Inside your game loop or update method
     public boolean collisionWithPlayer2 = false;
-   public Random random; // For rolling the dice
-    Dice dice = new Dice();
+
+    Dice dice = new Dice();//calling the dice method
     public int steps = 0; // Steps remaining for the player's current turn
 
     // constructor for player one
@@ -43,8 +45,8 @@ public class Player extends Entity{
         this.collisionChecker = collisionChecker;
 
         //Player Screen Position
-        screenX = worldX; // sub by half to be in the center
-        screenY = worldY;// half-way point of the screen
+        screenX = gp.tileSize; // sub by half to be in the center
+        screenY =gp.maxWorldCol/2 * gp.tileSize;;// half-way point of the screen
 
 
         //Solid Area Variables for player
@@ -106,9 +108,30 @@ public class Player extends Entity{
 
         maxLife1=6;//max life to be reached
         life1 = maxLife1;// current life to be used
+        //same for both players
+        powerA = 5;
 
     }
+    // Call this method when playerA wins the battle
+    public void takeMoneyFromOpponent(Player2 opponent) {
+        if(this.powerA < opponent.powerB){
+            gp.ui.showMessage("Power A less Than Power B");
+            return;
+        }
+        // Calculate the fraction of money to take based on the given formula
+        double moneyTaken = (this.powerA - opponent.powerB) / (double)(this.powerA + opponent.powerB) * opponent.walletB;
+        // Subtract that money from the opponent's wallet
+        opponent.walletB -= moneyTaken;
+        // Ensure the opponent's wallet does not go negative
+        if (opponent.walletB < 0) {
+            opponent.walletB = 0;
+        }
+        // Add the taken money to player A's wallet
+        this.walletA += moneyTaken;
 
+        // Will add additional logic to handle what happens if the opponent runs out of money
+
+    }
 
     // to get image of player
 //    public void getPlayerImage() throws IOException{
@@ -180,6 +203,7 @@ public class Player extends Entity{
         return image;
     }
 
+    //will be used for battle system
     public void getPlayerAttackImage1(){
 
         up1 = setup("boy_up_1",gp.tileSize,gp.tileSize*2);
@@ -261,7 +285,6 @@ public class Player extends Entity{
         // Update sprite animations.
         updateSpriteAnimation();
     }
-
     private void updateSpriteAnimation() {
         spriteCounter++;
         if (spriteCounter > 12) {
@@ -299,8 +322,6 @@ public class Player extends Entity{
 
             // If there is no collision, update the world position
             if (!collisionOn) {
-                worldX = newWorldX;
-                worldY = newWorldY;
                 int objectIndex = collisionChecker.checkObject(this, true);
                 if (objectIndex == 999) {
                     worldX = newWorldX;
@@ -322,6 +343,12 @@ public class Player extends Entity{
             if(keyHand.enterPressed){
                 attacking();
                 gp.player2.life2 -=1;
+                if(gp.player2.life2 == 0){
+                    gp.ui.showMessage("Player2 won The Battle ");
+                    takeMoneyFromOpponent(gp.player2);
+                    System.out.println("WalletB =  "+gp.player2.walletB+" WalleA = "+this.walletA);
+
+                }
             }
             System.out.println("Player 1 hits PLayer 2 !");
             // Handle collision (e.g., stop movement, play sound, etc.)
@@ -344,137 +371,7 @@ public class Player extends Entity{
             }
         }
 
-
-//    public void update(Keyhandler keyH) {
-//        // copied from gamePanel
-//        // System.out.println("Player Update Called");
-//        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
-//
-//            if (keyH.upPressed) {//THE IF STATEMENT HERE CHECKS THE DIRECTION NOW
-//                // add direction info to be updated on screen
-//                direction = "up";
-//                //worldY -= speed;// I changed this from  to switch case for collision
-//
-//            } else if (keyH.downPressed) {
-//                direction = "down";
-//               // worldY += speed;
-//            } else if (keyH.rightPressed) {
-//                direction = "right";
-//               // worldX += speed;
-//            } else if (keyH.leftPressed) { // for readability left
-//                direction = "left";
-//                 //worldX -= speed;
-//            }
-//
-//        //} else {
-//
-//            spriteCounter++;
-//            if (spriteCounter > 8) {
-//                //updates happens every 10 frames
-//                if (spriteNum == 1) {
-//                    spriteNum = 2; //update when it is pose 1 to pose 2
-//                } else if (spriteNum == 2) {
-//                    spriteNum = 3;// update when it is pose 2 to pose 1
-//                } else if (spriteNum == 3) {
-//                    spriteNum = 4;
-//                } else if (spriteNum == 4) {
-//                    spriteNum = 1;
-//                }
-//
-//                spriteCounter = 0; // initialize  again to zero
-//            }
-//        }
-//
-////
-////        if(keyH.rightPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.downPressed == true) {
-////
-////           // if (!movedThisTurn) {
-////
-////                if (keyH.upPressed) {//THE IF STATEMENT HERE CHECKS THE DIRECTION NOW
-////                    // add direction info to be updated on screen
-////                    direction = "up";
-////                    //worldY -= speed;// I changed this from  to switch case for collision
-////
-////                } else if (keyH.downPressed) {
-////                    direction = "down";
-////                    // worldY += speed;
-////                } else if (keyH.rightPressed) {
-////                    direction = "right";
-////                    //worldX += speed;
-////                } else if (keyH.leftPressed) { // for readability left
-////                    direction = "left";
-////                    // worldX -= speed;
-////                }
-////
-////                // Use the dice result to determine the number of steps
-////               // int steps = diceResult * gp.tileSize;
-////
-////
-////
-////
-////
-////            //CHECK THE COLLISION HERE AFTER DIRECTION BEEN KNOWN
-////            collisionOn = false;
-////            gp.collisionChecker.checkTile(this);
-////            //CHECK OBJECT COLLISION
-////            int objectIndex = gp.collisionChecker.checkObject(this,true);
-////            pickUpObject(objectIndex);
-////
-////            //CHECK NPC COLLISION
-////            int npcIndex = gp.collisionChecker.checkEntity(this,gp.npc);
-////            interactNPC(npcIndex);
-////
-////            //CHECK Monster Collision
-////            int  monsterIndex = gp.collisionChecker.checkEntity(this,gp.monster);
-////            interactMonster(monsterIndex);
-////
-////
-////                //IF IT WAS FALSE , PLAYER CAN MOVE
-////                if (collisionOn == false) {
-////                    switch (direction) {
-////                        case "up":
-////                            worldY -= speed;//steps; // go up
-////                            break;
-////                        case "down":
-////                            worldY += speed; // goes down
-////                            break;
-////                        case "left":
-////                            worldX -= speed; // goes to left
-////                            break;
-////                        case "right":
-////                            worldX += speed; // goes to right
-////                            break;
-////                    }
-////                   // movedThisTurn = true;
-////                }
-////
-////                //sprite counter to update images
-////                spriteCounter++;
-////                if (spriteCounter >8) {
-////                    //updates happens every 10 frames
-////                    if (spriteNum == 1) {
-////                        spriteNum = 2; //update when it is pose 1 to pose 2
-////                    } else if (spriteNum == 2) {
-////                        spriteNum = 3;// update when it is pose 2 to pose 1
-////                    } else if (spriteNum == 3) {
-////                        spriteNum = 4;
-////                    } else if (spriteNum == 4) {
-////                        spriteNum = 1;
-////                    }
-////
-////                    spriteCounter = 0; // initialize  again to zero
-////                }
-////           // }
-////        }
-////
-//    }
-
-
-    // Override the update method
-
-    // Helper method to handle movement and collision
-    // The move method should include collision checking and decrementing of steps
-
+    //Prepare for other turn to switch
     public void prepareTurn() {
         if (!isTurn) { // Check if it's this player's turn
             int diceResult = dice.roll(); // Roll the dice to determine steps
@@ -485,6 +382,7 @@ public class Player extends Entity{
         }
     }
 
+    //attacking in action using this method
     public void attacking(){
         spriteCounter++;
 
@@ -508,6 +406,7 @@ public class Player extends Entity{
 
     }
 
+    //INTERACT WITH OBJECTS ON MAP
     public void pickUpObject(int i){
       //Object Being Collected
         if(i !=999)// any index not used in the object array
@@ -531,42 +430,44 @@ public class Player extends Entity{
                 case "Diamond Ring":// Worth 40.25$
                     walletA +=40.25;
                     gp.obj[i] = null;
-                    gp.ui.showMessage("PlayerA wallet has "+walletA+" $");
+                    gp.ui.showMessage("Player1 wallet has "+walletA+" $");
                     break;
                 case "Dragon Scroll":// Worth 25.5$
                     walletA +=25.5;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    gp.ui.showMessage("Player1 has "+walletA+" Dollar(s) now!!");
                     break;
                 case "Crystal Goblet":// Worth 45.5$
                     walletA +=45.5;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    gp.ui.showMessage("Player1 has "+walletA+" Dollar(s) now!!");
                     break;
                 case "Jewel Sword"://Price: 27.5$
                     if(walletA >=27.5) {
                         walletA -=27.5;
                         gp.obj[i] = null;
-                        System.out.println("Player 2 equipped a Jewel Sword now");
+                        hasWeapons++;
+                        powerA++;
+                        gp.ui.showMessage("Player1 equipped a Jewel Sword now");
                     }
                     break;
                 case "Golden Goblet":// Worth 30.5$
                     walletA +=30.5;
                     gp.obj[i] = null;
-                    System.out.println("Player has "+walletA+" Dollar(s) now!!");
+                    gp.ui.showMessage("Player1 has "+walletA+" Dollar(s) now!!");
                     break;
                 case "Paladin Shield": // Price: 15.5$
                     if(walletA >=15.5) {
                         walletA -=15.5;
                         gp.obj[i] = null;
-                        System.out.println("Player 2 equipped a Paladin Shield now");
+                        gp.ui.showMessage("Player1 equipped a Paladin Shield now");
                     }
                     break;
                 case "Wooden Bow":// Price: 12.25$
                     if(walletA >=12.25) {
                         walletA -=12.5;
                         gp.obj[i] = null;
-                        System.out.println("Player 2 equipped a Wooden Bow now");}
+                        gp.ui.showMessage("Player1 equipped a Wooden Bow now");}
 
                     break;
                 case "Castle":
@@ -580,6 +481,48 @@ public class Player extends Entity{
                         gp.ui.showMessage("Need 3 keys to WIN");
                     }
                     break;
+                case "Axe":
+                if(walletA>=40)
+                {
+                    walletA -=40;
+                    gp.obj[i] = null;
+                    hasWeapons++;
+                    powerA++;
+                    gp.ui.showMessage("Player1 got a Axe!");
+                }
+                break;
+                case "Fire Axe"://45$
+                    if(walletA>=45){
+                        walletA -= 45;
+                        gp.obj[i] = null;
+                        hasWeapons++;
+                        powerA+=3;
+                        gp.ui.showMessage("Player1 got a Fire Axe!");
+                    }
+                    break;
+                case "Cursed Sword"://worth 55.5
+                    if(walletA>=55.5){
+                        walletA -=55.5;//pay for it
+                        gp.obj[i] = null;
+                        hasWeapons++;
+                        powerA+=2;
+                        gp.ui.showMessage("Player1 got a Cursed Sword!");
+                    }
+                    break;
+                case "Normal Sword"://25.5$
+                    if(walletA>=25.5){
+                        walletA -=25.5;
+                        gp.obj[i] = null;
+                        hasWeapons++;
+                        powerA++;
+                        gp.ui.showMessage("Player1 got a Sword!");
+                    }
+                    break;
+                case "Trap":
+                gp.obj[i] = null;
+                this.life1 --;
+                gp.ui.showMessage("Player1 Went Into A TRAP");
+                break;
 
             }
         }

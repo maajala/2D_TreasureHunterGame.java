@@ -33,7 +33,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     //WORLD SETTING
     public final int maxWorldCol = 13;//50
-    public final int maxWorldRow = 13;//50
+
+   // public final int maxWorldRow = 13;//50
    // public final int WorldWidth = tileSize * maxWorldCol;
     //public final int WorldHeight= tileSize * maxWorldRow; // this is going to be our resize
 
@@ -51,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         //assetSetter.setNPC();
         //assetSetter.setMonster();
-      // assetSetter.setObject();
+       assetSetter.setObject();
        gameState = playState;// State calls to play
 
     }
@@ -81,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable{
     //Entity and Objects
     public Player player1 = new Player(this,keyH,collisionChecker1);
    public Player2 player2 = new Player2(this,keyH,collisionChecker2);
-    public SuperObject obj[] = new SuperObject[30]; // we prepare an array of size 10 for objects // we will use it in another class
+    public SuperObject obj[] = new SuperObject[35]; // we prepare an array of size 10 for objects // we will use it in another class
     // THAT MEANS WE CAN DISPLAY 25 OBJECTS AT THE SAME TIME
     public Entity npc[] = new Entity[10];// create npc from entity
     public Entity monster[] = new Entity[20];//create monster from npc
@@ -199,7 +200,8 @@ public class GamePanel extends JPanel implements Runnable{
         g.setColor(Color.black);
         // Draw the vertical lines
         for (int x = 0; x <= screenWidth; x += tileSize) {
-            g.drawLine(x, 0, x, screenHeight);
+            g.drawLine(x, 2, x, screenHeight);//takes 2 points co-ordinates
+
         }
         // Draw the horizontal lines
         for (int y = 0; y <= screenHeight; y += tileSize) {
