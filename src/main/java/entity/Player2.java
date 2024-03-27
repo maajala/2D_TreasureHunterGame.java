@@ -235,6 +235,11 @@ public class Player2 extends Entity{
             System.out.println("Player 2 hits PLayer 1 !");
             // Handle collision (e.g., stop movement, play sound, etc.)
         }
+        if(powerB == 0){//when player B loses he comes back to his origin
+            worldX = gp.player1.worldX *11;// this is for 10x10 map
+            worldY = gp.player1.worldY;
+            life2=6;
+        }
         screenX = worldX;
         screenY = worldY;
 
@@ -262,6 +267,9 @@ public class Player2 extends Entity{
         double moneyTaken = (this.powerB - opponent.powerA) / (double)(this.powerB + opponent.powerA) * opponent.walletA;
         // Subtract that money from the opponent's wallet
         opponent.walletA -= moneyTaken;
+        this.powerB -= opponent.powerA;
+        opponent.powerA=0;
+
         // Ensure the opponent's wallet does not go negative
         if (opponent.walletA < 0) {
             opponent.walletA = 0;
@@ -273,50 +281,6 @@ public class Player2 extends Entity{
     }
 
     //Working on another version of the update
-    public void update2() {
-        if (isTurn && steps > 0) {
-            collisionOn = false;
-            int newWorldX = worldX;
-            int newWorldY = worldY;
-            boolean moved = false;
-
-            if (keyH2.upPressed) {
-                newWorldY -= speed;
-                direction = "up";
-                moved = true;
-            } else if (keyH2.downPressed) {
-                newWorldY += speed;
-                direction = "down";
-                moved = true;
-            } else if (keyH2.leftPressed) {
-                newWorldX -= speed;
-                direction = "left";
-                moved = true;
-            } else if (keyH2.rightPressed) {
-                newWorldX += speed;
-                direction = "right";
-                moved = true;
-            }
-
-            if (moved) {
-                collisionChecker.checkTile(this);
-                if (!collisionOn) {
-                    int objectIndex = collisionChecker.checkObject(this, true);
-                    if (objectIndex == 999) {
-                        worldX = newWorldX;
-                        worldY = newWorldY;
-                        steps -= gp.tileSize; // or decrement by a constant if one step isn't equal to tileSize
-                    } else {
-                        pickUpObject(objectIndex);
-                    }
-                }
-            }
-
-            if (steps <= 0) {
-                isTurn = false; // End of the player's turn
-            }
-        }
-    }
 
 
     //Prepare for other turn to switch

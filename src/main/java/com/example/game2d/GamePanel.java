@@ -17,7 +17,7 @@ import java.io.IOException;
 public class GamePanel extends JPanel implements Runnable{
     // works as game screen ,
     //SCREEN SETTING
-    private final int Big_Num = 1000000000;
+    private final int Big_Num = 1000000000;//used to create a logical interval when drawing
     final int originalTileSize =32; // 16 x 16
     final int scalar = 2;// SCALAR THAT CHANGE THE SIZE OF THE GAME PAGE LATER
     public final int tileSize = originalTileSize  * scalar; // 48 x 48
@@ -91,9 +91,8 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();// start the thread
     }
 
-    //METHOD TO CHANGE TURNS
-   @Override
-    public void run() {
+   @Override // Creating a Logical interval when drawing
+    public void run() {//A method that is essential part of the Runnable interface
         double drawInterval = Big_Num/FPS; // 0.0166 seconds
 
         double lastTime = System.nanoTime(); // last time before entering the loop
@@ -123,12 +122,12 @@ public class GamePanel extends JPanel implements Runnable{
     public void update() {
         if(gameState == playState){
             if (playerTurn) {
-                player1.update();
-                if (player1.steps <= 0) {
+                player1.update();//update player one actions
+                if (player1.steps <= 0) { // used his steps
                     playerTurn = false; // Switch to Player 2's turn
-                    player2.prepareTurn(); // Prepare Player 2 for their turn
+                    player2.prepareTurn(); // Prepare Player 2 for his turn
                 }
-            } else {
+            } else {//if it was not playerTurn 2 which is true after 1st if
                 player2.update();
                 if (player2.steps <= 0) {
                     playerTurn = true; // Switch back to Player 1's turn
@@ -136,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
         }
-        if(gameState == pauseState){
+        if(gameState == pauseState){//whereas is game state was pause then pause by pressing P
             ui.drawPauseScreen();
         }
 
@@ -153,12 +152,14 @@ public class GamePanel extends JPanel implements Runnable{
 //                monster[i].update();
 //            }
 //        }
+
     }
     // METHOD TO PAINT COMPONENT ON SCREEN
     public void paintComponent(Graphics g){
 
 
         super.paintComponent(g);
+
         // I will transform this graphics to 2d ones to have more control
         // graphics 2d class extends graphics class to add more control over geometry,x,y components, color and text layout
         Graphics2D g2 = (Graphics2D)g;

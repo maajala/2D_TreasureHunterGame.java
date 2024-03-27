@@ -276,6 +276,7 @@ public class TileManager {
 //            e.printStackTrace();
 //        }
 //    }
+    //using the setup method its easy now for us to draw tiles
     public void getTileImage(){
        // should create objects of buffered images for each tile from the Tile[] tile created in this class
 
@@ -291,6 +292,7 @@ public class TileManager {
 
     }
 
+    //setup here creates tiles of passes index and image
     public void setup(int index , String imageName, boolean collision){
         // THIS METHOD'S PURPOSE WAS TO MAKE TILES FITS EXACTLY THE SIZE OF TILES IN MY SCREEN
         UtilityTool uTool = new UtilityTool();

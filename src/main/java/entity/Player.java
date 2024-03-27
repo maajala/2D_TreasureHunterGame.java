@@ -30,13 +30,12 @@ public class Player extends Entity{
    CollisionChecker collisionChecker;
 
    public boolean isTurn = false ;
-
     // Inside your game loop or update method
     public boolean collisionWithPlayer2 = false;
 
+
     Dice dice = new Dice();//calling the dice method
     public int steps = 0; // Steps remaining for the player's current turn
-
     // constructor for player one
     public Player (GamePanel gp, Keyhandler keyH, CollisionChecker collisionChecker) {
         super(gp);
@@ -122,6 +121,8 @@ public class Player extends Entity{
         double moneyTaken = (this.powerA - opponent.powerB) / (double)(this.powerA + opponent.powerB) * opponent.walletB;
         // Subtract that money from the opponent's wallet
         opponent.walletB -= moneyTaken;
+        this.powerA -= opponent.powerB;// decrease power of winning player
+        opponent.powerB=0;
         // Ensure the opponent's wallet does not go negative
         if (opponent.walletB < 0) {
             opponent.walletB = 0;
@@ -294,8 +295,6 @@ public class Player extends Entity{
     }
 
     public void update() {
-//        if(!isTurn){
-
 
             collisionOn = false;
 
@@ -353,14 +352,21 @@ public class Player extends Entity{
             System.out.println("Player 1 hits PLayer 2 !");
             // Handle collision (e.g., stop movement, play sound, etc.)
         }
+        if(powerA==0)//when player A loses he comes back to his origin
+        {
+            worldX = gp.tileSize;
+            worldY = gp.maxWorldCol/2 * gp.tileSize;
+            life1 = 6;//recga
+        }
 
             screenX = worldX;
             screenY = worldY;
 
             // Update sprite animations
             spriteCounter++;
-            if (spriteCounter > 12) {
+            if (spriteCounter > 12) {// interval of 12
                 spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
+                // The result is always in the range 0 to 3
                 spriteCounter = 0;
             }
             if (isTurn && (keyHand.upPressed || keyHand.downPressed || keyHand.leftPressed || keyHand.rightPressed)) {

@@ -22,6 +22,7 @@ public class Main {
         window.pack();
         // window would be centered in the middle
         window.setLocationRelativeTo(null);
+
         // make window visibly possible
         window.setVisible(true);
 
