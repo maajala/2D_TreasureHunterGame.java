@@ -357,6 +357,7 @@ public class Player extends Entity{
             worldX = gp.tileSize;
             worldY = gp.maxWorldCol/2 * gp.tileSize;
             life1 = 6;//recga
+            powerA=1;
         }
 
             screenX = worldX;

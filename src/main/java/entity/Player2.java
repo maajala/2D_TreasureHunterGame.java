@@ -239,6 +239,7 @@ public class Player2 extends Entity{
             worldX = gp.player1.worldX *11;// this is for 10x10 map
             worldY = gp.player1.worldY;
             life2=6;
+            powerB=1;
         }
         screenX = worldX;
         screenY = worldY;
