@@ -2,11 +2,13 @@ package object;
 
 import com.example.game2d.GamePanel;
 import com.example.game2d.UtilityTool;
+import houses.Market;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class SuperObject { // game objects
     //THE PARENT CLASS FOR OTHER OBJECTS
@@ -35,6 +37,8 @@ public class SuperObject { // game objects
     //BATTLE TOOL
     public int attack;
     public int defence;
+
+
     public void draw(Graphics2D g2, GamePanel gp) {
      
 

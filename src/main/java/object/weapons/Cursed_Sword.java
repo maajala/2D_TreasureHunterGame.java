@@ -13,6 +13,7 @@ public class Cursed_Sword extends SuperObject {
         name ="Cursed Sword";
         type = type_sword;
         attack =3;
+        worth = 32.5;
         try{
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapons/cursedSword.png")));
             image = scaleImage(originalImage, 3.5, 3.5); // Scale to half of its original size as an example

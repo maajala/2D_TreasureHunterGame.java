@@ -1,13 +1,17 @@
 package com.example.game2d;
 
 import entity.*;
+import houses.Market;
 import object.Heart;
 import object.SuperObject;
 import object.treasures.OBJ_Key;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+
+import static object.SuperObject.*;
 
 public class UI {
     //HINT to remember , do not instantiate any sub method in the draw method as  it will take time to progress in runtime
@@ -20,10 +24,27 @@ public class UI {
     public boolean messageOn = false;
     int messageCounter = 0;
     public String message = "";// message to be used inorder to be displayed
+
+    //Slot INFOS for WINDOW REGARDING INVENTORY
     public int slotCol = 0;
     public int slotCol2=0;
     public int slotRow = 0;
+    public int marketSlotCol =0;
+    public  int marketSlotRow =0;
     public int slotRow2=0;
+    //CREATE A MARKET
+    public Market market = new Market();
+    public SuperObject currentItem;
+    public PlayerTest playerCollideWithMarket;
+
+    //SubSTATE INTEGER
+    public int subState;
+    public static final int SELECT_STATE = 0;
+    public static final int BUY_STATE = 1;
+    public static final int SELL_STATE = 2;
+
+    //Command Number Acts like a cursor
+    public int commandNum ;
 
     // TIME Taken
     double playTime;
@@ -109,8 +130,11 @@ public class UI {
            // g2.drawString("power:"+gp.player2.powerB,gp.tileSize*9,gp.tileSize*13);
 
             // Buttons to Press Inorder to Act Upon
-            g2.drawString("C : Status Board",gp.tileSize,gp.tileSize*13);
-            g2.drawString("P : Pause",gp.tileSize*9,gp.tileSize*13);
+            g2.drawString("C: Character",0,gp.tileSize*13);
+            g2.drawString("I: Items",gp.tileSize*5 - 24,gp.tileSize*13);
+            g2.drawString("M: Market",gp.tileSize*8 - 24,gp.tileSize*13);
+            g2.drawString("P: Pause",gp.tileSize*11,gp.tileSize*13);
+
             //TIME TAKEN
             playTime += (double)1/60;// we divide by our FPS which is 60
             g2.drawString("Time: "+dFormat.format(playTime), gp.tileSize*5,gp.tileSize);
@@ -144,6 +168,9 @@ public class UI {
         }
         if(gp.gameState == gp.inventoryState){
             drawInventory();
+        }
+        if(gp.gameState == gp.marketState){
+            drawMarketScreen();
         }
 
     }
@@ -334,6 +361,188 @@ public class UI {
 
         g2.drawString(text, x, y);
     }
+    public void drawDialogue(String currentDialogue){
+        //Window for display
+        int x = gp.tileSize *2;
+        int y= gp.tileSize /2;
+        int width= gp.screenWidth-(gp.tileSize *7);
+        int height = gp.tileSize * 4;
+        drawSubWindow(x ,y , width,  height);
+
+        // choose the font of the dialogue
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,32F));//MARUMONICA TYPE
+        x += gp.tileSize-24;
+        y += gp.tileSize +14;
+
+        // type here your text
+        for(String line: currentDialogue.split("\n")){
+            g2.drawString(line, x, y);
+            y += gp.tileSize;
+        }
+    }
+
+    //Handling input
+    public void handleInput(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_B: // Assuming 'B' for buy
+                subState = BUY_STATE;
+                break;
+            case KeyEvent.VK_S: // Assuming 'S' for sell
+                subState = SELL_STATE;
+                break;
+            case KeyEvent.VK_DELETE: // Go back via DELETE to select state
+                subState = SELECT_STATE;
+                break;
+        }
+    }
+    //DRAW THE MARKET SCREEN (TO PURCHASE ITEMS)
+    public void drawMarketScreen(){
+
+        switch (subState){//Chose from menu via subState
+            case SELECT_STATE: trade_select();break;
+            case BUY_STATE: trade_buy();break;
+            case SELL_STATE: trade_sell(); break;
+            default:
+                System.out.println("error Occurred here");
+                break;
+        }
+        gp.keyH.selectPressed= false;
+    }
+    //SUB STATES FOR MARKET SCREEN DOWN HERE
+
+    //DRAW INVENTORY SCREEN
+    public void trade_select(){
+        //DRAW DIALOGUE SCREEN
+        drawDialogue("Hi There\nChoose From THESE\nOptions!");
+        //Draw Window
+        int x = gp.tileSize * 6;//x-Component of Window
+        int y = gp.tileSize * 4;//y-Component of Window
+        int width = gp.tileSize *3;//Width of the window
+        int height = (int)(gp.tileSize * 3.5);//height of the window
+        drawSubWindow(x, y, width, height);
+
+
+        //DRAWING A STRING Inside the Market SELECT Window
+        x += gp.tileSize;
+        y += gp.tileSize;
+
+        // FOR BUY OPTION STRING
+        g2.drawString("BUY", x,y);
+        // if statements for these options
+        if(commandNum == 0){
+            g2.drawString(">", x-24,y);
+            //CHECK IF THE PLAYER PRESSED ENTER
+            if(gp.keyH.selectPressed == true){
+                subState = BUY_STATE;
+            }
+        }
+        y += gp.tileSize; // ACTS AS NEW LINE
+
+        // FOR SELL OPTION STRING
+        g2.drawString("SELL", x,y);
+        if(commandNum == 1){
+            g2.drawString(">", x-24,y);
+            //CHECK IF THE PLAYER PRESSED ENTER
+            if(gp.keyH.selectPressed == true){
+                subState = SELL_STATE;
+            }
+        }
+        y += gp.tileSize; // ACTS AS NEW LINE
+
+        // FOR LEAVE OPTION STRING
+        g2.drawString("LEAVE", x,y);
+        if(commandNum == 2){
+            g2.drawString(">", x-24,y);
+            //CHECK IF THE PLAYER PRESSED ENTER
+            if(gp.keyH.selectPressed == true){
+                commandNum = 0;
+                gp.gameState = gp.playState;
+            }
+        }
+    }
+    public void trade_buy(){
+        if(gp.player1.collisionWithMarket)
+            playerCollideWithMarket = gp.player1;
+        else{
+            playerCollideWithMarket = gp.player2;
+        }
+        drawInventoryMarket(playerCollideWithMarket);
+
+    }
+    public void trade_sell(){
+
+    }
+
+    public void drawInventoryMarket(PlayerTest player){
+        //Draw Screen For MARKET WINDOW ITEMS
+        int frameX = gp.tileSize * 2;
+        int frameY = gp.tileSize*2;
+        int frameWidth = gp.tileSize * 6;
+        int frameHeight = gp.tileSize * 5;
+        drawSubWindow(frameX,frameY,frameWidth,frameHeight);
+
+        //DEFINE UNIFORM SLOT SIZE FOR ALL SLOTS
+        int slotSize = gp.tileSize + 3;// SO WHEN WE CHANGE OUR SLOT SIZE OR WHY WE USE IT
+
+        // Slot For MARKET
+        final int slotXStart = frameX + 20;// for slot position frame x and
+        final int slotYStart = frameY + 20;// position frame y
+        int marketSlotX = slotXStart;// x slot
+        int marketSlotY = slotYStart;// y slot
+
+        //DRAW WHAT IS INSIDE THE MARKET
+        for(int i=0; i<market.inventory.size(); i++){
+
+            //EQUIP CURSOR BY DRAWING AROUND THE CURRENT ITEM
+
+            //Scan one by one and draw the gotten image of the ITEM picked up
+            g2.drawImage(market.inventory.get(i).image,marketSlotX,marketSlotY,null);
+
+            marketSlotX += slotSize;// We need to check our position in the next line
+            if(i == 4 || i == 9 || i == 14){// WE HAVE 4X5 MATRIX START FROM 0
+                // WE NEED TO CHECK INDICES
+                marketSlotX = slotXStart;
+                marketSlotY += slotSize;
+            }
+        }//END OF LOOP
+
+        //Cursor for The MARKET NAVIGATION
+        int cursorX = slotXStart +(slotSize * marketSlotCol);
+        int cursorY = slotYStart + (slotSize * marketSlotRow);
+        int cursorWidth = gp.tileSize;
+        int cursorHeight = gp.tileSize;
+
+        //Draw Cursor inventory
+        g2.setColor(Color.white);// color white
+        g2.setStroke(new BasicStroke(3));// METHOD For thickness
+        g2.drawRoundRect(cursorX, cursorY,cursorWidth,cursorHeight,10,10);//draw now
+
+        //DESCRIPTION FRAME FOR TOOLS This block of code is optional
+        int dFrameX = frameX;//EASY CONCEPT AS ANY OTHER WINDOW DRAWN BEFORE
+        int dFrameY = frameY + frameHeight;
+        int dFrameWidth = frameWidth;
+        int dFrameHeight = gp.tileSize*2;
+        //Draw DESCRIPTION TEXT HERE
+        int textX = dFrameX +20;
+        int textY = dFrameY + gp.tileSize;
+        g2.setFont(g2.getFont().deriveFont(28F));
+
+        //GET THE ITEM FROM THIS INDEX SLOT LATER
+        int itemIndex = getItemIndexFromMarket();
+
+        if(itemIndex < market.inventory.size()){//If there is an Item
+            System.out.println("Item index market now:"+itemIndex);
+
+            //DISPLAY THE DESCRIPTION WINDOW
+            drawSubWindow(dFrameX, dFrameY, dFrameWidth,dFrameHeight);
+
+            for(String line : market.inventory.get(itemIndex).description.split("\n")){
+                g2.drawString(line,textX,textY);
+                textY +=32;//as new line for each entry of Writing the string
+            }
+        }
+    }
+
     public void drawInventory(){
         //Draw Screen For Inventory For Player 2
         int frameX = gp.tileSize * 8;
@@ -364,7 +573,8 @@ public class UI {
 
 
         //DRAW PLAYER's ITEMS for PLayer 1
-        for(int i=0; i<gp.player1.inventory.size(); i++){// size is not fixed using ArrayList
+        for(int i=0; i<gp.player1.inventory.size(); i++){
+            // size is not fixed using ArrayList
 
             //EQUIP CURSOR by drawing around the current toold
 
@@ -378,6 +588,7 @@ public class UI {
             g2.drawImage(gp.player1.inventory.get(i).image,slotX2,slotY2,null);
 
             slotX2 += slotSize;// We need to check our position in the next line
+
             if(i == 4 || i == 9 || i == 14){// WE HAVE 4X5 MATRIX START FROM 0
                 // WE NEED TO CHECK INDICES
                 slotX2 = slotXStart2;
@@ -426,7 +637,8 @@ public class UI {
         int textY = dFrameY + gp.tileSize;
         g2.setFont(g2.getFont().deriveFont(28F));//Choosing the font of the TEXT
 
-        int itemIndex = getItemIndexFromPlayer1();//GET THE OBJECT FROM THIS INDEX SLOT LATER
+        //GET THE OBJECT FROM THIS INDEX SLOT LATER
+        int itemIndex = getItemIndexFromPlayer1();
 
         if(itemIndex < gp.player1.inventory.size()){//If there is an Item
             //DISPLAY THE DESCRIPTION WINDOW
@@ -463,6 +675,27 @@ public class UI {
                 textY2 +=32;//as new line for each entry of Writing the string
             }
         }
+    }
+
+    public void buyItemMarket(){ // We call this method by pressing ENTER
+        int itemIndex;
+        //get Market Index Slot
+            itemIndex = gp.ui.getItemIndexFromMarket();
+            if(itemIndex !=0){
+                //select items from SuperObject
+                SuperObject selectedMarketItem = market.inventory.get(itemIndex);
+                currentItem = selectedMarketItem;
+                if(playerCollideWithMarket.walletA >= currentItem.worth)
+                    playerCollideWithMarket.inventory.add(currentItem);
+
+            }
+
+    }
+    //GETTING INDEX FOR SLOT POSITION FOR PLAYERS ONE AND ANOTHER ONE FOR TWO (USED IN INVENTORY DRAWING)
+    public int getItemIndexFromMarket(){
+        //we Going  use our slot columns and rows to select the object we captured the image from
+        int itemIndexMarket = marketSlotCol + (marketSlotRow * 5);//counting the element value in my matrix
+        return itemIndexMarket;
     }
     public int getItemIndexFromPlayer1(){
         //we Going  use our slot columns and rows to select the object we captured the image from

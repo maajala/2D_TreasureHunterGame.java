@@ -13,7 +13,7 @@ public class Jewel_Sword extends SuperObject {
 
         name ="Jewel Sword"; // for chest object
         type = type_sword;
-        worth = 27.5;
+        worth = 27.5;//worth of money
         attack =2;
         try{
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/jewelSword.png")));

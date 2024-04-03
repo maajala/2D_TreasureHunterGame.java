@@ -13,6 +13,7 @@ public class WoodenS extends SuperObject {
         name ="Wooden Shield"; // for chest object
         type = type_shield;
         defence =1;
+        worth = 12;
         try{
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/shieldW.png")));
             image = scaleImage(originalImage, 3.5, 3.5); // Scale to half of its original size as an example

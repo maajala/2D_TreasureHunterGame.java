@@ -11,8 +11,9 @@ public class Paladin_Shield extends SuperObject {
     public Paladin_Shield(){
 
         collision = true;
-        type = type_shield;
-        defence =2;
+        type = type_shield;// type of object
+        worth = 25.5;//price
+        defence =2; // defence power
         name ="Paladin Shield"; // for chest object
         try{
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/shieldB.png")));

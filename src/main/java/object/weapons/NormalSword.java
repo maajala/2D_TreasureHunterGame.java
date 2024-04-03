@@ -13,6 +13,7 @@ public class NormalSword extends SuperObject {
     public NormalSword(){
         name ="Normal Sword";//weapon name
         type = type_sword;
+        worth = 15;
         attack =1;
         collision = true;
         try{

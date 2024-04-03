@@ -2,12 +2,10 @@ package com.example.game2d;
 
 import collision.CollisionChecker;
 import entity.*;
-import monster.MON_GreenSlime;
 import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
-import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.io.IOException;
 
@@ -29,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int pauseState = 2;
     public final int characterState =3;
     public final int inventoryState = 4;
-    public final int chestState = 5;
+    public final int marketState = 5;
 
     //WORLD SETTING
     public final int maxWorldCol = 13;//50
@@ -143,24 +141,12 @@ public class GamePanel extends JPanel implements Runnable{
             ui.drawCharacterScreen();
         }
         else if(gameState == inventoryState){
+
             ui.drawInventory();
-        }
-        else if(gameState == chestState){
+        }else if(gameState == marketState){
+           // ui.drawMarket();
         }
 
-//        for(int i=0 ;i< npc.length; i++)
-//        {
-//            if(npc[i] != null){
-//             npc[i].update();
-//            }
-//        }
-//
-//        for(int i=0 ;i< monster.length; i++)
-//        {
-//            if(monster[i] != null){
-//                monster[i].update();
-//            }
-//        }
 
     }
     // METHOD TO PAINT COMPONENT ON SCREEN
@@ -183,16 +169,6 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
 
-//        // NPC
-//        for(int i=0 ; i< npc.length; i++){
-//            if(npc[i] !=null)
-//                npc[i].draw(g2);
-//        }
-//        //monster
-//        for(int i=0 ; i< monster.length; i++){
-//            if(monster[i] !=null)
-//                monster[i].draw(g2);
-//        }
         //Player1
         player1.draw(g2);
         //player 2

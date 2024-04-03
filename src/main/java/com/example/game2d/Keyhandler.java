@@ -71,6 +71,8 @@
 //}
 package com.example.game2d;
 
+import entity.PlayerTest;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -88,9 +90,10 @@ public class Keyhandler implements KeyListener {
     public boolean downFirstPressed = false; // Add flag to down button
     public boolean leftFirstPressed = false; // Add flag to left button
     public boolean rightFirstPressed = false; // Add flag right button
-    public boolean cPressed = false; // Add flag c pressed button
-    public boolean oPressed = false;// Add flag o pressed button
-    public boolean iPressed = false; //Flag for inventory press state
+    public boolean cPressed = false; // Add flag C pressed button
+    public boolean mPressed = false;// Add flag M pressed button
+    public boolean selectPressed = false;// Add flag select pressed button
+
 
     public Keyhandler(){};
     public Keyhandler(GamePanel gp){
@@ -106,29 +109,20 @@ public class Keyhandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        // Player 1 movement
+        // Player  movement
         if (code == KeyEvent.VK_UP) {
-//         if(!upPressed){// only trigger on first press
-//             upFirstPressed = true;
-//         }
+
          upPressed = true;
         }
         if (code == KeyEvent.VK_DOWN) {
-//            if(!downPressed){// only trigger on first press
-//                downFirstPressed = true;
-//            }
             downPressed = true;
         }
         if (code == KeyEvent.VK_LEFT) {
-//            if(!leftPressed){// only trigger on first press
-//                leftFirstPressed = true;
-//            }
+
             leftPressed = true;
         }
         if (code == KeyEvent.VK_RIGHT) {
-//            if(!rightPressed){// only trigger on first press
-//                rightFirstPressed = true;
-//            }
+
             rightPressed = true;
         }
 
@@ -150,13 +144,6 @@ public class Keyhandler implements KeyListener {
             if(gp.gameState == gp.playState){// if game state was play
                 gp.gameState = gp.characterState;// change to character state
             }else if(gp.gameState == gp.characterState){ //switch back if pressed again
-                gp.gameState = gp.playState;
-            }
-        }
-        if(code == KeyEvent.VK_O){
-            if(gp.gameState == gp.playState){// if game state was play
-                gp.gameState = gp.chestState;// change to chest state
-            }else if(gp.gameState == gp.chestState){ //switch back if pressed again
                 gp.gameState = gp.playState;
             }
         }
@@ -225,28 +212,103 @@ public class Keyhandler implements KeyListener {
 
         }
 
+        //Check Market Event
+        if(code == KeyEvent.VK_M && (gp.player1.collisionWithMarket || gp.player2.collisionWithMarket)){
+            if(gp.gameState == gp.playState){// if game state was play
+                gp.gameState = gp.marketState;// change to MARKET state
+                mPressed = true;// to be used in another classes
+            }else if(gp.gameState == gp.marketState){ //switch back if pressed again
+                gp.gameState = gp.playState;
+                mPressed = false; //Summary of the condition flag
+            }
+        }
+        //ACTIONS TAKEN WHEN MARKET STATE
+        if(gp.gameState == gp.marketState){
+            if(code == KeyEvent.VK_ENTER){
+                selectPressed = true; // or m pressed
+            }
+
+            if(gp.ui.subState == 0){ // WAS SELECT STATE
+
+                    //CHOOSE FROM THE OPTIONS
+                if(code == KeyEvent.VK_UP){ //NAVIGATE UP
+                    gp.ui.commandNum--;
+                    if(gp.ui.commandNum < 0){
+                        gp.ui.commandNum =2; // since we have 3 options so maximum is 2
+                    }
+                }
+                if(code == KeyEvent.VK_DOWN){//Navigate Down
+                    gp.ui.commandNum++;
+                    if(gp.ui.commandNum >2){ // inversely if command Num was > 2 we set it back to zero
+                        gp.ui.commandNum =0; // since we have 3 options so maximum is 2
+                    }
+                }
+            }
+            //ACT UPON BUY STATE
+            if(gp.ui.subState == gp.ui.BUY_STATE){
+
+                //INORDER TO NAVIGATE WE USE SIMILAR LOGIC TO THAT OF INVENTORY
+                if(code == KeyEvent.VK_UP){
+                    if(gp.ui.marketSlotRow !=0 ){//NOT APPLICABLE FOR ZEROES (NEGATIVE IN OTHER WORDS)
+                        gp.ui.marketSlotRow--;//MOVE THE CURSOR UP
+                    }
+                }
+                if(code == KeyEvent.VK_LEFT){
+                    if(gp.ui.marketSlotCol !=0 ){//NOT APPLICABLE FOR ZEROES (NEGATIVE IN OTHER WORDS)
+                        gp.ui.marketSlotCol--; // MOVER THE CURSOR LEFT
+                    }
+                }
+                if(code == KeyEvent.VK_DOWN){//We can not go more than 3 Down
+                    if(gp.ui.marketSlotRow !=3){
+                        gp.ui.marketSlotRow++;// MOVE THE CURSOR DOWN
+                    }
+                }
+                if(code == KeyEvent.VK_RIGHT){//We can not go more than 4 Right
+                    if(gp.ui.marketSlotCol != 4){
+                        gp.ui.marketSlotCol++; // MOVE THE CURSOR RIGHT
+                    }
+                }
+                if(code == KeyEvent.VK_ESCAPE){
+                    gp.ui.subState = 0;
+                }
+                //SELECT ITEMS USING ENTER FROM MARKET
+                if(code == KeyEvent.VK_ENTER){//checking current item value
+                    gp.ui.buyItemMarket();
+
+                }
+            }
+            //ACT UPON SELL STATE
+            if(gp.ui.subState == 2){
+
+            }
+        }
+
+
+    }
+    public void tradeScreen(KeyEvent e){
+        int code = e.getKeyCode();
 
     }
     @Override
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        // Player 1 movement
+        // Player  movement
         if (code == KeyEvent.VK_UP) {
             upPressed = false;
-         //  upFirstPressed =false;//reset on release
+
         }
         if (code == KeyEvent.VK_DOWN) {
             downPressed = false;
-         //  downFirstPressed =false;
+
         }
         if (code == KeyEvent.VK_LEFT) {
             leftPressed = false;
-            //leftFirstPressed =false;
+
         }
         if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
-           // rightFirstPressed =false;
+
         }
         if(code == KeyEvent.VK_SPACE){
             diceRollPressed = false;
@@ -260,11 +322,7 @@ public class Keyhandler implements KeyListener {
         if(code == KeyEvent.VK_C){
             cPressed = false;
         }
-        if(code == KeyEvent.VK_O){
-            oPressed = false;
-        }
-        if(code == KeyEvent.VK_I){
-            iPressed = false;
-        }
+
+
     }
 }

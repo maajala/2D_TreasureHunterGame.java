@@ -13,6 +13,7 @@ public class fireAxe extends SuperObject {
         name ="Fire Axe";//weapon name
         type = type_axe;//type
         collision = true;
+        worth = 36.5;
         attack =2;
         try{
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/weapons/fireAxe.png")));
