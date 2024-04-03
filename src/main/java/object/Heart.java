@@ -27,18 +27,6 @@ public class Heart extends SuperObject{
         }
     }
 
-    private BufferedImage scaleImage(BufferedImage before, double scaleX, double scaleY) {
-        int w = before.getWidth();//image information before
-        int h = before.getHeight();//image information before scaling
-        // Create a new BufferedImage for the scaled image
-        BufferedImage after = new BufferedImage((int)(w * scaleX), (int)(h * scaleY), BufferedImage.TYPE_INT_ARGB);
-        AffineTransform at = new AffineTransform();// Create an AffineTransform to perform scaling
-        at.scale(scaleX, scaleY);// Create an AffineTransformOp to apply the scaling operation
-        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        // Apply the scaling operation to the original image and store the result in the 'after' BufferedImage
-        after = scaleOp.filter(before, after);
-        // Return the scaled image
-        return after;
-    }
+
 
 }

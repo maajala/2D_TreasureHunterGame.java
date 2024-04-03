@@ -4,6 +4,8 @@ import com.example.game2d.GamePanel;
 import com.example.game2d.UtilityTool;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class SuperObject { // game objects
@@ -16,7 +18,23 @@ public class SuperObject { // game objects
     public Rectangle solidArea = new Rectangle(0 , 0, 48 ,48);// create a border around each object
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY=0;
+    //Position of Solid Area
     public int worldX, worldY; // we need to creat object class for keyHandler
+
+    // ITEM ATTRIBUTES
+    public String description = "";
+    public BufferedImage originalImage;
+
+    // TYPE of Objects
+    public int type;
+    public static final int type_sword = 0;
+    public static final int type_bow=1;
+    public static final int type_axe = 2;
+    public static final int type_shield =3;
+    public static final int type_consumable = 4;
+    //BATTLE TOOL
+    public int attack;
+    public int defence;
     public void draw(Graphics2D g2, GamePanel gp) {
      
 
@@ -26,6 +44,20 @@ public class SuperObject { // game objects
 
         // Draw the object at the adjusted coordinates
         g2.drawImage(image, adjustedX, adjustedY, gp.tileSize, gp.tileSize, null);
+    }
+
+    public BufferedImage scaleImage(BufferedImage before, double scaleX, double scaleY) {
+        int w = before.getWidth();//image information before
+        int h = before.getHeight();//image information before scaling
+        // Create a new BufferedImage for the scaled image
+        BufferedImage after = new BufferedImage((int)(w * scaleX), (int)(h * scaleY), BufferedImage.TYPE_INT_ARGB);
+        AffineTransform at = new AffineTransform();// Create an AffineTransform to perform scaling
+        at.scale(scaleX, scaleY);// Create an AffineTransformOp to apply the scaling operation
+        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+        // Apply the scaling operation to the original image and store the result in the 'after' BufferedImage
+        after = scaleOp.filter(before, after);
+        // Return the scaled image
+        return after;
     }
 
 }

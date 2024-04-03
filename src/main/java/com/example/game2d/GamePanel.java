@@ -1,10 +1,7 @@
 package com.example.game2d;
 
 import collision.CollisionChecker;
-import entity.Dice;
-import entity.Entity;
-import entity.Player;
-import entity.Player2;
+import entity.*;
 import monster.MON_GreenSlime;
 import object.SuperObject;
 import tile.TileManager;
@@ -21,8 +18,8 @@ public class GamePanel extends JPanel implements Runnable{
     final int originalTileSize =32; // 16 x 16
     final int scalar = 2;// SCALAR THAT CHANGE THE SIZE OF THE GAME PAGE LATER
     public final int tileSize = originalTileSize  * scalar; // 48 x 48
-    public final int maxScreenCol = 13;//
-    public final int maxScreenRow = 13;//
+    public final int maxScreenCol = 14;//
+    public final int maxScreenRow = 14;//
     public final int  screenWidth = tileSize * maxScreenCol;//768 pixels // 10> 480
     public final int screenHeight = tileSize * maxScreenRow;//576 pixels
 
@@ -30,9 +27,13 @@ public class GamePanel extends JPanel implements Runnable{
     public int gameState;//making  state for the game
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int characterState =3;
+    public final int inventoryState = 4;
+    public final int chestState = 5;
 
     //WORLD SETTING
     public final int maxWorldCol = 13;//50
+    public String playerTurnName = "";
 
    // public final int maxWorldRow = 13;//50
    // public final int WorldWidth = tileSize * maxWorldCol;
@@ -44,12 +45,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(Color.BLACK);// set the color of the background
         this.setDoubleBuffered(true);// for any buffer solve it outside offscreen for more improvement of the performance
         this.addKeyListener(keyH);// this line of code to recognise the controls of class KeyHandler
-        this.addKeyListener(keyH2);
+        //this.addKeyListener(keyH2);
         this.setFocusable(true);//With this, GamePanel can be "focused" to receive key input.
     }
     //IT IS IMPORTANT TO CALL THIS GAME METHOD BEFORE GAME STARTS
     public void setUpGame() throws IOException {
-
         //assetSetter.setNPC();
         //assetSetter.setMonster();
        assetSetter.setObject();
@@ -80,9 +80,9 @@ public class GamePanel extends JPanel implements Runnable{
     // current turn; true for player1's turn, false for player2's turn
 
     //Entity and Objects
-    public Player player1 = new Player(this,keyH,collisionChecker1);
-   public Player2 player2 = new Player2(this,keyH,collisionChecker2);
-    public SuperObject obj[] = new SuperObject[35]; // we prepare an array of size 10 for objects // we will use it in another class
+    public PlayerTest player1 = new PlayerTest(this,keyH,collisionChecker1);
+    public PlayerTest player2 = new PlayerTest(this,keyH,collisionChecker2);
+    public SuperObject obj[] = new SuperObject[40]; // we prepare an array of size 10 for objects // we will use it in another class
     // THAT MEANS WE CAN DISPLAY 25 OBJECTS AT THE SAME TIME
     public Entity npc[] = new Entity[10];// create npc from entity
     public Entity monster[] = new Entity[20];//create monster from npc
@@ -117,17 +117,18 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-
     // method to update screen information
     public void update() {
         if(gameState == playState){
             if (playerTurn) {
+                playerTurnName = "Player 1";
                 player1.update();//update player one actions
                 if (player1.steps <= 0) { // used his steps
                     playerTurn = false; // Switch to Player 2's turn
                     player2.prepareTurn(); // Prepare Player 2 for his turn
                 }
             } else {//if it was not playerTurn 2 which is true after 1st if
+                playerTurnName = "Player 2";
                 player2.update();
                 if (player2.steps <= 0) {
                     playerTurn = true; // Switch back to Player 1's turn
@@ -135,8 +136,16 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
         }
-        if(gameState == pauseState){//whereas is game state was pause then pause by pressing P
+        else if(gameState == pauseState){//whereas is game state was pause then pause by pressing P
             ui.drawPauseScreen();
+        }
+        else if(gameState == characterState){
+            ui.drawCharacterScreen();
+        }
+        else if(gameState == inventoryState){
+            ui.drawInventory();
+        }
+        else if(gameState == chestState){
         }
 
 //        for(int i=0 ;i< npc.length; i++)
@@ -189,11 +198,12 @@ public class GamePanel extends JPanel implements Runnable{
         //player 2
         player2.draw(g2);
 
+        //draw grid
+        drawGrid(g);
+
         //UI
         ui.draw(g2);
 
-        //draw grid
-        drawGrid(g);
         //to save some memory use dispose
         g2.dispose();
     }

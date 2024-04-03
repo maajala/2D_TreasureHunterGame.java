@@ -1,6 +1,8 @@
 package entity;
 
+import collision.CollisionChecker;
 import com.example.game2d.GamePanel;
+import object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -29,6 +31,9 @@ public class Entity {
     public boolean collisionOn = false;
     public boolean winnerPlayer = false;
     public boolean attacking = false; // default no attack until we handle a collision
+    public SuperObject currentWeapon;
+    public SuperObject currentShield;
+    //public Entity currentShield;
 
      public Entity(GamePanel gp){//abstract
         this.gp = gp;

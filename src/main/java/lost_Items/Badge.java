@@ -14,6 +14,7 @@ public class Badge extends SuperObject {
         name = "Badge"; // for door object
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/lost/badge.png")));
+            description="["+name+"]\nLost Item";
         } catch (IOException e) {
             e.printStackTrace(); //catches error if found
         }

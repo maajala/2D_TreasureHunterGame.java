@@ -1,4 +1,4 @@
-package object.treasures;
+package object.chest;
 
 import com.example.game2d.GamePanel;
 import object.SuperObject;

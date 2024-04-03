@@ -28,6 +28,9 @@ public class Player2 extends Entity{
     public int life2;//varying health
     public int powerB;
     public int hasWeapons;
+    public int collectedTreasures;
+    public int hasShield;
+    public int winCountPlayer;
     CollisionChecker collisionChecker;
     public boolean collisionWithPlayer1 = false;
     public boolean isTurn =false;
@@ -45,7 +48,7 @@ public class Player2 extends Entity{
         this.collisionChecker = collisionChecker;
 
         //Player Screen Position
-        screenX = gp.player1.worldX *11; // sub by half to be in the center
+        screenX = gp.player1.worldX *12; // sub by half to be in the center
         screenY = gp.player1.worldY;// half-way point of the screen
 
 
@@ -70,7 +73,7 @@ public class Player2 extends Entity{
         // same what we did in GamePanel for player position
         //worldX = gp.tileSize * 23;// starting point , player position in world map // was 23
         //worldY = gp.tileSize * 21;// was 21
-        worldX = gp.player1.worldX *11;// this is for 10x10 map
+        worldX = gp.player1.worldX *12;// this is for 10x10 map
         worldY = gp.player1.worldY;
         speed = 4;
         direction = "down"; // can be chosen any direction as default
@@ -236,7 +239,7 @@ public class Player2 extends Entity{
             // Handle collision (e.g., stop movement, play sound, etc.)
         }
         if(powerB == 0){//when player B loses he comes back to his origin
-            worldX = gp.player1.worldX *11;// this is for 10x10 map
+            worldX = gp.player1.worldX *12;// this is for 10x10 map
             worldY = gp.player1.worldY;
             life2=6;
             powerB=1;
@@ -258,7 +261,7 @@ public class Player2 extends Entity{
     }
     }
 
-    public void takeMoneyFromOpponent(Player opponent) {
+    public void takeMoneyFromOpponent(PlayerTest opponent) {
 
         if(this.powerB < opponent.powerA){
             gp.ui.showMessage("Power A less Than Power B");
@@ -347,16 +350,19 @@ public class Player2 extends Entity{
                 case "Diamond Ring":// Worth 40.25$
                     walletB +=40.25;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Dragon Scroll":// Worth 25.5$
                     walletB +=25.5;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Crystal Goblet":// Worth 45.5$
                     walletB +=45.5;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Jewel Sword"://Price: 27.5$
@@ -371,12 +377,14 @@ public class Player2 extends Entity{
                 case "Golden Goblet":// Worth 30.5$
                     walletB +=30.5;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player2 has "+walletB+" Dollar(s) now!!");
                     break;
                 case "Paladin Shield": // Price: 15.5$
                     if(walletB >=15.5) {
                         walletB -=15.5;
                         gp.obj[i] = null;
+                        hasShield++;
                         powerB++;
                         gp.ui.showMessage("Player2 equipped a Paladin Shield now");
                     }
@@ -385,6 +393,7 @@ public class Player2 extends Entity{
                     if(walletB >=12.25) {
                         walletB -=12.5;
                         gp.obj[i] = null;
+                        hasWeapons++;
                         powerB++;
                         gp.ui.showMessage("Player2 equipped a Wooden Bow now");}
 
@@ -392,6 +401,7 @@ public class Player2 extends Entity{
                 case "Castle":
                     if(keyCountB==3){
                         gp.ui.gameFinished = true;
+                        winCountPlayer++;
                         keyCountB -=3;
                         gp.obj[i]=null;
                         this.winnerPlayer = true;

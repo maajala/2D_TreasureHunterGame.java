@@ -27,6 +27,10 @@ public class Player extends Entity{
     public int life1;//varying health
     public int powerA;//initial power
     public int hasWeapons;
+    public int collectedTreasures;
+    public int hasShield;
+    public int winCountPlayer1;
+
    CollisionChecker collisionChecker;
 
    public boolean isTurn = false ;
@@ -109,10 +113,12 @@ public class Player extends Entity{
         life1 = maxLife1;// current life to be used
         //same for both players
         powerA = 5;
+        collectedTreasures =0;
+        hasWeapons =0;
 
     }
     // Call this method when playerA wins the battle
-    public void takeMoneyFromOpponent(Player2 opponent) {
+    public void takeMoneyFromOpponent(PlayerTest opponent) {
         if(this.powerA < opponent.powerB){
             gp.ui.showMessage("Power A less Than Power B");
             return;
@@ -134,39 +140,7 @@ public class Player extends Entity{
 
     }
 
-    // to get image of player
-//    public void getPlayerImage() throws IOException{
-//        try {// snap of every image of the player
-//            up1 = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png"))));
-//            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
-//            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
-//            up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_4.png")));
-//
-//            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
-//            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
-//            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
-//            down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_4.png")));
-//
-//            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
-//            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_4.png")));
-//            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
-//            left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
-//
-//
-//            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
-//            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
-//            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
-//            right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_4.png")));
-//
-//
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//            throw new IOException("Error loading player images", e);
-//
-//        }
-//
-//    }
+
 
 
    // Another Fast Way to Draw or Call PLayers Image
@@ -431,22 +405,29 @@ public class Player extends Entity{
                     {
                         gp.obj[i] = null;
                         keyCountA--;
+                        gp.ui.showMessage("You Opened the Door");
                     }
-                    gp.ui.showMessage("You Opened the Door");
+                    else {
+                    gp.ui.showMessage("Need A Key To Open The Door");
+                    }
+
                     break;
                 case "Diamond Ring":// Worth 40.25$
                     walletA +=40.25;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player1 wallet has "+walletA+" $");
                     break;
                 case "Dragon Scroll":// Worth 25.5$
                     walletA +=25.5;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player1 has "+walletA+" Dollar(s) now!!");
                     break;
                 case "Crystal Goblet":// Worth 45.5$
                     walletA +=45.5;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player1 has "+walletA+" Dollar(s) now!!");
                     break;
                 case "Jewel Sword"://Price: 27.5$
@@ -461,11 +442,13 @@ public class Player extends Entity{
                 case "Golden Goblet":// Worth 30.5$
                     walletA +=30.5;
                     gp.obj[i] = null;
+                    collectedTreasures++;
                     gp.ui.showMessage("Player1 has "+walletA+" Dollar(s) now!!");
                     break;
                 case "Paladin Shield": // Price: 15.5$
                     if(walletA >=15.5) {
                         walletA -=15.5;
+                        hasShield++;
                         gp.obj[i] = null;
                         gp.ui.showMessage("Player1 equipped a Paladin Shield now");
                     }
@@ -473,6 +456,7 @@ public class Player extends Entity{
                 case "Wooden Bow":// Price: 12.25$
                     if(walletA >=12.25) {
                         walletA -=12.5;
+                        hasWeapons++;
                         gp.obj[i] = null;
                         gp.ui.showMessage("Player1 equipped a Wooden Bow now");}
 
@@ -480,6 +464,7 @@ public class Player extends Entity{
                 case "Castle":
                     if(keyCountA==3){
                         gp.ui.gameFinished = true;
+                        winCountPlayer1++;
                         keyCountA -=3;
                         gp.obj[i]=null;
                         this.winnerPlayer = true;
@@ -536,16 +521,16 @@ public class Player extends Entity{
 
     }
 
-    public void interactNPC(int i){
-        if(i !=999){
-            System.out.println("Player Hits An NPC");
-        }
-    }
-
-    public void interactMonster(int i){
-        if(i != 999)
-            System.out.println("Player Touches a Monster");
-    }
+//    public void interactNPC(int i){
+//        if(i !=999){
+//            System.out.println("Player Hits An NPC");
+//        }
+//    }
+//
+//    public void interactMonster(int i){
+//        if(i != 999)
+//            System.out.println("Player Touches a Monster");
+//    }
 
 //    public void draw(Graphics2D g2){
 //
@@ -778,3 +763,37 @@ public void draw(Graphics2D g2) {
 // Update screen position based on the world position and camera position
 // If your game has a camera that follows the player, you need to convert world coordinates to screen coordinates
 // For a static camera, it would just be a direct assignment like below:
+
+// to get image of player
+//    public void getPlayerImage() throws IOException{
+//        try {// snap of every image of the player
+//            up1 = ImageIO.read((Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_1.png"))));
+//            up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_2.png")));
+//            up3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_3.png")));
+//            up4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_up_4.png")));
+//
+//            down1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_3.png")));
+//            down2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_2.png")));
+//            down3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_1.png")));
+//            down4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_down_4.png")));
+//
+//            left1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_1.png")));
+//            left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_4.png")));
+//            left3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_3.png")));
+//            left4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_left_2.png")));
+//
+//
+//            right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_1.png")));
+//            right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_2.png")));
+//            right3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_3.png")));
+//            right4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/player_right_4.png")));
+//
+//
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//            throw new IOException("Error loading player images", e);
+//
+//        }
+//
+//    }

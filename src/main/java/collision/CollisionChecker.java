@@ -165,7 +165,6 @@ public class CollisionChecker {
 
             // Check if the solidAreas intersect
             return p1Rect.intersects(p2Rect);
-
     }
 
     //NPC or Monster
