@@ -13,6 +13,7 @@ public class moneyBag extends SuperObject {
 
         collision = true;
         name = "Money Bag"; // for door object
+        worth =40;
         type = type_consumable;
         try {
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/lost/moneyBag.png")));

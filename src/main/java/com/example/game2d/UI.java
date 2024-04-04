@@ -685,16 +685,6 @@ public class UI {
         }
     }
 
-    public void drawChestWindow(){
-        System.out.println("Size of the chest is "+chest.inventory.size());
-        int x = gp.tileSize *6;
-        int y = gp.tileSize *3;
-        int width = gp.tileSize * 6;
-        int height = gp.tileSize * 5;
-
-        drawSubWindow(x,y,width,height);
-    }
-
     public void buyItemMarket(){ // We call this method by pressing ENTER
         int itemIndex;
         //get Market Index Slot
@@ -708,6 +698,20 @@ public class UI {
                     playerCollideWithMarket.inventory.add(currentItem);
                     //deduct from player the amount
                     playerCollideWithMarket.walletA -= currentItem.worth;
+
+                    // Check if Weapon purchased or Shield
+
+                   // Check  WEAPONS
+                   if(currentItem.type == SuperObject.type_sword) {
+                       playerCollideWithMarket.hasWeapons++; // increase weapons numbers
+                       playerCollideWithMarket.powerA++;// increase power
+
+                   // IF SHIELD
+                   }else if(currentItem.type == SuperObject.type_shield){
+                       playerCollideWithMarket.hasShield++;// increase shield numbers
+                       playerCollideWithMarket.life1++; // increase defence
+
+                   }
                     showMessage("A "+currentItem.name+" Purchased");
                 }
                 else showMessage("Not Enough Money");
@@ -809,7 +813,20 @@ public class UI {
             playerCollideWithChest = gp.player1;
         }else
             playerCollideWithChest = gp.player2;
-        playerCollideWithChest.inventory.addAll(chest.inventory);
+
+        for(int i=0; i<chest.inventory.size(); i++){
+            if(chest.inventory.get(i).type == SuperObject.type_sword || chest.inventory.get(i).type == SuperObject.type_axe
+            || chest.inventory.get(i).type == SuperObject.type_bow){
+                playerCollideWithChest.hasWeapons++;
+            }
+            if(chest.inventory.get(i).type == SuperObject.type_shield){
+                playerCollideWithChest.hasShield++;
+            }
+            if(chest.inventory.get(i).type == SuperObject.type_consumable){
+                playerCollideWithChest.walletA += chest.inventory.get(i).worth;
+            }
+        }
+        playerCollideWithChest.collectedTreasures += chest.inventory.size();
 
         collectedT = true;
 

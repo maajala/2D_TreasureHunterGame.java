@@ -650,7 +650,6 @@ public class PlayerTest extends Entity{
                     if(gp.ui.collectedT){
                        gp.obj[i].image = gp.obj[i].image2;
                        gp.ui.collectedT = false;
-//                       gp.obj[i] = null;
                     }
                     break;
 

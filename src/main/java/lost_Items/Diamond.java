@@ -13,6 +13,7 @@ public class Diamond extends SuperObject {
 
         collision = true;
         name = "Diamond"; // for door object
+        worth =45;
         type = type_consumable;
         try {
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/lost/Diamond.png")));

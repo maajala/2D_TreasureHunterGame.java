@@ -13,6 +13,7 @@ public class crystalRose extends SuperObject {
 
         collision = true;
         name = "Crystal Rose"; // for door object
+        worth =27.5;
         type = type_consumable;
         try {
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/lost/crystalRose.png")));

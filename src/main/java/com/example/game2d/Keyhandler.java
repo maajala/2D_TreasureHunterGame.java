@@ -288,8 +288,15 @@ public class Keyhandler implements KeyListener {
 
         //Check Chest Collision and Check Button
         if(code == KeyEvent.VK_O && (gp.player1.collisionWithChest || gp.player2.collisionWithChest)){
-            if(gp.player1.keyCountA>0 || gp.player2.keyCountA>0){
-                gp.ui.collectTreasures();
+            // IF PLAYER 1 HAS KEY
+            if(gp.player1.keyCountA>0){
+                gp.ui.collectTreasures();// COLLECT TREASURE
+                System.out.println("Collected successfully");
+                gp.ui.playerCollideWithChest.keyCountA--;
+            }
+            // IF PLAYER 2 HAS KEY
+            else if(gp.player2.keyCountA>0){
+                gp.ui.collectTreasures();//COLLECT TREASURE
                 System.out.println("Collected successfully");
                 gp.ui.playerCollideWithChest.keyCountA--;
             }
