@@ -4,14 +4,14 @@ import entity.*;
 import houses.Market;
 import object.Heart;
 import object.SuperObject;
+import object.chest.Chest;
 import object.treasures.OBJ_Key;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-
-import static object.SuperObject.*;
+import java.util.ArrayList;
 
 public class UI {
     //HINT to remember , do not instantiate any sub method in the draw method as  it will take time to progress in runtime
@@ -34,17 +34,26 @@ public class UI {
     public int slotRow2=0;
     //CREATE A MARKET
     public Market market = new Market();
+    public Chest chest = new Chest();
+   ArrayList <SuperObject> currentList = new ArrayList<>();
+    //CURRENT ITEM BEING POINTED IN MARKET
     public SuperObject currentItem;
+    //Player WHO IS IN ACTION
     public PlayerTest playerCollideWithMarket;
+    public PlayerTest playerCollideWithChest;
 
     //SubSTATE INTEGER
     public int subState;
+
+    //Flags for the State of Market Options
     public static final int SELECT_STATE = 0;
     public static final int BUY_STATE = 1;
     public static final int SELL_STATE = 2;
 
     //Command Number Acts like a cursor
-    public int commandNum ;
+    public int commandNum;//Just Flag for the cursor navigation
+    //boolean for collection
+    public boolean collectedT=false;
 
     // TIME Taken
     double playTime;
@@ -491,12 +500,12 @@ public class UI {
         int marketSlotY = slotYStart;// y slot
 
         //DRAW WHAT IS INSIDE THE MARKET
-        for(int i=0; i<market.inventory.size(); i++){
+        for(int i = 0; i<market.marketItems.size(); i++){
 
             //EQUIP CURSOR BY DRAWING AROUND THE CURRENT ITEM
 
             //Scan one by one and draw the gotten image of the ITEM picked up
-            g2.drawImage(market.inventory.get(i).image,marketSlotX,marketSlotY,null);
+            g2.drawImage(market.marketItems.get(i).image,marketSlotX,marketSlotY,null);
 
             marketSlotX += slotSize;// We need to check our position in the next line
             if(i == 4 || i == 9 || i == 14){// WE HAVE 4X5 MATRIX START FROM 0
@@ -530,19 +539,18 @@ public class UI {
         //GET THE ITEM FROM THIS INDEX SLOT LATER
         int itemIndex = getItemIndexFromMarket();
 
-        if(itemIndex < market.inventory.size()){//If there is an Item
+        if(itemIndex < market.marketItems.size()){//If there is an Item
             System.out.println("Item index market now:"+itemIndex);
 
             //DISPLAY THE DESCRIPTION WINDOW
             drawSubWindow(dFrameX, dFrameY, dFrameWidth,dFrameHeight);
 
-            for(String line : market.inventory.get(itemIndex).description.split("\n")){
+            for(String line : market.marketItems.get(itemIndex).description.split("\n")){
                 g2.drawString(line,textX,textY);
                 textY +=32;//as new line for each entry of Writing the string
             }
         }
     }
-
     public void drawInventory(){
         //Draw Screen For Inventory For Player 2
         int frameX = gp.tileSize * 8;
@@ -677,20 +685,36 @@ public class UI {
         }
     }
 
+    public void drawChestWindow(){
+        System.out.println("Size of the chest is "+chest.inventory.size());
+        int x = gp.tileSize *6;
+        int y = gp.tileSize *3;
+        int width = gp.tileSize * 6;
+        int height = gp.tileSize * 5;
+
+        drawSubWindow(x,y,width,height);
+    }
+
     public void buyItemMarket(){ // We call this method by pressing ENTER
         int itemIndex;
         //get Market Index Slot
             itemIndex = gp.ui.getItemIndexFromMarket();
             if(itemIndex !=0){
                 //select items from SuperObject
-                SuperObject selectedMarketItem = market.inventory.get(itemIndex);
+                SuperObject selectedMarketItem = market.marketItems.get(itemIndex);
                 currentItem = selectedMarketItem;
-                if(playerCollideWithMarket.walletA >= currentItem.worth)
+                //Check If the Wallet of the Player is Greater than or not
+                if(playerCollideWithMarket.walletA >= currentItem.worth) {
                     playerCollideWithMarket.inventory.add(currentItem);
-
+                    //deduct from player the amount
+                    playerCollideWithMarket.walletA -= currentItem.worth;
+                    showMessage("A "+currentItem.name+" Purchased");
+                }
+                else showMessage("Not Enough Money");
             }
 
     }
+
     //GETTING INDEX FOR SLOT POSITION FOR PLAYERS ONE AND ANOTHER ONE FOR TWO (USED IN INVENTORY DRAWING)
     public int getItemIndexFromMarket(){
         //we Going  use our slot columns and rows to select the object we captured the image from
@@ -707,6 +731,7 @@ public class UI {
         int itemIndex2 = slotCol + (slotRow * 5);//counting the element value in my matrix
         return itemIndex2;
     }
+
     public void drawPlayerLife1(Graphics2D g2){
         //updating the player Life
       //  gp.player1.life1=5;
@@ -768,7 +793,6 @@ public class UI {
         }
 
     }
-
     public void drawSubWindow(int x, int y, int width, int height){
         Color c = new Color(0, 0, 0,210);
         g2.setColor(c);
@@ -779,13 +803,25 @@ public class UI {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10,25,25);
     }
-//    public void drawSubWindow(int x, int y, int width, int height){};
+    public void collectTreasures(){
+        if(gp.player1.collisionWithChest)
+        {
+            playerCollideWithChest = gp.player1;
+        }else
+            playerCollideWithChest = gp.player2;
+        playerCollideWithChest.inventory.addAll(chest.inventory);
+
+        collectedT = true;
+
+    }
     public void showMessage(String text){
         message = text;// copy that text to message
         messageOn = true; // FLAG ON
     }
+
+    //Method To Align the position after the text
     public int getXForAlignToRightText(String text, int tailX){
-        int length = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();
+        int length = (int)g2.getFontMetrics().getStringBounds(text,g2).getWidth();//Watched video about aligning
         int x =tailX - length;
         return x;
     }

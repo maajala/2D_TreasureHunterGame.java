@@ -9,6 +9,7 @@ import lost_Items.Diamond;
 import lost_Items.crystalRose;
 import lost_Items.moneyBag;
 import object.SuperObject;
+import object.chest.Chest;
 import object.treasures.*;
 import object.weapons.Axe;
 import object.weapons.Cursed_Sword;
@@ -55,13 +56,15 @@ public class PlayerTest extends Entity{
 
     //CURRENT OBJECT FOR MARKET
     public SuperObject currentObject ;
+    public Chest currentChest = new Chest();
     //Boolean of Turn
     public boolean isTurn = false ;
 
     // Collision With Player Boolean
     public boolean collisionWithPlayer = false;
-    //MARKET COLLISION BOOLEAN
+    //MARKET & CHEST COLLISION BOOLEAN
     public boolean collisionWithMarket =false;
+    public boolean collisionWithChest =false;
 
     public String playerSign="";
     public SuperObject currentWeapon;
@@ -92,8 +95,8 @@ public class PlayerTest extends Entity{
         solidArea = new Rectangle();
         solidArea.x = 8;// changed from 0 to 8 after cut of collision
         solidArea.y = 16;// changed from 0 to 16 after cut // it is optional
-        solidArea.width = 48;//changed from tileSize(48) to 32 as the desired cut
-        solidArea.height= 48;;
+        solidArea.width = 44;//changed from tileSize(48) to 32 as the desired cut
+        solidArea.height= 46;;
         solidAreaDefaultX = solidArea.x;// default values helpful to retrieve
         solidAreaDefaultY = solidArea.y;// the default values when changing them later
 
@@ -221,14 +224,6 @@ public class PlayerTest extends Entity{
     }
 
 
-//    private void updateSpriteAnimation() {
-//        spriteCounter++;
-//        if (spriteCounter > 12) {
-//            spriteNum = (spriteNum % 4) + 1; // Cycle through sprite numbers 1 to 4
-//            spriteCounter = 0;
-//        }
-//    }
-
     public void equipWeapon(SuperObject weapon) {
         if (weapon != null) { // Assuming Weapon is a subclass of SuperObject
             this.currentWeapon = weapon;
@@ -276,15 +271,16 @@ public class PlayerTest extends Entity{
 
         // If there is no collision, update the world position
         if (!collisionOn) {
-            collisionWithMarket = false;
-            int objectIndex = collisionChecker.checkObject(this, true);
-            if (objectIndex == 999) {
+            collisionWithMarket = false; // RESET WHEN NOT COLLIDING
+            collisionWithChest = false; // RESET WHEN NOT COLLIDING
+            int objectIndex = collisionChecker.checkObject(this, true);// CHECK COLLISION INDEX OBJECT
+            if (objectIndex == 999) {//CHANGE THE WORLD X AND Y COMPONENT INTO newWorld ones
                 worldX = newWorldX;
                 worldY = newWorldY;
 
             } else {
                 // Handle object collision event, e.g., pick up a key
-                pickUpObject(objectIndex);
+                pickUpObject(objectIndex);// INVOKE THE METHOD OF PICKING OBJECT
             }
         }
 
@@ -649,6 +645,14 @@ public class PlayerTest extends Entity{
                     collisionWithMarket = true;
                     currentObject = gp.obj[i];
                     break;
+                case "Chest":
+                    collisionWithChest = true;
+                    if(gp.ui.collectedT){
+                       gp.obj[i].image = gp.obj[i].image2;
+                       gp.ui.collectedT = false;
+//                       gp.obj[i] = null;
+                    }
+                    break;
 
             }
 
@@ -741,75 +745,5 @@ public class PlayerTest extends Entity{
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 
-    public void draw1(Graphics2D g2){
-
-        BufferedImage image = null;
-        // we will use switch case to determine which direction the player is now
-        switch (direction){
-            //count if we pressed the left button or not
-            // for each consecutive method we update movement to level 1 and vice versa
-            case "up":
-                if(spriteNum==1){
-                    image = up1;
-                }
-                if(spriteNum==2){
-                    image = up2;
-                }
-                if(spriteNum == 3)
-                    image = up3;
-                if(spriteNum == 4)
-                    image = up4;
-                break;
-
-            case "down":
-                if(spriteNum==1){
-                    image = down1;
-
-                }
-                if(spriteNum==2){
-                    image= down2;
-                }
-                if(spriteNum==3){
-                    image = down3;
-
-                }
-                if(spriteNum==4){
-                    image= down4;
-                }
-
-                break;
-
-            case "left":
-                if(spriteNum==1){
-                    image = left1;
-                }
-                if(spriteNum==2){
-                    image= left2;
-                }
-                if(spriteNum==3){
-                    image = left3;
-                }
-                if(spriteNum==4){
-                    image= left4;
-                }
-                break;
-
-            case "right":
-                if(spriteNum==1) {
-                    image = right1;
-                }
-                if(spriteNum==2)
-                    image = right2;
-                if(spriteNum==3) {
-                    image = right3;
-                }
-                if(spriteNum==4)
-                    image = right4;
-
-                break;
-        }
-        // Now we are ready to draw the image on Screen Use .drawImage()
-        g2.drawImage(image,screenX,screenY, gp.tileSize, gp.tileSize, null);
-    }
 
 }

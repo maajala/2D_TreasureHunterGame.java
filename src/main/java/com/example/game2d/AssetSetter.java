@@ -1,172 +1,188 @@
-package com.example.game2d;
+//package com.example.game2d;
+//
+//import houses.Castle;
+//import houses.Empty_House;
+//import lost_Items.Diamond;
+//import houses.Market;
+//import houses.Trap;
+//import lost_Items.crystalRose;
+//import lost_Items.moneyBag;
+//import object.OBJ_Door;
+//import object.SuperObject;
+//import object.chest.Chest;
+//import object.treasures.*;
+//import object.treasures.WoodenS;
+//import object.treasures.OBJ_Key;
+//import object.treasures.Paladin_Shield;
+//import object.weapons.Axe;
+//import object.weapons.Cursed_Sword;
+//import object.weapons.NormalSword;
+//import object.weapons.fireAxe;
+//
+//import java.util.Random;
+//
+//public class AssetSetter extends SuperObject {
+// GamePanel gp;
+//
+// Random random = new Random();
+//
+//
+// //CONSTRUCTOR
+//
+// public AssetSetter(GamePanel gp) {
+//  this.gp = gp;
+// }
+//
+//  //create a method to instantiate default objects
+//
+// public void setObject() {
+//  //HERE THE OBJECT ARRAY WE CREATED COMES IN PLAY
+//  //3 keys
+//  gp.obj[0] = new Castle(); //OBJ_KEY is A SUBCLASS ITSELF FROM SuperObject
+//  //THIS MEANS WE WILL HAVE worldX and worldY for each object we create in the array
+//  gp.obj[0].worldX = gp.screenWidth / 2; // here we locate the location of the object
+//  gp.obj[0].worldY = 6 * gp.tileSize;
+//  // Create as so for any other object
+//  gp.obj[1] = new Market();
+//  gp.obj[1].worldX = 3* gp.tileSize;
+//  gp.obj[1].worldY = 8 * gp.tileSize;
+//
+//  //3 Doors
+//  gp.obj[2] = new OBJ_Door();
+//  gp.obj[2].worldX = gp.tileSize * 2;
+//  gp.obj[2].worldY = gp.tileSize * 2;
+//
+//  //2 More Markets
+//  gp.obj[3] = new Market();
+//  gp.obj[3].worldX = 7 * gp.tileSize;
+//  gp.obj[3].worldY = 6 * gp.tileSize;
+//
+//  gp.obj[4] = new Market();
+//  gp.obj[4].worldX = 3 * gp.tileSize;
+//  gp.obj[4].worldY = 3 * gp.tileSize;
+//  //Treasures
+//  gp.obj[5] = new WoodenS();
+//  gp.obj[5].worldX = 9 * gp.tileSize;
+//  gp.obj[5].worldY = 7 * gp.tileSize;
+//
+//  //CRYSTAL
+//  gp.obj[6] = new Crystal_Goblet();
+//  gp.obj[6].worldX = 9 * gp.tileSize;
+//  gp.obj[6].worldY = 6 * gp.tileSize;
+//
+//  //Paladin Shield
+//  gp.obj[7] = new Paladin_Shield();
+//  gp.obj[7].worldX = 5 * gp.tileSize;
+//  gp.obj[7].worldY = 6 * gp.tileSize;
+//
+//  //Golden Goblet
+//  gp.obj[8] = new Golden_Goblet();
+//  gp.obj[8].worldX = 10 * gp.tileSize;
+//  gp.obj[8].worldY = 2 * gp.tileSize;
+//
+//  //Diamond Ring
+//  gp.obj[9] = new Diamond_Ring();
+//  gp.obj[9].worldX = 8 * gp.tileSize;
+//  gp.obj[9].worldY = 6 * gp.tileSize;
+//
+//  //Dragon Scroll
+//  gp.obj[10] = new Dragon_Scroll();
+//  gp.obj[10].worldX = 2 * gp.tileSize;
+//  gp.obj[10].worldY = 8 * gp.tileSize;
+//
+//  //Jewel Sword
+//  gp.obj[11] = new Jewel_Sword();
+//  gp.obj[11].worldX = 5 * gp.tileSize;
+//  gp.obj[11].worldY = 7 * gp.tileSize;
+//  //Wooden Bow
+//  gp.obj[12] = new Wooden_Bow();
+//  gp.obj[12].worldX = 7 * gp.tileSize;
+//  gp.obj[12].worldY = 12 * gp.tileSize;
+//
+//  for (int i = 13; i < 17; i++) {
+//   gp.obj[i] = new Trap();
+//   int currentX = random.nextInt(3, 10) * gp.tileSize;
+//   int currentY;
+//   do {
+//    currentY = random.nextInt(3, 10) * gp.tileSize;
+//   } while (currentY == 5 * gp.tileSize);
+//   gp.obj[i].worldX = currentX;
+//   gp.obj[i].worldY = currentY;
+//  }
+//  // Lost Items
+//  gp.obj[18] = new moneyBag();
+//  gp.obj[18].worldX = 9 * gp.tileSize;
+//  gp.obj[18].worldY = 4 * gp.tileSize;
+//
+//  gp.obj[19] = new Diamond();
+//  gp.obj[19].worldX = 4 * gp.tileSize;
+//  gp.obj[19].worldY = 9 * gp.tileSize;
+//
+//  gp.obj[20] = new crystalRose();
+//  gp.obj[20].worldX = 3 * gp.tileSize;
+//  gp.obj[20].worldY = 6 * gp.tileSize;
+//
+//  gp.obj[21] = new Market();
+//  gp.obj[21].worldX = 5 * gp.tileSize * 3;
+//  gp.obj[21].worldY = 6 * gp.tileSize;
+//
+//  gp.obj[22] = new Market();
+//  gp.obj[22].worldX = 7 * gp.tileSize;
+//  gp.obj[22].worldY = 4 * gp.tileSize;
+//
+//  gp.obj[23] = new Market();
+//  gp.obj[23].worldX = gp.tileSize * 4;
+//  gp.obj[23].worldY = 6 * gp.tileSize;
+//
+//  gp.obj[24] = new OBJ_Key();
+//  gp.obj[24].worldX = 7 * gp.tileSize;
+//  gp.obj[24].worldY = 2 * gp.tileSize;
+//
+//  gp.obj[25] = new OBJ_Key();
+//  gp.obj[25].worldX = 3 * gp.tileSize;
+//  gp.obj[25].worldY = 4 * gp.tileSize;
+//
+//  gp.obj[26] = new OBJ_Key();
+//  gp.obj[26].worldX = 6 * gp.tileSize;
+//  gp.obj[26].worldY = 2 * gp.tileSize;
+//
+//  gp.obj[27] = new Axe();
+//  gp.obj[27].worldX = 3 * gp.tileSize;
+//  gp.obj[27].worldY = 2 * gp.tileSize;
+//
+//  gp.obj[28] = new fireAxe();
+//  gp.obj[28].worldX = 8 * gp.tileSize;
+//  gp.obj[28].worldY = 3 * gp.tileSize;
+//
+//  gp.obj[29] = new Cursed_Sword();
+//  gp.obj[29].worldX = 3 * gp.tileSize;
+//  gp.obj[29].worldY = 8 * gp.tileSize;
+//
+//  gp.obj[30] = new NormalSword();
+//  gp.obj[30].worldX = 8 * gp.tileSize;
+//  gp.obj[30].worldY = 9 * gp.tileSize;
+//
+//  gp.obj[31] = new Chest();
+//  gp.obj[31].worldX = 8 * gp.tileSize;
+//  gp.obj[31].worldY = 5 * gp.tileSize;
+//
+//  gp.obj[32] = new Chest();
+//  gp.obj[32].worldX = 11 * gp.tileSize;
+//  gp.obj[32].worldY = 8 * gp.tileSize;
+//
+//  gp.obj[33] = new Chest();
+//  gp.obj[33].worldX = 3 * gp.tileSize;
+//  gp.obj[33].worldY = 4 * gp.tileSize;
+//
+//  gp.obj[34] = new Empty_House();
+//  gp.obj[34].worldX = 5 * gp.tileSize;
+//  gp.obj[34].worldY = 11 * gp.tileSize;
+// }
+//}
 
-import houses.Castle;
-import lost_Items.Diamond;
-import houses.Market;
-import houses.Trap;
-import lost_Items.crystalRose;
-import lost_Items.moneyBag;
-import object.OBJ_Door;
-import object.SuperObject;
-import object.chest.Chest;
-import object.treasures.*;
-import object.treasures.WoodenS;
-import object.treasures.OBJ_Key;
-import object.treasures.Paladin_Shield;
-import object.weapons.Axe;
-import object.weapons.Cursed_Sword;
-import object.weapons.NormalSword;
-import object.weapons.fireAxe;
-
-import java.util.Random;
-
-public class AssetSetter extends SuperObject {
- GamePanel gp;
-
- Random random = new Random();
 
 
- //CONSTRUCTOR
 
- public AssetSetter(GamePanel gp) {
-  this.gp = gp;
- }
-
-  //create a method to instantiate default objects
-
- public void setObject() {
-  //HERE THE OBJECT ARRAY WE CREATED COMES IN PLAY
-  //3 keys
-  gp.obj[0] = new Castle(); //OBJ_KEY is A SUBCLASS ITSELF FROM SuperObject
-  //THIS MEANS WE WILL HAVE worldX and worldY for each object we create in the array
-  gp.obj[0].worldX = gp.screenWidth / 2; // here we locate the location of the object
-  gp.obj[0].worldY = 6 * gp.tileSize;
-  // Create as so for any other object
-  gp.obj[1] = new Market();
-  gp.obj[1].worldX = 0;
-  gp.obj[1].worldY = 8 * gp.tileSize;
-
-  //3 Doors
-  gp.obj[2] = new OBJ_Door();
-  gp.obj[2].worldX = gp.tileSize * 2;
-  gp.obj[2].worldY = gp.tileSize * 2;
-
-  //2 More Markets
-  gp.obj[3] = new Market();
-  gp.obj[3].worldX = 0;
-  gp.obj[3].worldY = 6 * gp.tileSize;
-
-  gp.obj[4] = new Market();
-  gp.obj[4].worldX = 2 * gp.tileSize;
-  gp.obj[4].worldY = 9 * gp.tileSize;
-  //Treasures
-  gp.obj[5] = new WoodenS();
-  gp.obj[5].worldX = 9 * gp.tileSize;
-  gp.obj[5].worldY = 7 * gp.tileSize;
-
-  //CRYSTAL
-  gp.obj[6] = new Crystal_Goblet();
-  gp.obj[6].worldX = 9 * gp.tileSize;
-  gp.obj[6].worldY = 6 * gp.tileSize;
-
-  //Paladin Shield
-  gp.obj[7] = new Paladin_Shield();
-  gp.obj[7].worldX = 5 * gp.tileSize;
-  gp.obj[7].worldY = 6 * gp.tileSize;
-
-  //Golden Goblet
-  gp.obj[8] = new Golden_Goblet();
-  gp.obj[8].worldX = 10 * gp.tileSize;
-  gp.obj[8].worldY = 2 * gp.tileSize;
-
-  //Diamond Ring
-  gp.obj[9] = new Diamond_Ring();
-  gp.obj[9].worldX = 8 * gp.tileSize;
-  gp.obj[9].worldY = 6 * gp.tileSize;
-
-  //Dragon Scroll
-  gp.obj[10] = new Dragon_Scroll();
-  gp.obj[10].worldX = 2 * gp.tileSize;
-  gp.obj[10].worldY = 8 * gp.tileSize;
-
-  //Jewel Sword
-  gp.obj[11] = new Jewel_Sword();
-  gp.obj[11].worldX = 5 * gp.tileSize;
-  gp.obj[11].worldY = 7 * gp.tileSize;
-  //Wooden Bow
-  gp.obj[12] = new Wooden_Bow();
-  gp.obj[12].worldX = 8 * gp.tileSize;
-  gp.obj[12].worldY = 5 * gp.tileSize;
-
-  for (int i = 13; i < 17; i++) {
-   gp.obj[i] = new Trap();
-   int currentX = random.nextInt(3, 10) * gp.tileSize;
-   int currentY;
-   do {
-    currentY = random.nextInt(3, 10) * gp.tileSize;
-   } while (currentY == 5 * gp.tileSize);
-   gp.obj[i].worldX = currentX;
-   gp.obj[i].worldY = currentY;
-  }
-  // Lost Items
-  gp.obj[18] = new moneyBag();
-  gp.obj[18].worldX = 9 * gp.tileSize;
-  gp.obj[18].worldY = 4 * gp.tileSize;
-
-  gp.obj[19] = new Diamond();
-  gp.obj[19].worldX = 9 * gp.tileSize;
-  gp.obj[19].worldY = 3 * gp.tileSize;
-
-  gp.obj[20] = new crystalRose();
-  gp.obj[20].worldX = 3 * gp.tileSize;
-  gp.obj[20].worldY = 6 * gp.tileSize;
-
-  gp.obj[21] = new Market();
-  gp.obj[21].worldX = 5 * gp.tileSize * 3;
-  gp.obj[21].worldY = 6 * gp.tileSize;
-
-  gp.obj[22] = new Market();
-  gp.obj[22].worldX = 7 * gp.tileSize;
-  gp.obj[22].worldY = 4 * gp.tileSize;
-
-  gp.obj[23] = new Market();
-  gp.obj[23].worldX = gp.tileSize * 4;
-  gp.obj[23].worldY = 6 * gp.tileSize;
-
-  gp.obj[24] = new OBJ_Key();
-  gp.obj[24].worldX = 7 * gp.tileSize;
-  gp.obj[24].worldY = 2 * gp.tileSize;
-
-  gp.obj[25] = new OBJ_Key();
-  gp.obj[25].worldX = 3 * gp.tileSize;
-  gp.obj[25].worldY = 4 * gp.tileSize;
-
-  gp.obj[26] = new OBJ_Key();
-  gp.obj[26].worldX = 6 * gp.tileSize;
-  gp.obj[26].worldY = 2 * gp.tileSize;
-
-  gp.obj[27] = new Axe();
-  gp.obj[27].worldX = 3 * gp.tileSize;
-  gp.obj[27].worldY = 2 * gp.tileSize;
-
-  gp.obj[28] = new fireAxe();
-  gp.obj[28].worldX = 3 * gp.tileSize;
-  gp.obj[28].worldY = 3 * gp.tileSize;
-
-  gp.obj[29] = new Cursed_Sword();
-  gp.obj[29].worldX = 3 * gp.tileSize;
-  gp.obj[29].worldY = 8 * gp.tileSize;
-
-  gp.obj[30] = new NormalSword();
-  gp.obj[30].worldX = 8 * gp.tileSize;
-  gp.obj[30].worldY = 9 * gp.tileSize;
-
-  gp.obj[31] = new Chest();
-  gp.obj[31].worldX = 8 * gp.tileSize;
-  gp.obj[31].worldY = 5 * gp.tileSize;
-
- }
-}
 
 // private final int maxObjects;
 //
@@ -316,82 +332,83 @@ public class AssetSetter extends SuperObject {
 
 
 
-//package com.example.game2d;
-//
-//import houses.Castle;
-//import houses.Market;
-//import lost_Items.*;
-//import object.OBJ_Door;
-//import object.SuperObject;
-//import object.treasures.*;
-//import object.weapons.*;
-//
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.Collections;
-//import java.util.Random;
-//import houses.Trap;
-//
-//public class AssetSetter extends SuperObject {
-// GamePanel gp;
-// Random random = new Random();
-//
-// public AssetSetter(GamePanel gp){
-//  this.gp = gp;
-//
-// }
-//
-// public void setObject(){
-//
-//
-//  // Define arrays for different types of objects you have
-//  Class[] leftSideObjects = {
-//          Castle.class,Market.class, OBJ_Door.class,  Market.class,
-//          WoodenS.class, Crystal_Goblet.class, Market.class,Paladin_Shield.class, Golden_Goblet.class,
-//          Diamond_Ring.class, Dragon_Scroll.class, Jewel_Sword.class, Wooden_Bow.class
-//  };
-//
-//  Class[] rightSideObjects = {
-//          Trap.class, moneyBag.class, Diamond.class, crystalRose.class,
-//          Market.class, Market.class, Market.class,Trap.class,
-//          OBJ_Key.class, Trap.class, OBJ_Key.class,Trap.class,
-//          Axe.class, OBJ_Key.class,fireAxe.class, Cursed_Sword.class, NormalSword.class
-//  };
-//
-//  // Randomly shuffle the arrays to randomize object placement
-//  Collections.shuffle(Arrays.asList(leftSideObjects), random);
-//  Collections.shuffle(Arrays.asList(rightSideObjects), random);
-//
-//  // Place objects on the left side
-//  for (int i = 0; i < leftSideObjects.length; i++) {
-//   int x = random.nextInt(2, 6); // Random X for left side
-//   int y = random.nextInt(2, 11); // Random Y within the map bounds
-//   gp.obj[i] = createObject(leftSideObjects[i], x, y);
-//  }
-//
-//  // Place objects on the right side
-//  for (int i = 0; i < rightSideObjects.length; i++) {
-//   int x = random.nextInt(6, 12); // Random X for right side
-//   int y = random.nextInt(2, 11); // Random Y within the map bounds
-//   gp.obj[i + leftSideObjects.length] = createObject(rightSideObjects[i], x, y);
-//  }
-// }
-//
-// private SuperObject createObject(Class objClass, int x, int y) {
-//
-//  // Create an instance of the object class and set its position
-//  SuperObject obj = null;
-//  try {
-//   obj = (SuperObject) objClass.getConstructor().newInstance();
-//   obj.worldX = x * gp.tileSize;
-//   obj.worldY = y * gp.tileSize;
-//
-//
-//  } catch (Exception e) {
-//   e.printStackTrace();
-//  }
-//  return obj;
-// }
-//}
+package com.example.game2d;
+
+import houses.Castle;
+import houses.Market;
+import lost_Items.*;
+import object.OBJ_Door;
+import object.SuperObject;
+import object.chest.Chest;
+import object.treasures.*;
+import object.weapons.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
+import houses.Trap;
+
+public class AssetSetter extends SuperObject {
+ GamePanel gp;
+ Random random = new Random();
+
+ public AssetSetter(GamePanel gp){
+  this.gp = gp;
+
+ }
+
+ public void setObject(){
+
+
+  // Define arrays for different types of objects you have
+  Class[] leftSideObjects = {
+          Castle.class,Chest.class,Market.class, OBJ_Door.class,  Market.class,
+          WoodenS.class, Crystal_Goblet.class, Chest.class,Market.class,Paladin_Shield.class, Golden_Goblet.class,
+          Diamond_Ring.class, Dragon_Scroll.class, Jewel_Sword.class, Wooden_Bow.class, Chest.class
+  };
+
+  Class[] rightSideObjects = {
+          Trap.class, moneyBag.class, Diamond.class, crystalRose.class,
+          Market.class, Market.class, Market.class,Trap.class,
+          OBJ_Key.class, Trap.class, OBJ_Key.class,Trap.class, Chest.class,
+          Axe.class, OBJ_Key.class,fireAxe.class, Cursed_Sword.class, NormalSword.class
+  };
+
+  // Randomly shuffle the arrays to randomize object placement
+  Collections.shuffle(Arrays.asList(leftSideObjects), random);
+  Collections.shuffle(Arrays.asList(rightSideObjects), random);
+
+  // Place objects on the left side
+  for (int i = 0; i < leftSideObjects.length; i++) {
+   int x = random.nextInt(2, 6); // Random X for left side
+   int y = random.nextInt(2, 11); // Random Y within the map bounds
+   gp.obj[i] = createObject(leftSideObjects[i], x, y);
+  }
+
+  // Place objects on the right side
+  for (int i = 0; i < rightSideObjects.length; i++) {
+   int x = random.nextInt(6, 12); // Random X for right side
+   int y = random.nextInt(2, 11); // Random Y within the map bounds
+   gp.obj[i + leftSideObjects.length] = createObject(rightSideObjects[i], x, y);
+  }
+ }
+
+ private SuperObject createObject(Class objClass, int x, int y) {
+
+  // Create an instance of the object class and set its position
+  SuperObject obj = null;
+  try {
+   obj = (SuperObject) objClass.getConstructor().newInstance();
+   obj.worldX = x * gp.tileSize;
+   obj.worldY = y * gp.tileSize;
+
+
+  } catch (Exception e) {
+   e.printStackTrace();
+  }
+  return obj;
+ }
+}
 
 

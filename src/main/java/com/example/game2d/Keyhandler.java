@@ -75,6 +75,7 @@ import entity.PlayerTest;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 // This class handles keyboard events for player movement
 public class Keyhandler implements KeyListener {
@@ -93,6 +94,7 @@ public class Keyhandler implements KeyListener {
     public boolean cPressed = false; // Add flag C pressed button
     public boolean mPressed = false;// Add flag M pressed button
     public boolean selectPressed = false;// Add flag select pressed button
+    public boolean oPressed = false; // Add flag O Pressed button
 
 
     public Keyhandler(){};
@@ -227,7 +229,6 @@ public class Keyhandler implements KeyListener {
             if(code == KeyEvent.VK_ENTER){
                 selectPressed = true; // or m pressed
             }
-
             if(gp.ui.subState == 0){ // WAS SELECT STATE
 
                     //CHOOSE FROM THE OPTIONS
@@ -279,15 +280,20 @@ public class Keyhandler implements KeyListener {
             }
             //ACT UPON SELL STATE
             if(gp.ui.subState == 2){
-
+                    if(code == KeyEvent.VK_ESCAPE){
+                        gp.ui.subState = 0;
+                    }
             }
         }
 
-
-    }
-    public void tradeScreen(KeyEvent e){
-        int code = e.getKeyCode();
-
+        //Check Chest Collision and Check Button
+        if(code == KeyEvent.VK_O && (gp.player1.collisionWithChest || gp.player2.collisionWithChest)){
+            if(gp.player1.keyCountA>0 || gp.player2.keyCountA>0){
+                gp.ui.collectTreasures();
+                System.out.println("Collected successfully");
+                gp.ui.playerCollideWithChest.keyCountA--;
+            }
+        }
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -321,6 +327,9 @@ public class Keyhandler implements KeyListener {
         }
         if(code == KeyEvent.VK_C){
             cPressed = false;
+        }
+        if(code == KeyEvent.VK_O){
+            oPressed = false;
         }
 
 

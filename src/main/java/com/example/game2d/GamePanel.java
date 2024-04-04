@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int characterState =3;
     public final int inventoryState = 4;
     public final int marketState = 5;
+    public final int chestState = 6;
 
     //WORLD SETTING
     public final int maxWorldCol = 13;//50
@@ -134,27 +135,29 @@ public class GamePanel extends JPanel implements Runnable{
                 }
             }
         }
-        else if(gameState == pauseState){//whereas is game state was pause then pause by pressing P
+        // IF P PRESSED PAUSE
+        else if(gameState == pauseState){
             ui.drawPauseScreen();
         }
+        // IF C PRESSED
         else if(gameState == characterState){
             ui.drawCharacterScreen();
         }
+        // IF I PRESSED
         else if(gameState == inventoryState){
-
             ui.drawInventory();
-        }else if(gameState == marketState){
-           // ui.drawMarket();
         }
-
+        //IF M PRESSED
+         if(gameState == marketState){
+            ui.drawMarketScreen();
+        }
+        //IF O Pressed
 
     }
+
     // METHOD TO PAINT COMPONENT ON SCREEN
     public void paintComponent(Graphics g){
-
-
         super.paintComponent(g);
-
         // I will transform this graphics to 2d ones to have more control
         // graphics 2d class extends graphics class to add more control over geometry,x,y components, color and text layout
         Graphics2D g2 = (Graphics2D)g;

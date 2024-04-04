@@ -17,20 +17,20 @@ import java.util.Objects;
 
 public class Market extends SuperObject {
     public static int count;
-    public ArrayList<SuperObject> inventory = new ArrayList<>();
+    public ArrayList<SuperObject> marketItems = new ArrayList<>();
 
     public Market(){
         collision = true;
         name = "Market";
         //ADD WEAPONS and SHIELDS TO THE MARKET
-        inventory.add(new fireAxe());
-        inventory.add(new Paladin_Shield());
-        inventory.add(new Cursed_Sword());
-        inventory.add(new NormalSword());
-        inventory.add(new WoodenS());
-        inventory.add(new Axe());
-        inventory.add(new Jewel_Sword());
-        inventory.add(new Wooden_Bow());
+        marketItems.add(new fireAxe());
+        marketItems.add(new Paladin_Shield());
+        marketItems.add(new Cursed_Sword());
+        marketItems.add(new NormalSword());
+        marketItems.add(new WoodenS());
+        marketItems.add(new Axe());
+        marketItems.add(new Jewel_Sword());
+        marketItems.add(new Wooden_Bow());
 
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/houses/market.png")));

@@ -16,8 +16,7 @@ public class Wooden_Bow extends SuperObject {
         worth = 14.25;
         try {
             BufferedImage originalImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/woodenBow.png")));
-            image = scaleImage(originalImage, 0.05, 0.05); // Scale to half of its original size as an example
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/treasures/woodenBow.png")));
+            image = scaleImage(originalImage, 0.13, 0.13); // Correctly scales the image.
             description="["+name+"]\nUsed in Battles";
         }catch (IOException e){
             e.printStackTrace();
